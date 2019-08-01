@@ -35,18 +35,22 @@ function getEntireTree(id){
 }
 
 chrome.bookmarks.onCreated.addListener(function (id, bookmark) {
-    console.log("id: "+id+" id2: "+bookmark.id);
-    getEntireTree('1');
+    console.log("action:create// id: "+id+"\n");
+    console.log(bookmark);
+    //getEntireTree('1');
 });
 
 chrome.bookmarks.onChanged.addListener(function (id, bookmark) {
-    console.log("id: "+id+" id2: "+bookmark.id);
+    console.log("action:change// id: "+id+"\n");
+    console.log(bookmark);
 });
 
 chrome.bookmarks.onRemoved.addListener(function (id, bookmark) {
-    console.log("id: "+id+" id2: "+bookmark.id);
+    console.log("action:remove// id: "+id+"\n");
+    console.log(bookmark);
 });
 
 chrome.bookmarks.onMoved.addListener(function (id, bookmark) {
-    console.log("id: "+id+" id2: "+bookmark.id);
+    console.log("action:move// id: "+id+"\n");
+    console.log(bookmark);
 });

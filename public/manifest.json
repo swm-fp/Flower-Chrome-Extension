@@ -4,7 +4,7 @@
   "version": "1.0",
   "manifest_version": 2,
   "background": {
-    "scripts": ["app/background.js"]
+    "scripts": ["app/background.js", "app/background_bookmark.js"]
   },
   "chrome_url_overrides" : {
     "newtab" : "newtab.html"
@@ -22,5 +22,12 @@
   "web_accessible_resources":[
     "/static/css/content.css"
   ],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "<all_urls>",
+    "bookmarks"
+  ],
+
   "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'"
 }

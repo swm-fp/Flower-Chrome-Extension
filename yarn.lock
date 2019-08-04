@@ -1636,6 +1636,11 @@ chownr@^1.1.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.2.tgz#a18f1e0b269c8a6a5d3c86eb298beb14c3dd7bf6"
   integrity sha512-GkfeAQh+QNy3wquu9oIZr6SS5x7wGdSgNQvD10X3r+AZr1Oys22HW8kAmDMvNg2+Dm0TeGaEuO8gFwdBXxwO8A==
 
+chrome-extension-async@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/chrome-extension-async/-/chrome-extension-async-3.3.2.tgz#c2106942b09222cef340348c1e9c5c1e77ad7aba"
+  integrity sha512-MsZa46gKl2FHDJ33JROPKBStLKjkEPXT8ABB7O7cWDNRw8L+wyPF0RhDura5bsJySnRJtcLZLIxvBFUOZpu3YA==
+
 ci-info@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.6.0.tgz#2ca20dbb9ceb32d4524a683303313f0304b1e497"

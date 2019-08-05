@@ -1,12 +1,12 @@
 /* global chrome */
 import React, { Component } from 'react';
-import { API1 } from './FlowerAPI';
+import { getSampleNodes } from './FlowerAPI';
 
 
 export default class TestButton extends Component {
   render() {
     return (
-      <div onClick={API1}> test button </div>
+      <div onClick={getSampleNodes}> test button </div>
     );
   }
 }

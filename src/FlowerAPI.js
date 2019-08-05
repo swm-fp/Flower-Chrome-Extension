@@ -17,7 +17,7 @@ function makeRequest(token){
         //timeout: 3000 // 1초 이내에 응답이 오지 않으면 에러로 간주
       }
 }
-export async function API1(){
+export async function getSampleNodes(){
     let token = await getToken();
     let request = makeRequest(token);
 

@@ -21,7 +21,8 @@ export async function API1(){
     let token = await getToken();
     let request = makeRequest(token);
 
-    let result = await axios.get(' https://oc07otgs25.execute-api.ap-northeast-2.amazonaws.com/beta/users/1', request);
+    let result = await axios.get('https://2i0zlhluc1.execute-api.ap-northeast-2.amazonaws.com/beta/users/10/projects/10/nodes', request);
       console.log(result);
  }
+ 
  

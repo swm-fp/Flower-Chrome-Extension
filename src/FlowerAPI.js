@@ -22,7 +22,9 @@ export async function getSampleNodes(){
     let request = makeRequest(token);
 
     let result = await axios.get('https://2i0zlhluc1.execute-api.ap-northeast-2.amazonaws.com/beta/users/10/projects/10/nodes', request);
-      console.log(result);
+    console.log(result);
+    return result;
+      
  }
  
  

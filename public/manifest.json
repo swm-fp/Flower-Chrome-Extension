@@ -16,7 +16,10 @@
     {
       "matches": [ "<all_urls>" ],
       "css": ["/static/css/app.css"],
-      "js": ["/static/js/content.js"]
+      "js": [
+        "/static/js/content.js",
+        "/app/d3.min.js"
+      ]
     }
   ],
   "web_accessible_resources":[

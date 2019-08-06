@@ -21,9 +21,9 @@ export async function getSampleNodes(){
     let token = await getToken();
     let request = makeRequest(token);
 
-    let result = await axios.get('https://2i0zlhluc1.execute-api.ap-northeast-2.amazonaws.com/beta/users/10/projects/10/nodes', request);
-    console.log(result);
-    return result;
+    let result = await axios.get('https://2i0zlhluc1.execute-api.ap-northeast-2.amazonaws.com/beta', request);
+    console.log(result.data.data);
+    return result.data.data;
       
  }
  

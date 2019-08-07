@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import LoginButton from './LoginButton'
 import TestButton from './TestButton'
+import BMButton from './BMButton';
 
 
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
         </p>
         <LoginButton/>
         <TestButton/>
+        <BMButton/>
       </div>
     );
   }

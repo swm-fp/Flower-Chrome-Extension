@@ -1,6 +1,6 @@
-
-getEntireTree('1');
+//getEntireTree('1');
 let nodeList = [];
+getEntireTree('1');
 
 function node(id, title, is_folder, url=null, parentID=null, children=null) {
     this.id = id;
@@ -23,17 +23,38 @@ function addNodes(arr){
     }
 }
 
+let jsonInfo;
+
 function getEntireTree(id){
     chrome.bookmarks.getSubTree(id, function(tree){
+        /*
         addNodes(tree[0].children);
         //console.log(tree);
         let totalInfo = new Object();
         totalInfo.link = nodeList;
 
-        let jsonInfo = JSON.stringify(totalInfo);
+        jsonInfo = JSON.stringify(totalInfo);
+        */
+
+        jsonInfo = JSON.stringify(tree);
         console.log(jsonInfo);
     });
 }
+
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        console.log("background");
+        if (request.cmd == "any command") {
+            sendResponse({
+                result: "any response from background"
+            });
+        } else {
+            sendResponse(jsonInfo);
+        }
+        // Note: Returning true is required here!
+        //  ref: http://stackoverflow.com/questions/20077487/chrome-extension-message-passing-response-not-sent
+        return true;
+    });
 
 /*
 1. remove: 

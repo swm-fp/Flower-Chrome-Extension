@@ -21,6 +21,16 @@ function getParams(url) {
 function getIdToken(url){
 	return getParams(url)["id_token"];
 }
+function getUserInfo(token){
+	//seperate infomation part
+	let infoToken = token.split(".")[1];
+
+	//decode base64
+	let infoString = atob(infoToken);
+
+	let info = JSON.parse(infoString);
+	return info;
+}
 
 chrome.webRequest.onBeforeRequest.addListener(
 	function(details) {
@@ -30,15 +40,13 @@ chrome.webRequest.onBeforeRequest.addListener(
 		if( details.url.search(loginSuccessURL) != -1){
 			
 			let token = getIdToken(details.url);
+			let info = getUserInfo(token);
+			let userId = info["identities"][0]["userId"];
 
-			chrome.storage.local.set({"token": token}, function() {
-				chrome.storage.local.get(["token"], function(result) {
-					console.log("token "+' currently is ' + result);
-				});
+			//save to chrome storage
+			chrome.storage.local.set({"token": token,"id":userId}, function() {
+				alert("success");
 			});
-
-			alert(token);
-
 
 			chrome.tabs.update(details.tabId, {url: "chrome://newtab"});
 		}

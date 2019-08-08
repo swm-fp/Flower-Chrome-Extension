@@ -1,7 +1,6 @@
 /* global d3 */
 import React, { Component } from "react";
 import { getSampleNodes } from "./FlowerAPI";
-import "./Graph.css";
 
 async function Tree() {
   let result = await getSampleNodes();

@@ -10,6 +10,7 @@ async function sendRequest(url,method,data={}){
   let userInfo = await getUserInfo();
   let token = userInfo["token"];
   let userId = userInfo["id"];
+  let body = JSON.stringify(data);
 
   data["userId"] = userId;
 
@@ -20,11 +21,11 @@ async function sendRequest(url,method,data={}){
     headers: {
       "Authorization" : token
     },
-    data : data,
+    data : body,
   }
 
-  let result = axios(request);
-  return result;
+  let response = await axios(request);
+  return response;
 }
 
 function makeRequest_bookmark(token) {
@@ -53,30 +54,41 @@ async function getBookmarkTest() {
 
   let url = "https://lh5z9ce6yc.execute-api.ap-northeast-2.amazonaws.com/test/bookmark";
   let data = JSON.parse(response);
-  let result = await sendRequest(url,"post",data);
-  console.log(result);
+  let httpResponse = await sendRequest(url,"post",data);
+  console.log(httpResponse.data);
   }
 
 async function getSampleNodes(){
   let url = "https://2i0zlhluc1.execute-api.ap-northeast-2.amazonaws.com/beta";
   let method = "get";
-  let result =await sendRequest(url,method);
-  console.log(result.data.data);
-  return result.data.data;
+  let response =await sendRequest(url,method);
+  console.log(response.data.data);
+  return response.data.data;
 }
 
 async function readNodes(projectId){
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/{userId}/projects/"+projectId+"/nodes";
   let method = "get"
-  let result = await sendRequest(url,method);
-  console.log(result);
-  return result;
+  let response = await sendRequest(url,method);
+  console.log(response.data);
+  return response.data;
+}
+
+//data must object
+async function createNodes(projectId,nodesArray){
+  let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/{userId}/projects/"+projectId+"/nodes";
+  let method = "post"
+  let data = nodesArray;
+  let response = await sendRequest(url,method,data);
+  console.log(response.data);
+  return response.data;
 }
 
 const FlowerAPI = {
 "getBookmarkTest" : getBookmarkTest,
 "getSampleNodes" : getSampleNodes,
-"readNodes" : readNodes
+"readNodes" : readNodes,
+"createNodes" : createNodes
 }
 export default FlowerAPI;
 

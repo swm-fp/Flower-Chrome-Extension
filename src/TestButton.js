@@ -1,9 +1,10 @@
 /* global chrome */
-import React, { Component } from "react";
-import { getSampleNodes } from "./FlowerAPI";
+import React, { Component } from 'react';
+import FlowerAPI from './FlowerAPI';
+
 
 export default class TestButton extends Component {
   render() {
-    return <button onClick={getSampleNodes}> test button </button>;
+    return <button onClick={FlowerAPI.getSampleNodes}> test button </button>;
   }
 }

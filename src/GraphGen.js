@@ -1,9 +1,9 @@
 /* global d3 */
 import React, { Component } from "react";
-import { getSampleNodes } from "./FlowerAPI";
+import FlowerAPI from "./FlowerAPI";
 
 async function Tree() {
-  let result = await getSampleNodes();
+  let result = await FlowerAPI.getSampleNodes();
   console.log(result);
   let dataSet = [];
   for (let i = 0; i < result.length; i++) {

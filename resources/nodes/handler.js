@@ -19,11 +19,7 @@ module.exports.read = async event => {
   
   return {
     statusCode: 200,
-    body:JSON.stringify(
-      {
-        result : result
-      }
-      )
+    body:JSON.stringify(result)
       
     };
   };
@@ -61,17 +57,14 @@ module.exports.read = async event => {
     let projectId = pathParameters.projectId;
     
     let body = JSON.parse(event.body);
-    let data = body["data"];
+    let data = body;
     let params = convertToBatchWriteFormat(data,projectId);
     let result = await documentClient.batchWrite(params).promise();
+
+    result["requestedItems"] = data;
     
     return {
       statusCode: 200,
-      body: JSON.stringify(
-        {
-          result : result
-        }
-        )
-        
+      body: JSON.stringify(result)
       };
     };

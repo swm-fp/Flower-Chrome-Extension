@@ -1,6 +1,4 @@
-//getEntireTree('1');
-let nodeList = [];
-getEntireTree('1');
+/* global chrome */
 
 function node(id, title, is_folder, url=null, parentID=null, children=null) {
     this.id = id;
@@ -11,63 +9,36 @@ function node(id, title, is_folder, url=null, parentID=null, children=null) {
     this.children = children;
 }
 
-function addNodes(arr){
+function addNodes(arr, nodeList){
     for(let i=0 ; i<arr.length;i++){
-        n = arr[i];
+        let n = arr[i];
         if(!!n.children){
             nodeList.push(new node(n.id, n.title, true, null, n.parentId, n.children.map(n => n.id)));
-            addNodes(n.children);
+            addNodes(n.children, nodeList);
         }else if(n.parentId!=1){
             nodeList.push(new node(n.id, n.title, false, n.url, n.parentId, null));
         }
     }
+    return nodeList;
 }
 
-let jsonInfo;
+async function getEntireTree(id){
+    let nodes = [];
+    let data = new Object();
 
-function getEntireTree(id){
-    chrome.bookmarks.getSubTree(id, function(tree){
-        /*
-        addNodes(tree[0].children);
-        //console.log(tree);
-        let totalInfo = new Object();
-        totalInfo.link = nodeList;
+    const tree = await chrome.bookmarks.getSubTree(id);
+    nodes = await addNodes(tree[0].children, nodes);
 
-        jsonInfo = JSON.stringify(totalInfo);
-        */
-
-        jsonInfo = JSON.stringify(tree);
-        console.log(jsonInfo);
-    });
+    data.nodes = nodes;
+    return data;
 }
 
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        console.log("background");
-        if (request.cmd == "any command") {
-            sendResponse({
-                result: "any response from background"
-            });
-        } else {
-            sendResponse(jsonInfo);
-        }
-        // Note: Returning true is required here!
-        //  ref: http://stackoverflow.com/questions/20077487/chrome-extension-message-passing-response-not-sent
-        return true;
-    });
+const bookmark = {
+    "getEntireTree" : getEntireTree,
+}
+export default bookmark;
 
 /*
-1. remove: 
-{"id" : id}
-
-2. create:
-{"id":,"parentID":,"title":,"url":,isFolder:}
-
-
-3. update:
-{"id":, "parentID":, "title":, "url":, "isFolder":}
-*/
-
 chrome.bookmarks.onCreated.addListener(function (id, bookmark) {
     let data = new Object();
     data.id = bookmark.id;
@@ -118,3 +89,4 @@ chrome.bookmarks.onMoved.addListener(function (id, bookmark) {
         console.log("[moved] "+jsonInfo);
     });
 });
+*/

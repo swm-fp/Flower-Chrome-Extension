@@ -1,9 +1,9 @@
 /* global chrome */
 import React, { Component } from "react";
-import FlowerAPI from "../FlowerAPI";
+import bookmark from "./bookmark";
 
 export default class BMButton extends Component {
   render() {
-    return <button onClick={FlowerAPI.getBookmarkTest}> bookmark button </button>;
+    return <button onClick={bookmark.createBookmarks}> bookmark button </button>;
   }
 }

@@ -1,6 +1,6 @@
 /* global chrome */
 import React, { Component } from 'react';
-import FlowerAPI from './FlowerAPI';
+import FlowerAPI from '../FlowerAPI';
 
 
 

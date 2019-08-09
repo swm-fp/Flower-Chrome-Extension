@@ -1,6 +1,6 @@
 /* global chrome */
 import React, { Component } from "react";
-import bookmark from "./bookmark";
+import bookmark from "../bookmark";
 
 export default class BMButton extends Component {
   render() {

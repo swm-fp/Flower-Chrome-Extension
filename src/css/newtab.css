@@ -17,17 +17,3 @@ h1 {
 .app-container {
   padding: 25px;
 }
-
-.container-fluid .row div {
-  outline: solid 1px black;
-}
-
-button {
-  background-color: #6b6bf4; /* Green */
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 12px;
-}

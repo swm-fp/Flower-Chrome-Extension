@@ -53,21 +53,25 @@ async function createNodes(projectId,nodesArray){
   return response.data;
 }
 
+/*
 async function deleteNode(projectId, nodesArray){
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/{userId}/projects/"+projectId+"/nodes";
-  let method = "get"
-  let response = await sendRequest(url,method);
+  let method = "delete"
+  let data = nodesArray;
+  let response = await sendRequest(url,method,data);
   console.log(response.data);
   return response.data;
 }
 
 async function updateNode(projectId, nodesArray){
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/{userId}/projects/"+projectId+"/nodes";
-  let method = "get"
-  let response = await sendRequest(url,method);
+  let method = "put"
+  let data = nodesArray;
+  let response = await sendRequest(url,method,data);
   console.log(response.data);
   return response.data;
 }
+*/
 
 const FlowerAPI = {
 "getSampleNodes" : getSampleNodes,

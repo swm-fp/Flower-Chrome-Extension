@@ -9,7 +9,9 @@ async function sendRequest(url,method,data={}){
   let userInfo = await getUserInfo();
   let token = userInfo["token"];
   let userId = userInfo["id"];
-
+  let projectId = '1';
+  url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes";
+  
   data["userId"] = userId;
   let body = JSON.stringify(data);
 
@@ -22,6 +24,8 @@ async function sendRequest(url,method,data={}){
     },
     data : body,
   }
+
+  console.log(request);
 
   let response = await axios(request);
   return response;
@@ -36,7 +40,7 @@ async function getSampleNodes(){
 }
 
 async function readNodes(projectId){
-  let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/{userId}/projects/"+projectId+"/nodes";
+  let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/${userId}/projects/"+projectId+"/nodes";
   let method = "get"
   let response = await sendRequest(url,method);
   console.log(response.data);
@@ -55,16 +59,18 @@ async function createNodes(projectId,nodesArray){
 
 async function deleteNode(projectId, nodesArray){
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/{userId}/projects/"+projectId+"/nodes";
-  let method = "get"
-  let response = await sendRequest(url,method);
+  let method = "delete"
+  let data = nodesArray;
+  let response = await sendRequest(url,method,data);
   console.log(response.data);
   return response.data;
 }
 
 async function updateNode(projectId, nodesArray){
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/{userId}/projects/"+projectId+"/nodes";
-  let method = "get"
-  let response = await sendRequest(url,method);
+  let method = "put"
+  let data = nodesArray;
+  let response = await sendRequest(url,method,data);
   console.log(response.data);
   return response.data;
 }

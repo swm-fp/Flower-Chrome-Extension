@@ -2,15 +2,7 @@
 import FlowerAPI from "./FlowerAPI";
 
 function node(id, title, isFolder, url=null, parentID=null, children=null) {
-    /*
-    this.id = id;
-    this.parentID = parentID
-    this.title = title;
-    this.url = url;
-    this.isFolder = (url == null);
-    this.children = children;
-    */
-    return {"id":id, "parentId":parentID, "title":title, "url":url, "isFolder":isFolder, "children":children};
+    return {"nodeId":id, "parentId":parentID, "title":title, "url":url||null, "isFolder":isFolder, "children":children};
 }
 
 function addNodes(arr, nodeList){
@@ -20,7 +12,7 @@ function addNodes(arr, nodeList){
             nodeList.push(node(n.id, n.title, true, null, n.parentId, n.children.map(n => n.id)));
             addNodes(n.children, nodeList);
         }else if(n.parentId!=1){
-            nodeList.push(node(n.id, n.title, false, n.url, n.parentId, null));
+            nodeList.push(node(n.id, n.title, false, n.url, n.parentId, []));
         }
     }
     return nodeList;
@@ -40,57 +32,55 @@ async function getEntireTree(id){
 async function createBookmarks(){
     let data = await getEntireTree('1');
     console.log(data.nodes);
+    data.createOne = false;
+    await FlowerAPI.createNodes("1", data);
     return data.nodes;
-    //FlowerAPI.createNodes(projectId, data.nodes);
 }
 
-/*
-chrome.bookmarks.onCreated.addListener(function (id, n) {
-    let data = new Object();
-    let nodes = [];
-    nodes.push(new node(n.id, n.title, n.url==null, n.url, n.parentId, null))
 
-    data.nodes = nodes;
-    FlowerAPI.createNodes(projectId, data);
-    console.log("[create] "+data);
+chrome.bookmarks.onCreated.addListener(async function (id, n) {
+    let data = {"nodes": [node(n.id, n.title, n.url==null, n.url, n.parentId, null)]}
+    data.createOne = true;
+    await FlowerAPI.createNodes("1", data);
+    console.log(data);
 });
 
-chrome.bookmarks.onChanged.addListener(function (id, bookmark) {
-    chrome.bookmarks.get(id, function (nodes){
-        let data = new Object();
-        n = nodes[0];
+async function getBookmarkInfo(id){
+    node = await chrome.bookmarks.get(id);
+    return {
+        nodes:[
+            {
+                "nodeId":id, 
+                "title":node[0].title, 
+                "isFolder":node[0].url==null, 
+                "url":node[0].url||null, 
+                "parentId":node[0].parentId, 
+                "children": []
+            }
+        ]
+    };
+}
 
-        let nodes = [];
-        nodes.push(new node(id, n.title, n.url==null, n.url, n.parentId, null))
-        
-        data.nodes = nodes;
-        FlowerAPI.updateNode(projectId, data);
-        console.log("[changed] "+data);
-    });
+chrome.bookmarks.onChanged.addListener(async function (id, bookmark) {
+    let data = await getBookmarkInfo(id);
+    data.moved = false;
+    console.log(data);
+    await FlowerAPI.updateNode("1", data);
 });
 
-chrome.bookmarks.onRemoved.addListener(function (id, bookmark) {
-    let data = new Object();
-    data.removedNodeId = id;
-    
-    FlowerAPI.deleteNode(projectId, data);
-    console.log("[remove] "+data);
+chrome.bookmarks.onRemoved.addListener(async function (id, bookmark) {
+    let data = {"nodes":[{"id":id}]}    
+    await FlowerAPI.deleteNode("1", data);
+    console.log(data);
 });
 
-chrome.bookmarks.onMoved.addListener(function (id, bookmark) {
-    chrome.bookmarks.get(id, function (nodes){
-        let data = new Object();
-        node = nodes[0];
-
-        let nodes = [];
-        nodes.push(new node(id, n.title, n.url==null, n.url, n.parentId, null))
-
-        data.nodes = nodes;
-        FlowerAPI.updateNode(projectId, data);
-        console.log("[moved] "+jsonInfo);
-    });
+chrome.bookmarks.onMoved.addListener(async function (id, bookmark) {
+    let data = await getBookmarkInfo(id);
+    data.moved = true;
+    console.log(data);
+    await FlowerAPI.updateNode("1", data);
 });
-*/
+
 const bookmark = {
     "createBookmarks" : createBookmarks,
 }

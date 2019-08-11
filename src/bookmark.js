@@ -33,8 +33,8 @@ async function createBookmarks(){
     let data = await getEntireTree('1');
     console.log(data.nodes);
     data.createOne = false;
+    await FlowerAPI.createNodes("1", data);
     return data.nodes;
-    //FlowerAPI.createNodes(projectId, data.nodes);
 }
 
 

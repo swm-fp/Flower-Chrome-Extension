@@ -1,7 +1,8 @@
 /* global d3 */
 import React, { Component } from "react";
-import FlowerAPI from "./FlowerAPI";
-import bookmark from "./bookmark";
+
+import bookmark from "../bookmark";
+import { Button } from "react-bootstrap";
 
 async function Tree() {
   let data = await bookmark.createBookmarks();
@@ -23,8 +24,6 @@ async function Tree() {
     .parentId(d => {
       return d.parentId;
     })(data);
-
-  console.log(daraStructure);
 
   let treeStructure = d3.tree().size([700, 700]);
   let information = treeStructure(daraStructure);
@@ -169,8 +168,8 @@ export default class GRAPH extends Component {
   render() {
     return (
       <div>
-        <button onClick={Tree}>Tree</button>
-        <button onClick={Treemap}>Treemap</button>
+        <Button onClick={Tree}>Tree</Button>
+        <Button onClick={Treemap}>Treemap</Button>
       </div>
     );
   }

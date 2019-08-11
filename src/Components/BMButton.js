@@ -1,9 +1,11 @@
 /* global chrome */
 import React, { Component } from "react";
 import bookmark from "../bookmark";
-
+import { Button } from "react-bootstrap";
 export default class BMButton extends Component {
   render() {
-    return <button onClick={bookmark.createBookmarks}> bookmark button </button>;
+    return (
+      <Button onClick={bookmark.createBookmarks}> bookmark button </Button>
+    );
   }
 }

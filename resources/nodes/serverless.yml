@@ -93,6 +93,32 @@ functions:
           path: /users/{userId}/projects/{projectId}/nodes
           method: post
           cors: true
+  
+  update:
+    name: updateNode
+    handler: handler.update
+    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+      - http:
+          path: /users/{userId}/projects/{projectId}/nodes
+          method: put
+          cors: true
+  
+  delete:
+    name: deleteNode
+    handler: handler.delete
+    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+      - http:
+          path: /users/{userId}/projects/{projectId}/nodes
+          method: delete
+          cors: true
     
   
 

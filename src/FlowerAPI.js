@@ -1,6 +1,6 @@
 /* global chrome */
 import axios from 'axios'
-
+import "./chrome-extension-async";
 function getUserInfo(){
   return chrome.storage.local.get(["token","id"]);
 }

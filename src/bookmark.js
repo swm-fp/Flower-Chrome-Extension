@@ -1,8 +1,15 @@
 /* global chrome */
 import FlowerAPI from "./FlowerAPI";
 
-function node(id, title, isFolder, url=null, parentID=null, children=null) {
-    return {"nodeId":id, "parentId":parentID, "title":title, "url":url||null, "isFolder":isFolder, "children":children};
+function node(id, title, isFolder, url = null, parentID = null, children = null) {
+    return {
+        nodeId: id,
+        parentId: parentID,
+        title: title,
+        url: url || "null",
+        isFolder: isFolder,
+        children: children
+    };
 }
 
 function addNodes(arr, nodeList){
@@ -31,10 +38,9 @@ async function getEntireTree(id){
 
 async function createBookmarks(){
     let data = await getEntireTree('1');
-    console.log(data.nodes);
     data.createOne = false;
-    await FlowerAPI.createNodes("1", data);
-    return data.nodes;
+    let result = await FlowerAPI.createNodes("sampleProject", data);
+    return result;
 }
 
 

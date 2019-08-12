@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 export default class TestButton extends Component {
   render() {
     let projectId = "simpleProject";
-    let data = [
+    let data = {nodes:[
       {
         nodeId: "1",
         parentId: "-1",
@@ -28,7 +28,7 @@ export default class TestButton extends Component {
         url: "https://www.naver.com",
         children: []
       }
-    ];
+    ]};
     return (
       <div>
         <Button onClick={FlowerAPI.getSampleNodes}>

@@ -40,7 +40,7 @@ async function createBookmarks(){
     let data = await getEntireTree('1');
     data.createOne = false;
     let result = await FlowerAPI.createNodes("sampleProject", data);
-    return result;
+    return data.nodes;
 }
 
 

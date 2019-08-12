@@ -5,6 +5,7 @@ let documentClient = new AWS.DynamoDB.DocumentClient();
 let table = 'Nodes'
 
 
+// return Array
 module.exports.read = async event => {
   let pathParameters = event.pathParameters;
   let projectId = pathParameters.projectId;
@@ -16,10 +17,17 @@ module.exports.read = async event => {
   };
   
   let result = await documentClient.scan(params).promise();
+  /*
+  {
+    Items : [],
+    Count : number,
+    ScannedCount : number
+  }
+   */
   
   return {
     statusCode: 200,
-    body:JSON.stringify(result)
+    body:JSON.stringify(result.Items)
       
     };
   };

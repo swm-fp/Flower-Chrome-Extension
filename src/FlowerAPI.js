@@ -1,7 +1,7 @@
 /* global chrome */
 import axios from 'axios'
 import "./chrome-extension-async";
-function getUserInfo(){
+async function getUserInfo(){
   return chrome.storage.local.get(["token","id"]);
 }
 
@@ -36,7 +36,7 @@ async function getSampleNodes(){
 }
 
 async function readNodes(projectId){
-  let userInfo = getUserInfo();
+  let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes";
   
@@ -61,7 +61,7 @@ async function createNodes(projectId,nodesArray){
 }
 
 async function deleteNode(projectId, nodesArray){
-  let userInfo = getUserInfo();
+  let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes";
 
@@ -73,7 +73,7 @@ async function deleteNode(projectId, nodesArray){
 }
 
 async function updateNode(projectId, nodesArray){
-  let userInfo = getUserInfo();
+  let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes"; 
   

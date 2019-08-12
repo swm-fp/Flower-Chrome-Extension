@@ -135,6 +135,10 @@ async function addChildrenIdtoParent(parentNode, childrenId) {
     for(let i=0;i<params.length;i++){
       await documentClient.batchWrite(params[i]).promise();
     };
+
+    if(data.createOne){
+      await addChildrenIdtoParent(await getNodeInfo(userId, data.nodes[0].parentId), data.nodes[0].nodeId);
+    }
     
     let result = {};
     result["requestedItems"] = params;

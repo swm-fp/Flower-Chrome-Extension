@@ -74,45 +74,28 @@ module.exports.read = async event => {
     return params;
   }
   
-  async function getNodeInfo(userId, id) {
+  async function getNodeInfo(userId, nodeId) {
+
   let params = {
-    TableName: 'NodesTest',
-    ScanFilter: {
-      'nodeId': {
-        ComparisonOperator: "EQ",
-        AttributeValueList: [
-          id,
-        ]
-      },
-      'userId': {
-        ComparisonOperator: "EQ",
-        AttributeValueList: [
-          userId,
-        ]
-      }
-    }
+    TableName : 'NodesTest',
+    FilterExpression : 'nodeId = :nodeId and userId = :userId',
+    ExpressionAttributeValues : {':nodeId' : nodeId, ':userId' : userId}
   };
+  
   let result = await documentClient.scan(params).promise();
+
+  /*
+  {
+    Items : [],
+    Count : number,
+    ScannedCount : number
+  }
+   */
+
   return result.Items[0];
 }
 
-async function deleteChildrenIdfromParent(parentNode, childrenId) {
-  const idx = parentNode.children.indexOf(childrenId);
-  if (idx > -1) parentNode.children.splice(idx, 1)
 
-  let params = {
-    TableName: "NodesTest",
-    Key: {
-      id: parentNode.id
-    },
-    UpdateExpression: "set children=:c",
-    ExpressionAttributeValues: {
-      ":c": parentNode.children
-    }
-  };
-
-  let result = await documentClient.update(params).promise();
-}
 
 async function addChildrenIdtoParent(parentNode, childrenId) {
   parentNode.children.push(childrenId);
@@ -138,7 +121,7 @@ async function addChildrenIdtoParent(parentNode, childrenId) {
     
     let body = JSON.parse(event.body);
     let data = body;
-    let params = await convertToBatchWriteFormat(data.nodes,projectId, userId);
+    let params = convertToBatchWriteFormat(data.nodes,projectId, userId);
     
     for(let i=0;i<params.length;i++){
       await documentClient.batchWrite(params[i]).promise();
@@ -168,6 +151,24 @@ async function deleteChildren(userId, nodeId) {
     }
   }
   await deleteNode(node);
+}
+
+async function deleteChildrenIdfromParent(parentNode, childrenId) {
+  const idx = parentNode.children.indexOf(childrenId);
+  if (idx > -1) parentNode.children.splice(idx, 1)
+
+  let params = {
+    TableName: "NodesTest",
+    Key: {
+      id: parentNode.id
+    },
+    UpdateExpression: "set children=:c",
+    ExpressionAttributeValues: {
+      ":c": parentNode.children
+    }
+  };
+
+  let result = await documentClient.update(params).promise();
 }
 
 async function deleteNode(node) {

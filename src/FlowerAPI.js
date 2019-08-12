@@ -1,7 +1,7 @@
 /* global chrome */
 import axios from 'axios'
 import "./chrome-extension-async";
-function getUserInfo(){
+async function getUserInfo(){
   return chrome.storage.local.get(["token","id"]);
 }
 
@@ -23,8 +23,6 @@ async function sendRequest(url,method,data={}){
     data : body,
   }
 
-  console.log(request);
-
   let response = await axios(request);
   return response;
 }
@@ -38,7 +36,7 @@ async function getSampleNodes(){
 }
 
 async function readNodes(projectId){
-  let userInfo = getUserInfo();
+  let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes";
   
@@ -50,7 +48,7 @@ async function readNodes(projectId){
 
 //data must object
 async function createNodes(projectId,nodesArray){
-  let userInfo = getUserInfo();
+  let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes";
 
@@ -58,11 +56,12 @@ async function createNodes(projectId,nodesArray){
   let data = nodesArray;
   let response = await sendRequest(url,method,data);
   console.log(response.data);
+
   return response.data;
 }
 
 async function deleteNode(projectId, nodesArray){
-  let userInfo = getUserInfo();
+  let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes";
 
@@ -74,7 +73,7 @@ async function deleteNode(projectId, nodesArray){
 }
 
 async function updateNode(projectId, nodesArray){
-  let userInfo = getUserInfo();
+  let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/projects/"+projectId+"/nodes"; 
   

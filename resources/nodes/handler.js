@@ -55,10 +55,10 @@ module.exports.read = async event => {
   {
     "projectId" : projectId
   }
-  let result = await readTable("NodesTest",parameters);
+  let response = await readTable(tableName,parameters);
   
   /*
-  result :
+  response :
   {
     Items : [],
     Count : number,
@@ -66,10 +66,11 @@ module.exports.read = async event => {
   }
    */
   
+   let result = response.Items;
 
   return {
     statusCode: 200,
-    body:JSON.stringify(result.Items)
+    body:JSON.stringify(result)
     };
 
     /*
@@ -78,7 +79,45 @@ module.exports.read = async event => {
      */
   };
 
+
+module.exports.readNode= async event => {
+  let queryStringParameters = event.queryStringParameters;
+  let requestUrl = queryStringParameters.requestUrl;
+
+  let tableName = "NodesTest";
+  let parameters = {
+    "requestUrl" : requestUrl
+  }
+  let response = await readTable(tableName,parameters);
   
+  /*
+  response :
+  {
+    Items : [],
+    Count : number,
+    ScannedCount : number
+  }
+   */
+
+   let result;
+
+   if(response.Count == 0){
+     result = {}
+   }
+   else{
+     result = response.Items[0];
+   }
+
+  return {
+    statusCode: 200,
+    body:JSON.stringify(result)
+    };
+
+    /*
+    return :
+    {}
+     */
+  };
   
 
 

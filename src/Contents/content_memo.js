@@ -5,6 +5,7 @@ import "../css/memo.css";
 import "../chrome-extension-async";
 let x;
 let y;
+let node = {};
 
 
 document.addEventListener("mousemove",function(event){
@@ -62,7 +63,10 @@ export default class Memo extends Component {
 		componentDidMount(){
 			dragElement(this.props.element);
 			this.props.element.getElementsByClassName("flower-memo-text")[0].onkeydown = (e)=>{e.stopPropagation();}
-			this.props.element.getElementsByClassName("flower-memo-text")[0].value = this.props.text;
+			if(this.props.text){
+				this.props.element.getElementsByClassName("flower-memo-text")[0].value = this.props.text;
+			}
+			
 			
 		}
 	}
@@ -101,9 +105,10 @@ chrome.runtime.onMessage.addListener(
 		if(request.message == "contextMenu"){
 			renderMemo();
 		}
-		else if (request.message == "memoList"){
-			console.log("in render");
-			renderMemo(request.memoList);
+		else if (request.message == "node"){
+			node = request.node;
+			if(node.memoList)
+			renderMemo(node.memoList);
 		}
 });
 	
@@ -119,13 +124,18 @@ window.onbeforeunload = e=>{
 				"position" : {
 					"left" : memoElement.style["left"], 
 					"top" : memoElement.style["top"]
-				},
-				"text" : memoElement.querySelector("textarea").value
+				}
+				
 			}
+			if(memoElement.querySelector("textarea").value){
+				memoData["text"] = memoElement.querySelector("textarea").value;
+			}
+			
 			memoList.push(memoData);
 		}
+		node["memoList"] = memoList;
 
-		chrome.runtime.sendMessage({ "memoList" : memoList });
+		chrome.runtime.sendMessage({ "node" : node });
 	}
 		
 };

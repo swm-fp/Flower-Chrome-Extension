@@ -1,8 +1,21 @@
-/* global d3 */
+import * as d3 from "d3";
+import * as d3plus from "d3plus-react";
+
 import React, { Component } from "react";
 
 import bookmark from "../bookmark";
 import { Button } from "react-bootstrap";
+
+function make_root(data) {
+  return d3
+    .stratify()
+    .id(d => {
+      return d.nodeId;
+    })
+    .parentId(d => {
+      return d.parentId;
+    })(data);
+}
 
 async function Tree() {
   let data = await bookmark.createBookmarks();
@@ -16,14 +29,7 @@ async function Tree() {
     .append("g")
     .attr("transform", "translate(50,50)");
 
-  let daraStructure = d3
-    .stratify()
-    .id(d => {
-      return d.id;
-    })
-    .parentId(d => {
-      return d.parentId;
-    })(data);
+  let daraStructure = make_root(data);
 
   let treeStructure = d3.tree().size([700, 700]);
   let information = treeStructure(daraStructure);
@@ -89,43 +95,33 @@ async function Tree() {
     })
     .attr("y", d => {
       return d.y + 2;
-    })
-    .attr("writing-mode", "vetical-rl");
+    });
 }
 
-async function Treemap() {
+async function Treemap_Naive() {
   let data = await bookmark.createBookmarks();
-  data.push({ id: "1" });
-
+  data.push({ nodeId: "1" });
   let margin = { top: 10, right: 10, bottom: 10, left: 10 };
+
   let svg = d3
     .select("#graph")
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%")
+    .attr("align", "center")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  let root = d3
-    .stratify()
-    .id(d => {
-      return d.id;
-    })
-    .parentId(d => {
-      return d.parentId;
-    })(data);
-
+  let root = make_root(data);
   root.sum(d => {
-    return 1 + (d.children == null ? 0 : d.children.size);
+    return 1;
   });
-
   console.log(root);
-
   d3
     .treemap()
     .size([1000, 1000])
     .padding(4)(root);
-
+  // Treemap 구조
   svg
     .selectAll("rect")
     .data(root.leaves())
@@ -143,9 +139,13 @@ async function Treemap() {
     .attr("height", function(d) {
       return d.y1 - d.y0;
     })
+    .on("click", function(d) {
+      window.open(d.data.url);
+    })
     .style("stroke", "black")
     .style("fill", "#69b3a2");
 
+  // Treemap text
   svg
     .selectAll("text")
     .data(root.leaves())
@@ -169,7 +169,7 @@ export default class GRAPH extends Component {
     return (
       <div>
         <Button onClick={Tree}>Tree</Button>
-        <Button onClick={Treemap}>Treemap</Button>
+        <Button onClick={Treemap_Naive}>Treemap</Button>
       </div>
     );
   }

@@ -60,8 +60,8 @@ async function Treemap_interactive() {
     .attr("x", 6)
     .attr("y", 6 - margin.top)
     .attr("dy", ".75em");
-  
-  let data = await bookmark.createBookmarks()
+
+  let data = await bookmark.createBookmarks();
   data.push({ nodeId: "1", parentId: "" });
   var root = make_root(data);
   console.log(root);
@@ -168,7 +168,7 @@ async function Treemap_interactive() {
         .style("fill-opacity", 1);
       t1.selectAll("rect").call(rect);
       t2.selectAll("rect").call(rect);
-      
+
       /* Foreign object */
       t1.selectAll(".textdiv").style("display", "none");
       /* added */
@@ -212,7 +212,6 @@ async function Treemap_interactive() {
       .attr("fill", function(d) {
         return "#bbbbbb";
       });
-
   }
   function foreign(foreign) {
     /* added */
@@ -255,6 +254,6 @@ async function Treemap_interactive() {
 
 export default class BMTreemap extends Component {
   render() {
-    return <Button onClick={Treemap_interactive}> </Button>;
+    return <Button onClick={Treemap_interactive}>Treemap Intercative</Button>;
   }
 }

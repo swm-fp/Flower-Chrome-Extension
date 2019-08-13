@@ -1,3 +1,4 @@
+/* global chrome */
 function getParams(url) {
     // 파라미터가 담길 배열
     let param = new Array();

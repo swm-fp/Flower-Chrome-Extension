@@ -4,7 +4,7 @@ import FlowerAPI from "../FlowerAPI";
 import { Button } from "react-bootstrap";
 export default class TestButton extends Component {
   render() {
-    let projectId = "simpleProject";
+    let projectId = "sampleProject";
     let data = {nodes:[
       {
         nodeId: "1",

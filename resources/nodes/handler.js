@@ -139,7 +139,12 @@ module.exports.readNode= async event => {
       }
       
       let node = data[i];
-      node["id"] = uniqid();
+
+      //new node
+      if( !node["id"] ){
+        node["id"] = uniqid();
+      }
+      
       node["projectId"] = projectId;
       node["userId"] = userId;
       

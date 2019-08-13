@@ -1,13 +1,18 @@
 html,
 body,
-#root {
+#root,
+#graph,
+.main-section,
+.app-container {
   height: 100%;
-  max-height: 100%;
+  width: 100%;
 }
 
-h1 {
+.main-title {
   color: #48a684;
   font-weight: bold;
+  text-align: center;
+  padding: 5px;
 }
 
 .buttons-right > button {
@@ -16,4 +21,8 @@ h1 {
 }
 .app-container {
   padding: 25px;
+}
+
+.bootstrap-wrapper {
+  background-image: url("https://images.unsplash.com/photo-1548625361-1adcab316530?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60");
 }

@@ -119,7 +119,7 @@ async function Treemap_Naive() {
   console.log(root);
   d3
     .treemap()
-    .size([1000, 1000])
+    .size([1300, 1000])
     .padding(4)(root);
   // Treemap 구조
   svg

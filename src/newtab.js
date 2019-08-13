@@ -5,27 +5,60 @@ import "./css/newtab.css";
 import registerServiceWorker from "./registerServiceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavCustom from "./Components/NavCustom";
+import Sidebar from "react-sidebar";
 
+const mql = window.matchMedia(`(min-width: 800px)`);
 class NewTab extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sidebarDocked: mql.matches,
+      sidebarOpen: true
+    };
+
+    this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
+    this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+  }
+
+  componentWillMount() {
+    mql.addListener(this.mediaQueryChanged);
+  }
+
+  componentWillUnmount() {
+    mql.removeListener(this.mediaQueryChanged);
+  }
+
+  onSetSidebarOpen(open) {
+    this.setState({ sidebarOpen: open });
+  }
+
+  mediaQueryChanged() {
+    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
+  }
   render() {
     return (
-      <div className="h-100 bootstrap-wrapper">
-        <NavCustom />
-        <div className="h-100 app-container container-fluid">
-          <div className="row h-100">
-            <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              <h4>NAV</h4>
-            </div>
-            <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
-              <div className="row h-100">
-                <div
-                  id="graph"
-                  className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
-                />
-              </div>
+      <div className="bootstrap-wrapper">
+        <Sidebar
+          sidebar={<h1 class="main-title">Flower</h1>}
+          open={this.state.sidebarOpen}
+          docked={this.state.sidebarDocked}
+          onSetOpen={this.onSetSidebarOpen}
+          styles={{
+            sidebar: {
+              width: "250px",
+              align: "center",
+              backgroundColor: "#343a40"
+            }
+          }}
+        >
+          <NavCustom />
+
+          <div className="app-container container-fluid">
+            <div className="main-section">
+              <div id="graph" />
             </div>
           </div>
-        </div>
+        </Sidebar>
       </div>
     );
   }

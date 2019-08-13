@@ -5,6 +5,7 @@ import LoginButton from "./LoginButton";
 import TestButton from "./TestButton";
 import GRAPH from "./GraphGen";
 import BMButton from "./BMButton";
+import BMTreemap from "./BMTreemap";
 
 import {
   Navbar,
@@ -45,10 +46,13 @@ export default class NavCustom extends Component {
                 <GRAPH />
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">
+                <BMTreemap />
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.4">
                 <BMButton />
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
+              <NavDropdown.Item href="#action/3.5">
                 <TestButton />
               </NavDropdown.Item>
             </NavDropdown>

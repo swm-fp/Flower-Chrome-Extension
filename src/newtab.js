@@ -21,9 +21,7 @@ class NewTab extends Component {
                 <div
                   id="graph"
                   className="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
-                >
-                  <h4>Graph</h4>
-                </div>
+                />
               </div>
             </div>
           </div>

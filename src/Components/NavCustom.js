@@ -16,6 +16,8 @@ import {
   FormControl
 } from "react-bootstrap";
 
+import { IoLogoGithub } from "react-icons/io";
+
 export default class NavCustom extends Component {
   render() {
     return (
@@ -25,7 +27,7 @@ export default class NavCustom extends Component {
           <Nav className="mr-auto">
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="https://github.com/swm-fp/Flower-Chrome-Extension">
-              SWM-FP github
+              <IoLogoGithub /> SWM-FP
             </Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -38,9 +40,9 @@ export default class NavCustom extends Component {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
+
             <NavDropdown title="Test" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">
-                {" "}
                 <LoginButton />
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

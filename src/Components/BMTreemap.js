@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+
 import { Button } from "react-bootstrap";
 import React, { Component } from "react";
 import "../css/BMTreemap.css";
@@ -17,11 +18,15 @@ function make_root(data) {
 
 async function Treemap_interactive() {
   var el_id = "graph";
-  var obj = document.getElementById(el_id);
-  var divWidth = obj.offsetWidth;
+
+  var divWidth = window.innerWidth;
+  var color = d3
+    .scaleLinear()
+    .domain([0, 5])
+    .range(["lightgray", "#343a40"]); // or use hex values
   var margin = { top: 30, right: 0, bottom: 20, left: 0 },
-    width = divWidth - 25,
-    height = 700 - margin.top - margin.bottom,
+    width = divWidth * 0.8,
+    height = window.innerHeight * 0.8,
     formatNumber = d3.format(","),
     transitioning;
   // sets x and y scale to determine size of visible boxes
@@ -38,29 +43,36 @@ async function Treemap_interactive() {
     .size([width, height])
     .paddingInner(0)
     .round(false);
+
   var svg = d3
     .select("#" + el_id)
     .append("svg")
-    .attr("width", "80%")
-    .attr("height", "80%")
+    .attr("width", "100%")
+    .attr("height", "100%")
     .style("margin-left", -margin.left + "px")
     .style("margin.right", -margin.right + "px")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .style("shape-rendering", "crispEdges");
+
   var grandparent = svg.append("g").attr("class", "grandparent");
+
   grandparent
     .append("rect")
     .attr("y", -margin.top)
     .attr("width", width)
     .attr("height", margin.top)
-    .attr("fill", "#bbbbbb");
+    .attr("fill", d => {
+      return "#48a684";
+    });
+
   grandparent
     .append("text")
     .attr("x", 6)
     .attr("y", 6 - margin.top)
     .attr("dy", ".75em");
 
+  // data input from my bookmarks
   let data = await bookmark.createBookmarks();
   data.push({ nodeId: "1", parentId: "" });
   var root = make_root(data);
@@ -69,16 +81,14 @@ async function Treemap_interactive() {
   treemap(
     root
       .sum(function(d) {
-        return 1;
+        return 1; // 원래는 가중치 값으로 사용
       })
       .sort(function(a, b) {
-        return b.height - a.height || b.value - a.value;
+        return b.height - a.height;
       })
   );
   display(root);
   function display(d) {
-    // write text into grandparent
-    // and activate click's handler
     grandparent
       .datum(d.parent)
       .on("click", transition)
@@ -89,12 +99,14 @@ async function Treemap_interactive() {
       .datum(d.parent)
       .select("rect")
       .attr("fill", function() {
-        return "#bbbbbb";
+        return "#48a684"; // Math.floor(Math.random() * 16777215).toString(16); // random color
       });
+
     var g1 = svg
       .insert("g", ".grandparent")
       .datum(d)
       .attr("class", "depth");
+
     var g = g1
       .selectAll("g")
       .data(d.children)
@@ -106,6 +118,7 @@ async function Treemap_interactive() {
     })
       .classed("children", true)
       .on("click", transition);
+
     g.selectAll(".child")
       .data(function(d) {
         return d.children || [d];
@@ -114,6 +127,7 @@ async function Treemap_interactive() {
       .append("rect")
       .attr("class", "child")
       .call(rect);
+
     // add title to parents
     g.append("rect")
       .attr("class", "parent")
@@ -131,7 +145,7 @@ async function Treemap_interactive() {
       .html(function(d) {
         return (
           "" +
-          '<p class="title"> ' +
+          '<p class="title">' +
           d.data.title +
           "</p>" +
           "<p>" +
@@ -210,7 +224,7 @@ async function Treemap_interactive() {
         return y(d.y1) - y(d.y0);
       })
       .attr("fill", function(d) {
-        return "#bbbbbb";
+        return color(d.depth);
       });
   }
   function foreign(foreign) {
@@ -236,13 +250,14 @@ async function Treemap_interactive() {
     );
   }
   function breadcrumbs(d) {
-    var res = "";
+    var res = "Bookmarks";
     var sep = " > ";
     d.ancestors()
       .reverse()
       .forEach(function(i) {
-        res += i.data.title + sep;
+        res += (i.data.title ? i.data.title : "") + sep;
       });
+
     return res
       .split(sep)
       .filter(function(i) {

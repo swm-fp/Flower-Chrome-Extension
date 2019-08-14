@@ -80,10 +80,11 @@ module.exports = {
   // In production, we only want to load the polyfills and the app code.
   entry: {
     app: [require.resolve('./polyfills'), paths.appIndexJs],
-    content: [require.resolve('./polyfills'), './src/content.js'],
+    content: [require.resolve('./polyfills'), './src/Contents/content.js'],
     index: [require.resolve('./polyfills'), paths.appIndexJs],
     newtab: [require.resolve('./polyfills'), paths.newtabJs],
-    popup: [require.resolve('./polyfills'), paths.popupJs]
+    popup: [require.resolve('./polyfills'), paths.popupJs],
+    background: [require.resolve('./polyfills'), './src/backgrounds/background.js'],
   },
   output: {
     // The build folder.

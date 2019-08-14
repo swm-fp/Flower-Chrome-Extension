@@ -1,6 +1,4 @@
 import * as d3 from "d3";
-import * as d3plus from "d3plus-react";
-
 import React, { Component } from "react";
 
 import bookmark from "../bookmark";

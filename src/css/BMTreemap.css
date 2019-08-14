@@ -36,24 +36,10 @@ rect.parent,
 .children:hover rect.parent {
   opacity: 0;
 }
-.legend {
-  margin-bottom: 8px !important;
-}
-.legend rect {
-  stroke-width: 0px;
-}
-.legend text {
-  text-anchor: middle;
-  pointer-events: auto;
-  font-size: 13px;
-  font-family: sans-serif;
-  fill: black;
-}
 .form-group {
   text-align: left;
 }
 .textdiv {
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   font-size: 14px;
   padding: 7px;
   cursor: pointer;
@@ -63,7 +49,7 @@ rect.parent,
   font-size: 102%;
   font-weight: bold;
   margin-top: 8px;
-  font-size: 11px !important;
+  font-size: 17px !important;
 }
 .textdiv p {
   line-height: 13px;

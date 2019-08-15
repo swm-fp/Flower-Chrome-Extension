@@ -5,6 +5,12 @@ import React, { Component } from "react";
 import "../css/BMTreemap.css";
 import bookmark from "../bookmark";
 
+// To-do's
+// 1. Responsive Size : 현재는 임시 비율 확대중
+// 2. background images
+// 3. links add
+// 4. default background 추가
+
 function make_root(data) {
   return d3
     .stratify()
@@ -18,15 +24,15 @@ function make_root(data) {
 
 async function Treemap_interactive() {
   var el_id = "graph";
-
-  var divWidth = window.innerWidth;
+  let canvas = document.getElementById("graph");
+  var divWidth = canvas.clientWidth;
   var color = d3
     .scaleLinear()
     .domain([0, 5])
     .range(["lightgray", "#343a40"]); // or use hex values
   var margin = { top: 30, right: 0, bottom: 20, left: 0 },
-    width = divWidth * 0.8,
-    height = window.innerHeight * 0.8,
+    width = divWidth,
+    height = canvas.clientHeight,
     formatNumber = d3.format(","),
     transitioning;
   // sets x and y scale to determine size of visible boxes
@@ -49,6 +55,8 @@ async function Treemap_interactive() {
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%")
+    .attr("viewBox", "0 0 " + width + " " + height)
+    .attr("preserveAspectRatio", "xMinYMin meet")
     .style("margin-left", -margin.left + "px")
     .style("margin.right", -margin.right + "px")
     .append("g")

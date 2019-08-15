@@ -1,6 +1,5 @@
 /* global chrome */
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
 import LoginButton from "./LoginButton";
 import TestButton from "./TestButton";
 import GRAPH from "./GraphGen";

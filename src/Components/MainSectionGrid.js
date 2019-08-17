@@ -48,10 +48,10 @@ export default class MainSectionGrid extends Component {
           >
             <div id="graph" key="graph" className="block" />
             <div key="directory" className="block">
-              <p>Directory Part (TBD) </p>
+              <h3>Directory Part (TBD) </h3>
             </div>
             <div key="memo" className="block">
-              <p>Memo Part (TBD) </p>
+              <h3>Memo Part (TBD) </h3>
             </div>
           </ReactGridLayout>
         </div>

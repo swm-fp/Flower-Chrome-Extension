@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import NavCustom from "./Components/NavCustom";
 import Sidebar from "react-sidebar";
 import MainSectionGrid from "./Components/MainSectionGrid";
+import SidebarCustom from "./Components/SidebarCustom";
+
 // TBD list
 //import Fileview from "./Components/Fileview.js";
 
@@ -18,9 +20,9 @@ class NewTab extends Component {
       sidebarOpen: true,
       styles: {
         sidebar: {
-          width: "250px",
-          align: "center",
-          backgroundColor: "#343a40"
+          width: "240px",
+          align: "center"
+          //backgroundColor: "#343a40"
         }
       }
     };
@@ -49,7 +51,7 @@ class NewTab extends Component {
     return (
       <div className="bootstrap-wrapper">
         <Sidebar
-          sidebar={<h1 class="main-title">Flower</h1>}
+          sidebar={<SidebarCustom />}
           open={this.state.sidebarOpen}
           docked={this.state.sidebarDocked}
           onSetOpen={this.onSetSidebarOpen}

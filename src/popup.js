@@ -9,6 +9,7 @@ class Popup extends Component {
     return (
       <div class="container">
         <h1>Sidepannel</h1>
+        <div className="Memo" />
       </div>
     );
   }

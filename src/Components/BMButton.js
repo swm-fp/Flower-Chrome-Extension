@@ -1,4 +1,3 @@
-/* global chrome */
 import React, { Component } from "react";
 import bookmark from "../bookmark";
 import { Button } from "react-bootstrap";

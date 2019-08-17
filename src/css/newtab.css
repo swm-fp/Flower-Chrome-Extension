@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
 html,
 body,
 #root,
@@ -8,21 +14,19 @@ body,
   width: 100%;
 }
 
-.main-title {
-  color: #48a684;
-  font-weight: bold;
-  text-align: center;
-  padding: 5px;
-}
-
 .buttons-right > button {
   float: right;
   margin: 5px;
 }
 .app-container {
   padding: 25px;
+  background: rgba(76, 175, 80, 0.05);
 }
 
 .bootstrap-wrapper {
   background-image: url("https://images.unsplash.com/photo-1548625361-1adcab316530?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60");
+}
+
+.navbar {
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 4px 0px;
 }

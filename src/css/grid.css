@@ -1,12 +1,19 @@
 .block {
-  background: #e0e0e0;
-  box-shadow: 7px 7px 2px #d1d1d1;
+  background: rgb(248, 249, 250);
+  border-radius: 0.9rem;
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.5);
+  border-left: 7px solid #4db6ac;
+}
+
+h3 {
+  color: #4db6ac;
 }
 
 .react-grid-layout {
   position: relative;
   transition: height 200ms ease;
 }
+
 .react-grid-item {
   padding: 10px;
   transition: all 200ms ease;

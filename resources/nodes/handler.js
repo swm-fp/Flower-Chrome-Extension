@@ -21,7 +21,7 @@ async function readTable(tableName,parameters = {}){
 
     //has next?
     if(count != numOfParameter){
-      filterExpression += " and";
+      filterExpression += " and ";
     }
   }
 
@@ -46,7 +46,7 @@ async function readTable(tableName,parameters = {}){
 }
 
 // return Array
-module.exports.read = async event => {
+module.exports.readProjectNodes = async event => {
   let pathParameters = event.pathParameters;
   let projectId = pathParameters.projectId;
 
@@ -84,9 +84,13 @@ module.exports.readNode= async event => {
   let queryStringParameters = event.queryStringParameters;
   let requestUrl = queryStringParameters.requestUrl;
 
+  let pathParameters = event.pathParameters;
+  let userId = pathParameters.userId;
+
   let tableName = "NodesTest";
   let parameters = {
-    "requestUrl" : requestUrl
+    "requestUrl" : requestUrl,
+    "userId" : userId
   }
   let response = await readTable(tableName,parameters);
   
@@ -116,6 +120,46 @@ module.exports.readNode= async event => {
     /*
     return :
     {}
+     */
+  };
+
+module.exports.readUserNodes= async event => {
+
+  let pathParameters = event.pathParameters;
+  let userId = pathParameters.userId;
+
+  let tableName = "NodesTest";
+  let parameters = {
+    "userId" : userId
+  }
+  let response = await readTable(tableName,parameters);
+  
+  /*
+  response :
+  {
+    Items : [],
+    Count : number,
+    ScannedCount : number
+  }
+   */
+
+   let result;
+
+   if(response.Count == 0){
+     result = {}
+   }
+   else{
+     result = response.Items;
+   }
+
+  return {
+    statusCode: 200,
+    body:JSON.stringify(result)
+    };
+
+    /*
+    return :
+    []
      */
   };
   

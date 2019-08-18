@@ -54,8 +54,28 @@ async function readAllNodes(){
   let method = "get"
   let response = await sendRequest(url,method,{},{});
   console.log(response.data);
-  return response.data;
+  let result = response.data;
+  return result;
 }
+/*
+result :
+[
+  {
+    userId : 123 ,
+    memoList : {
+      position : {
+        top : 10px,
+        left : 10px,
+      },
+      text : abc
+    },
+    requestUrl : ~~,
+    ...
+    
+  } , 
+  { ... }
+]
+ */
 
 async function readNode(requestUrl){
   let userInfo = await getUserInfo();
@@ -117,6 +137,7 @@ const FlowerAPI = {
 "createNodes" : createNodes,
 "deleteNode" : deleteNode,
 "updateNode" : updateNode,
+"readAllNodes" : readAllNodes
 }
 export default FlowerAPI;
 

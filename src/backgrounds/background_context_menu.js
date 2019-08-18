@@ -53,8 +53,13 @@ chrome.runtime.onMessage.addListener(
         chrome.tabs.query({"url" : details.url , "active" : true}, async (tabs)=> {
           if(tabs.length == 1){
             let node = await FlowerAPI.readNode(details.url);
-            console.log("read memo : " + JSON.stringify(node));
-            chrome.tabs.sendMessage(tabs[0].id, {"message" : "node","node" : node});
+            
+            // node is exists
+            if( node.id ){
+              console.log("read memo : " + JSON.stringify(node));
+              chrome.tabs.sendMessage(tabs[0].id, {"message" : "node","node" : node});
+            }
+            
           }
         })
     }

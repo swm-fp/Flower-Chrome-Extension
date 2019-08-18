@@ -146,6 +146,12 @@ async function getTags(node){
   let data = node;
   let response = await sendRequest(url,method,data);
   console.log(response.data);
+  /*
+  {
+    data:....
+    keywords:["","", ...]
+  }
+  */
   return response.data;
 }
 

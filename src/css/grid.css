@@ -5,11 +5,12 @@
   border-left: 7px solid #4db6ac;
 }
 
-h3 {
+.sub-title {
   color: #4db6ac;
 }
 
 .react-grid-layout {
+  width: 100%;
   position: relative;
   transition: height 200ms ease;
 }

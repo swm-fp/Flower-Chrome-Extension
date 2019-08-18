@@ -138,6 +138,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 window.onbeforeunload = e => {
   //node is exists
   if( node ){
+
+    node["title"] = document.title;
+
     let memoList = [];
     let memoElements = document.getElementsByClassName("flower-memo");
     for (let memoElement of memoElements) {

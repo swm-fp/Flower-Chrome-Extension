@@ -47,10 +47,20 @@ async function readNodes(projectId){
   return response.data;
 }
 
-async function readNode(requestUrl){
+async function readAllNodes(){
   let userInfo = await getUserInfo();
   let userId = userInfo["id"];
   let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/nodes";
+  let method = "get"
+  let response = await sendRequest(url,method,{},{});
+  console.log(response.data);
+  return response.data;
+}
+
+async function readNode(requestUrl){
+  let userInfo = await getUserInfo();
+  let userId = userInfo["id"];
+  let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/beta/users/"+userId+"/node";
   let method = "get"
   let queryString = {
     "requestUrl" : requestUrl

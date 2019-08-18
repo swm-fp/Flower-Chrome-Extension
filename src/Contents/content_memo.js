@@ -59,12 +59,17 @@ function dragElement(elmnt) {
   }
 }
 
+
+function removeMemo(element){
+  element.remove();
+}
+
 export default class Memo extends Component {
   render() {
     return (
       <InputGroup className="flower-memo-wrapper">
         <InputGroup className="flower-memo-header">
-          <Button className="flower-memo-remove" />
+          <Button className="flower-memo-remove" onClick={()=>{removeMemo(this.props.element)}} />
           <Button className="flower-memo-action1" />
           <InputGroup.Text
             className="flower-memo-title"

@@ -129,9 +129,9 @@ async function updateNode(projectId, nodesArray){
   return response.data;
 }
 
-async function getTags(arrayList){
+async function getTags(node){
   /*
-  arrayList = 
+  node = 
   {
     title : ""
     url : ""
@@ -143,7 +143,7 @@ async function getTags(arrayList){
   let url = "15.164.93.85:5002/info/"; 
   let method = "put";
 
-  let data = arrayList;
+  let data = node;
   let response = await sendRequest(url,method,data);
   console.log(response.data);
   return response.data;

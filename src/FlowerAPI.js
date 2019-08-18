@@ -129,6 +129,26 @@ async function updateNode(projectId, nodesArray){
   return response.data;
 }
 
+async function getTags(arrayList){
+  /*
+  arrayList = 
+  {
+    title : ""
+    url : ""
+    memo : ["", "", ...]
+    highlight : ["", "", ...]
+  }
+  */
+
+  let url = "15.164.93.85:5002/info/"; 
+  let method = "put";
+
+  let data = arrayList;
+  let response = await sendRequest(url,method,data);
+  console.log(response.data);
+  return response.data;
+}
+
 
 const FlowerAPI = {
 "getSampleNodes" : getSampleNodes,

@@ -50,13 +50,13 @@ chrome.runtime.onMessage.addListener(
   chrome.webNavigation.onCompleted.addListener(function(details) {
     
     if(details.frameId==0){
-      (async ()=>{
-        let node = await FlowerAPI.readNode(details.url);
-        console.log("read memo : " + JSON.stringify(node));
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs)=> {
-          chrome.tabs.sendMessage(tabs[0].id, {"message" : "node","node" : node});
+        chrome.tabs.query({"url" : details.url , "active" : true}, async (tabs)=> {
+          if(tabs.length == 1){
+            let node = await FlowerAPI.readNode(details.url);
+            console.log("read memo : " + JSON.stringify(node));
+            chrome.tabs.sendMessage(tabs[0].id, {"message" : "node","node" : node});
+          }
         })
-      })();
     }
   });
   

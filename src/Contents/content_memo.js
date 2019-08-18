@@ -3,12 +3,11 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import "../css/memo.css";
 import "../chrome-extension-async";
-//import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 
 let x;
 let y;
-let node = {};
+let node = undefined;
 
 document.addEventListener(
   "mousemove",
@@ -137,9 +136,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 window.onbeforeunload = e => {
-  if (document.getElementsByClassName("flower-memo").length > 0) {
+  //node is exists
+  if( node ){
     let memoList = [];
-
     let memoElements = document.getElementsByClassName("flower-memo");
     for (let memoElement of memoElements) {
       let memoData = {

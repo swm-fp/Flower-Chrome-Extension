@@ -3,7 +3,7 @@ import "../css/grid.css";
 import RGL, { WidthProvider } from "react-grid-layout";
 import MemoList from "./MemoList";
 import { Alert } from "react-bootstrap";
-
+import Fileview from "./Fileview.js";
 // To-do's
 // 1. Responsive Local Storage Layout : 그리드 크기 변경후 로컬 또는 서버 저장
 // https://github.com/STRML/react-grid-layout/blob/master/test/examples/8-localstorage-responsive.jsx
@@ -16,21 +16,21 @@ const ReactGridLayout = WidthProvider(RGL);
 export default class MainSectionGrid extends Component {
   static defaultProps = {
     className: "layout",
-    cols: 12,
+    cols: 15,
     rowHeight: 35,
     onLayoutChange: function() {},
     // This turns off compaction so you can place items wherever.
-    verticalCompact: false
-    //preventCollision: true
+    verticalCompact: false,
+    preventCollision: true
   };
 
   constructor(props) {
     super(props);
 
     const layout = [
-      { i: "graph", x: 0, y: 6, w: 15, h: 9 },
-      { i: "memo", x: 0, y: 0, w: 15, h: 6 },
-      { i: "directory", x: 0, y: 9, w: 15, h: 5 }
+      { i: "graph", x: 0, y: 7, w: 9, h: 16 },
+      { i: "memo", x: 0, y: 0, w: 15, h: 7 },
+      { i: "directory", x: 9, y: 7, w: 6, h: 16 }
     ];
     this.state = {
       layout
@@ -55,7 +55,8 @@ export default class MainSectionGrid extends Component {
           >
             <div id="graph" key="graph" className="block" />
             <div key="directory" className="block">
-              <h4 className="sub-title">Directory Part </h4>
+              <h4 className="sub-title">Directoryㄴ</h4>
+              <Fileview />
             </div>
             <div key="memo" className="block">
               <h4 className="sub-title"> Memo </h4>

@@ -22,7 +22,7 @@ export default class SidebarCustom extends Component {
           <a>
             <Image
               className="profile-image"
-              src="https://via.placeholder.com/150"
+              src="https://avatars2.githubusercontent.com/u/16396561?s=460&v=4"
               roundedCircle
               fluid
             />

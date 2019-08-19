@@ -30,26 +30,42 @@ function scan(tree) {
   return x;
 }
 
-async function f() {
-  let data = await bookmark.createBookmarks();
-  data.push({ nodeId: "1", title: "Main" });
-  let root = make_root(data);
-  console.log("hello");
-  console.log([await scan(root)]);
-
-  console.log([{ title: "Chicken", children: [{ title: "Egg" }] }]);
-  return [await scan(root)];
-}
-
-let state = { treeData: f() };
+async function f() {}
 
 export default class Fileview extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      bookmarks: []
+    };
+  }
+  componentDidMount() {
+    this.getBMList()
+      .then(result => {
+        console.log(result);
+        result.push({ nodeId: "1", title: "Main" });
+        let root = make_root(result);
+        console.log(root);
+        return [scan(root)];
+      })
+      .then(result =>
+        this.setState({
+          bookmarks: result
+        })
+      );
+  }
+
+  getBMList() {
+    return bookmark.createBookmarks();
+  }
+
   render() {
     return (
-      <div style={{ height: 400 }}>
+      <div style={{ height: "100%" }}>
         <SortableTree
-          treeData={state.treeData}
-          onChange={treeData => state.setState({ treeData })}
+          treeData={this.state.bookmarks}
+          onChange={bookmarks => this.setState({ bookmarks })}
         />
       </div>
     );

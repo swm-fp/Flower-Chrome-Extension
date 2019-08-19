@@ -8,9 +8,6 @@ import Sidebar from "react-sidebar";
 import MainSectionGrid from "./Components/MainSectionGrid";
 import SidebarCustom from "./Components/SidebarCustom";
 
-// TBD list
-//import Fileview from "./Components/Fileview.js";
-
 const mql = window.matchMedia(`(min-width: 800px)`);
 class NewTab extends Component {
   constructor(props) {

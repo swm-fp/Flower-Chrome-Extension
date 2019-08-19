@@ -128,6 +128,9 @@ function renderMemo(memoList = undefined) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   console.log("catch message :" + request.message);
   if (request.message === "contextMenu") {
+    if( !node ){
+      node = {};
+    }
     renderMemo();
   } else if (request.message === "node") {
     node = request.node;

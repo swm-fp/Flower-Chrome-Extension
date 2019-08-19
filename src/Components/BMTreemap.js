@@ -28,7 +28,7 @@ async function Treemap_interactive() {
   var divWidth = canvas.clientWidth;
   var color = d3
     .scaleLinear()
-    .domain([0, 5])
+    .domain([0, 7])
     .range(["lightgray", "#343a40"]); // or use hex values
   var margin = { top: 30, right: 0, bottom: 20, left: 0 },
     width = divWidth,

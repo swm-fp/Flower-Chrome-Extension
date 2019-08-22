@@ -18,12 +18,13 @@ async function sendRequest(url,method,data = {},queryString = {}){
     url : url,
     method : method,
     headers: {
-      "Authorization" : token
+      "Authorization" : token,
     },
     data : body,
 
     params: queryString
   }
+  console.log(request);
 
   let response = await axios(request);
   return response;
@@ -139,13 +140,11 @@ async function getTags(node){
     highlight : ["", "", ...]
   }
   */
-
-  let url = "15.164.93.85:5002/info/"; 
-  let method = "put";
-
+  let url = "https://ep9jktepxl.execute-api.ap-northeast-2.amazonaws.com/beata/";
+  //let url = "https://ec2-15-164-93-85.ap-northeast-2.compute.amazonaws.com/info/";
+  let method = "post";
   let data = node;
   let response = await sendRequest(url,method,data);
-  console.log(response.data);
   /*
   return type:
 
@@ -159,7 +158,7 @@ async function getTags(node){
   }
   */
 
-  return response.data;
+  return response;
 }
 
 
@@ -170,7 +169,8 @@ const FlowerAPI = {
 "createNodes" : createNodes,
 "deleteNode" : deleteNode,
 "updateNode" : updateNode,
-"readAllNodes" : readAllNodes
+"readAllNodes" : readAllNodes,
+"getTags" : getTags
 }
 export default FlowerAPI;
 

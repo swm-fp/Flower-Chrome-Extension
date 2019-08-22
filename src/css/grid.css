@@ -1,6 +1,6 @@
 .block {
   background: rgb(248, 249, 250);
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.5);
   border-left: 7px solid #4db6ac;
 }

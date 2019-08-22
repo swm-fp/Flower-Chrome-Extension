@@ -131,6 +131,7 @@ async function updateNode(projectId, nodesArray){
 }
 
 async function getTags(node){
+  
   /*
   node = 
   {
@@ -158,7 +159,7 @@ async function getTags(node){
   }
   */
 
-  return response;
+  return response.data.keywords;
 }
 
 

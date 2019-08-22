@@ -1,3 +1,4 @@
+/* global chrome */
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Button } from "react-bootstrap";
@@ -6,15 +7,29 @@ import "./css/popup.css";
 import FlowerAPI from "./FlowerAPI";
 
 async function Tags() {
+  let title = await chrome.tabs.executeScript({
+    code: 'document.querySelector("title").innerText'
+  });
+
+  let url = await chrome.tabs.executeScript({
+    code: 'document.URL'
+  });
+  
   let node = 
   {
-    title : "플라워 북마크 서비스로 하는 효율적인 북마크 관리!",
-    url : "www",
+    title : title[0],
+    url : url[0],
     memo : undefined,
     highlight : undefined
   }
+
+  console.log(node);
+
   let data = await FlowerAPI.getTags(node);
-  console.log(data);
+
+  for(let i=0;i<data.length;i++){
+    console.log(data[i][0]);
+  }
 }
 
 class Popup extends Component {

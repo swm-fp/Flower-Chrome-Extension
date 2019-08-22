@@ -48,6 +48,8 @@
     "react-icons": "^3.7.0",
     "react-sidebar": "^3.0.2",
     "react-sortable-tree": "^2.6.2",
+    "react-sortable-tree-theme-file-explorer": "^2.0.0",
+    "react-sortable-tree-theme-minimal": "^0.0.14",
     "react-tag-input": "^6.4.0",
     "resolve": "1.6.0",
     "style-loader": "0.19.0",

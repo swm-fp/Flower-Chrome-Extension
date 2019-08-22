@@ -57,8 +57,6 @@ async function Treemap_interactive() {
     .attr("height", "100%")
     .attr("viewBox", "0 0 " + width + " " + height)
     .attr("preserveAspectRatio", "xMinYMin meet")
-    .style("margin-left", -margin.left + "px")
-    .style("margin.right", -margin.right + "px")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .style("shape-rendering", "crispEdges");

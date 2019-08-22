@@ -17,7 +17,7 @@ export default class MainSectionGrid extends Component {
   static defaultProps = {
     className: "layout",
     cols: 15,
-    rowHeight: 35,
+    rowHeight: 20,
     onLayoutChange: function() {},
     // This turns off compaction so you can place items wherever.
     verticalCompact: false,
@@ -28,9 +28,9 @@ export default class MainSectionGrid extends Component {
     super(props);
 
     const layout = [
-      { i: "graph", x: 0, y: 7, w: 9, h: 16 },
+      { i: "graph", x: 0, y: 7, w: 9, h: 18 },
       { i: "memo", x: 0, y: 0, w: 15, h: 7 },
-      { i: "directory", x: 9, y: 7, w: 6, h: 16 }
+      { i: "directory", x: 9, y: 7, w: 6, h: 18 }
     ];
     this.state = {
       layout
@@ -53,14 +53,14 @@ export default class MainSectionGrid extends Component {
             onLayoutChange={this.onLayoutChange}
             {...this.props}
           >
-            <div id="graph" key="graph" className="block" />
-            <div key="directory" className="block">
-              <h4 className="sub-title">Directoryㄴ</h4>
+            <div id="graph" key="graph" className="block" width="100%" />
+            <div key="directory" className="block" width="100%">
+              <h5 className="sub-title">Directory</h5>
               <Fileview />
             </div>
-            <div key="memo" className="block">
-              <h4 className="sub-title"> Memo </h4>
-              <MemoList />
+            <div key="memo" className="block" width="100%">
+              <h5 className="sub-title"> Memo </h5>
+              MemoList
             </div>
           </ReactGridLayout>
         </div>

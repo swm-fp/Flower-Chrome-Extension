@@ -30,19 +30,19 @@
 }
 
 .social-icon {
-  width: 1.4em;
-  height: 1.4em;
+  width: 1em;
+  height: 1em;
 }
 
 a {
   color: white;
   font-weight: bold;
-  margin: 0 7px;
+  margin: 0 4px;
 }
 
 .nav-item {
-  height: 50px;
-  font-size: 17px;
+  height: 35px;
+  font-size: 12px;
   letter-spacing: 2px;
 }
 

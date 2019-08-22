@@ -17,7 +17,7 @@ class NewTab extends Component {
       sidebarOpen: true,
       styles: {
         sidebar: {
-          width: "240px",
+          width: "180px",
           align: "center"
           //backgroundColor: "#343a40"
         }

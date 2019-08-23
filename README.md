@@ -1,78 +1,32 @@
-# Flower API
+# Flower Chrome Extension
 
-## createNodes( url , data )
+## 실행환경
+크롬 브라우저
 
-### 설명
+## 설치
 
-{userId} 유저의 {projectId} 프로젝트에 노드 리스트를 저장한다.
-
-### params
-
-#### url 
-https://BaseUrl/users/{userId}/projects/{projectId}/nodes
-
-
-#### data
-
-구조 :
+### Step 1
+~~~
+yarn install
 ~~~
 
-    [ {} , {} , ... ] 
-
+### Step 2 
 ~~~
-예제 : 
-~~~
+yarn build
+~~~~
 
-    [
-        {
-            "nodeId" : "1",
-            "parentId":"-1",
-            "title":"cs231n",
-            "url":"null",
-            "isFolder":true,
-            "children":["2","3"],
-        },
-        {
-            "nodeId" : "2",
-            "parentId":"1",
-            "title":"hello world",
-            "url":"https://www.naver.com",
-            "children":[],
-        },
-        {
-            "nodeId" : "3",
-            "parentId":"1",
-            "title":"hello fp",
-            "url":"https://www.naver.com",
-            "children":[],
-        }
-    ]
+### Step 3 
 
+ [chrome://extensions](chrome://extensions) 접속
 
-~~~
+### Step 4 
+우측상단 개발자 모드 켜기 
 
+### Step 5 
+좌측 상단 <b>"압축 해제된 확장 프로그램을 로드합니다."</b> 클릭
 
+### Setp 6
+build 폴더 선택
 
-
-
-
-
-
-
-
-
----
-## readNodes
-
-### 설명
-
-{userId} 유저의 {projectId} 프로젝트 의 모든 노드들을 가져온다.
-
-
-
-### params
-
-#### url
-https://BaseUrl/users/{userId}/projects/{projectId}/nodes
 
 

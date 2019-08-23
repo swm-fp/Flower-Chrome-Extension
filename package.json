@@ -51,6 +51,7 @@
     "react-sortable-tree-theme-file-explorer": "^2.0.0",
     "react-sortable-tree-theme-minimal": "^0.0.14",
     "react-tag-input": "^6.4.0",
+    "react-toastify": "^5.3.2",
     "resolve": "1.6.0",
     "style-loader": "0.19.0",
     "sw-precache-webpack-plugin": "0.11.4",

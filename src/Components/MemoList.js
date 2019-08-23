@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FlowerAPI from "../FlowerAPI.js";
-
+import "../css/memoList.css";
 import { Card, Button, CardDeck } from "react-bootstrap";
 
 export default class MemoList extends Component {
@@ -34,8 +34,10 @@ export default class MemoList extends Component {
           <Card.Text>{memo.memoList[0].text}</Card.Text>
         </Card.Body>
         <Card.Footer>
-          <small className="text-muted">Last updated 3 mins ago</small>
-          <a href={memo.requestUrl}>Detail</a>
+          <small className="text-muted">Last updated few mins ago</small>
+          <a href={memo.requestUrl} style={{ color: "gray" }}>
+            Detail
+          </a>
         </Card.Footer>
       </Card>
     ));

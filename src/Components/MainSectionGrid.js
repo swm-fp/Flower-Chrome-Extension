@@ -20,17 +20,17 @@ export default class MainSectionGrid extends Component {
     rowHeight: 20,
     onLayoutChange: function() {},
     // This turns off compaction so you can place items wherever.
-    verticalCompact: false,
-    preventCollision: true
+    verticalCompact: false
+    //preventCollision: true
   };
 
   constructor(props) {
     super(props);
 
     const layout = [
-      { i: "graph", x: 0, y: 7, w: 9, h: 18 },
-      { i: "memo", x: 0, y: 0, w: 15, h: 7 },
-      { i: "directory", x: 9, y: 7, w: 6, h: 18 }
+      { i: "graph", x: 0, y: 7, w: 10, h: 18 },
+      { i: "memo", x: 0, y: 0, w: 10, h: 7 },
+      { i: "directory", x: 10, y: 0, w: 5, h: 25, static: true }
     ];
     this.state = {
       layout

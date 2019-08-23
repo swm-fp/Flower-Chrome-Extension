@@ -1,27 +1,20 @@
 /* global chrome */
 chrome.runtime.onMessage.addListener(function(msg, sender) {
   if (msg === "toggle") {
-    toggle();
+    const modal = document.createElement("dialog");
+    modal.style.height = "40%";
+    modal.style.width = "40%";
+    modal.innerHTML = `<iframe id="modal" style="height:100%"></iframe>`;
+    document.body.appendChild(modal);
+    const dialog = document.querySelector("dialog");
+    dialog.showModal();
+    const iframe = document.getElementById("modal");
+    iframe.style.height = "100%";
+    iframe.style.width = "100%";
+    iframe.src = chrome.extension.getURL("popup.html");
+    iframe.frameBorder = 0;
+    document.addEventListener("click", () => {
+      dialog.parentNode.removeChild(dialog);
+    });
   }
 });
-
-var iframe = document.createElement("iframe");
-iframe.style.background = "green";
-iframe.style.height = "100%";
-iframe.style.width = "0px";
-iframe.style.position = "fixed";
-iframe.style.top = "0px";
-iframe.style.right = "0px";
-iframe.style.zIndex = "9000000000000000000";
-iframe.frameBorder = "none";
-iframe.src = chrome.extension.getURL("popup.html");
-
-document.body.appendChild(iframe);
-
-function toggle() {
-  if (iframe.style.width === "0px") {
-    iframe.style.width = "400px";
-  } else {
-    iframe.style.width = "0px";
-  }
-}

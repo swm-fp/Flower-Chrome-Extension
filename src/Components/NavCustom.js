@@ -15,8 +15,11 @@ import {
 } from "react-bootstrap";
 
 import { IoLogoGithub } from "react-icons/io";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default class NavCustom extends Component {
+  notify = () => toast("2019.08.17 | MachinLearning Remind");
   render() {
     return (
       <Navbar bg="light" variant="light" expand="lg">
@@ -25,6 +28,10 @@ export default class NavCustom extends Component {
           <Nav className="mr-auto">
             <Nav.Item>
               <Nav.Link href="#home">Home</Nav.Link>
+            </Nav.Item>
+            <Nav.Item onClick={this.notify}>
+              <Nav.Link>MEMO</Nav.Link>
+              <ToastContainer />
             </Nav.Item>
             <Nav.Item>
               <Nav.Link href="https://github.com/swm-fp/Flower-Chrome-Extension">

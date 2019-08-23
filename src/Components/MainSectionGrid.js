@@ -60,7 +60,7 @@ export default class MainSectionGrid extends Component {
             </div>
             <div key="memo" className="block" width="100%">
               <h5 className="sub-title"> Memo </h5>
-              MemoList
+              <MemoList />
             </div>
           </ReactGridLayout>
         </div>

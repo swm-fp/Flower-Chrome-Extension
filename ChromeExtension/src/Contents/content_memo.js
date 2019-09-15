@@ -1,5 +1,5 @@
 /* global chrome */
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "../css/memo.css";
 import "../chrome-extension-async";
@@ -58,48 +58,46 @@ function dragElement(elmnt) {
   }
 }
 
-
-function removeMemo(element){
+function removeMemo(element) {
   element.remove();
 }
 
-export default class Memo extends Component {
-  render() {
-    return (
-      <InputGroup className="flower-memo-wrapper">
-        <InputGroup className="flower-memo-header">
-          <Button className="flower-memo-remove" onClick={()=>{removeMemo(this.props.element)}} />
-          <Button className="flower-memo-action1" />
-          <InputGroup.Text
-            className="flower-memo-title"
-            id="inputGroup-sizing-sm"
-          >
-            Memo
-          </InputGroup.Text>
-        </InputGroup>
-        <div className="flower-memo-content">
-          <FormControl
-            as="textarea"
-            className="flower-memo-text"
-            placeholder={this.default_content}
-          />
-        </div>
-      </InputGroup>
-    );
-  }
-  componentDidMount() {
-    dragElement(this.props.element);
-    this.props.element.getElementsByClassName(
+export default function Memo(props) {
+  useEffect(() => {
+    dragElement(props.element);
+    props.element.getElementsByClassName(
       "flower-memo-text"
     )[0].onkeydown = e => {
       e.stopPropagation();
     };
-    if (this.props.text) {
-      this.props.element.getElementsByClassName(
-        "flower-memo-text"
-      )[0].value = this.props.text;
+    if (props.text) {
+      props.element.getElementsByClassName("flower-memo-text")[0].value =
+        props.text;
     }
-  }
+  });
+
+  return (
+    <InputGroup className="flower-memo-wrapper">
+      <InputGroup className="flower-memo-header">
+        <Button
+          className="flower-memo-remove"
+          onClick={() => {
+            removeMemo(props.element);
+          }}
+        />
+        <Button className="flower-memo-action1" />
+        <InputGroup.Text
+          className="flower-memo-title"
+          id="inputGroup-sizing-sm"
+        >
+          Memo
+        </InputGroup.Text>
+      </InputGroup>
+      <div className="flower-memo-content">
+        <FormControl as="textarea" className="flower-memo-text" />
+      </div>
+    </InputGroup>
+  );
 }
 
 function renderMemo(memoList = undefined) {
@@ -128,7 +126,7 @@ function renderMemo(memoList = undefined) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   console.log("catch message :" + request.message);
   if (request.message === "contextMenu") {
-    if( !node ){
+    if (!node) {
       node = {};
     }
     renderMemo();
@@ -140,8 +138,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 window.onbeforeunload = e => {
   //node is exists
-  if( node ){
-
+  if (node) {
     node["title"] = document.title;
 
     let memoList = [];

@@ -34,3 +34,8 @@ nav.navbar {
 .btn-outline-success {
   font-size: 11px;
 }
+
+.sidebar {
+  width: "180px";
+  text-align: "center";
+}

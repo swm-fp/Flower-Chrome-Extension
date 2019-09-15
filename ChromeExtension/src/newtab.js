@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./css/newtab.css";
 import registerServiceWorker from "./registerServiceWorker";
@@ -9,57 +9,42 @@ import MainSectionGrid from "./Components/MainSectionGrid";
 import SidebarCustom from "./Components/SidebarCustom";
 
 const mql = window.matchMedia(`(min-width: 800px)`);
-class NewTab extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sidebarDocked: mql.matches,
-      sidebarOpen: true,
-      styles: {
-        sidebar: {
-          width: "180px",
-          align: "center"
-          //backgroundColor: "#343a40"
-        }
-      }
+
+function NewTab(props) {
+  const [sidebarDocked, setSidebarDocked] = useState(mql.matches);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const styles = { sidebar: { width: "180px", align: "center" } };
+  useEffect(() => {
+    mql.addListener(mediaQueryChanged);
+    return () => {
+      mql.removeListener(mediaQueryChanged);
     };
+  });
 
-    this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
-    this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
-  }
+  const onSetSidebarOpen = open => {
+    setSidebarOpen(open);
+  };
 
-  componentWillMount() {
-    mql.addListener(this.mediaQueryChanged);
-  }
+  const mediaQueryChanged = () => {
+    setSidebarDocked(mql.matches);
+    setSidebarOpen(false);
+  };
 
-  componentWillUnmount() {
-    mql.removeListener(this.mediaQueryChanged);
-  }
-
-  onSetSidebarOpen(open) {
-    this.setState({ sidebarOpen: open });
-  }
-
-  mediaQueryChanged() {
-    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
-  }
-
-  render() {
-    return (
-      <div className="bootstrap-wrapper">
-        <Sidebar
-          sidebar={<SidebarCustom />}
-          open={this.state.sidebarOpen}
-          docked={this.state.sidebarDocked}
-          onSetOpen={this.onSetSidebarOpen}
-          styles={this.state.styles}
-        >
-          <NavCustom />
-          <MainSectionGrid />
-        </Sidebar>
-      </div>
-    );
-  }
+  return (
+    <div className="bootstrap-wrapper">
+      <Sidebar
+        className="sidebar"
+        sidebar={<SidebarCustom />}
+        open={sidebarOpen}
+        docked={sidebarDocked}
+        onSetOpen={onSetSidebarOpen}
+        styles={styles}
+      >
+        <NavCustom />
+        <MainSectionGrid />
+      </Sidebar>
+    </div>
+  );
 }
 
 ReactDOM.render(<NewTab />, document.getElementById("root"));

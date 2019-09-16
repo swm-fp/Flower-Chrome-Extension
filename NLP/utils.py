@@ -52,14 +52,14 @@ def api(api_num, sen):
     #pos = module.pos(sen)
     return deleteRepetes(filter(module.nouns(sen))) + eng_nouns(sen), module.pos(sen)
 
-def keyword_extractor(title, highlight=''):
-    title_nouns = api(2, title)
+def keyword_extractor(title):
+    title_nouns, _ = api(2, title)
 
-    return title_nouns
+    for w, c in Counter(title_nouns).most_common(100):
+        print(w, c)
 
 if __name__ == "__main__":
     while True:
         sen = input("문장입력>> ")
-        res = eng_nouns(sen)
-        print(res)
+        keyword_extractor(sen)
         print()

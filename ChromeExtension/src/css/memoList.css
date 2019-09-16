@@ -10,3 +10,8 @@
 .card-footer {
   font-size: 8px;
 }
+
+.card-deck,
+.card {
+  height: 100% auto;
+}

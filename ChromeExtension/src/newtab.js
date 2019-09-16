@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import "./css/newtab.css";
+import { BrowserRouter, Route } from "react-router-dom";
+import Sidebar from "react-sidebar";
 import registerServiceWorker from "./registerServiceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./css/newtab.css";
 import NavCustom from "./Components/NavCustom";
-import Sidebar from "react-sidebar";
-import MainSectionGrid from "./Components/MainSectionGrid";
+import MainDashboard from "./Components/MainDashboard";
 import SidebarCustom from "./Components/SidebarCustom";
 
 const mql = window.matchMedia(`(min-width: 800px)`);
@@ -41,11 +42,16 @@ function NewTab(props) {
         styles={styles}
       >
         <NavCustom />
-        <MainSectionGrid />
+        <Route path="/" component={MainDashboard} />
       </Sidebar>
     </div>
   );
 }
 
-ReactDOM.render(<NewTab />, document.getElementById("root"));
+ReactDOM.render(
+  <BrowserRouter>
+    <NewTab />,
+  </BrowserRouter>,
+  document.getElementById("root")
+);
 registerServiceWorker();

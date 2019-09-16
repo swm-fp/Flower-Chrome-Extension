@@ -1,37 +1,25 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import FlowerAPI from "../FlowerAPI.js";
 import "../css/memoList.css";
-import { Card, Button, CardDeck } from "react-bootstrap";
+import { Card, CardColumns } from "react-bootstrap";
 
-export default class MemoList extends Component {
-  constructor(props) {
-    super(props);
+function MemoList(props) {
+  const [memo, setStateMemo] = useState([]);
 
-    this.state = {
-      memo: []
-    };
-  }
-  componentDidMount() {
-    this.getMemoList().then(result =>
-      this.setState({
-        memo: result
-      })
-    );
-  }
+  useEffect(() => {
+    getMemoList().then(res => setStateMemo(res));
+  }, []);
 
-  getMemoList() {
-    return FlowerAPI.readAllNodes();
-  }
-
-  render() {
-    const { memo } = this.state;
-    const Memos = memo.map((memo, i) => (
+  let getMemoList = async () => {
+    return await FlowerAPI.readAllNodes();
+  };
+  let Memos = "";
+  if (memo.length > 0) {
+    Memos = memo.map((memo, i) => (
       <Card>
-        <Card.Header>
-          {memo.title} ({memo.memoList.length})
-        </Card.Header>
+        <Card.Header>{memo.title}</Card.Header>
         <Card.Body>
-          <Card.Text>{memo.memoList[0].text}</Card.Text>
+          {/* <Card.Text>{memo.memoList[0].text}</Card.Text> */}
         </Card.Body>
         <Card.Footer>
           <small className="text-muted">Last updated few mins ago</small>
@@ -41,6 +29,8 @@ export default class MemoList extends Component {
         </Card.Footer>
       </Card>
     ));
-    return <CardDeck>{Memos}</CardDeck>;
   }
+  return <CardColumns>{Memos}</CardColumns>;
 }
+
+export default MemoList;

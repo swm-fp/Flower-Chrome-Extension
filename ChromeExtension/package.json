@@ -46,6 +46,7 @@
     "react-grid-layout": "https://github.com/mnoster/react-grid-layout",
     "react-icon": "^1.0.0",
     "react-icons": "^3.7.0",
+    "react-router-dom": "^5.0.1",
     "react-sidebar": "^3.0.2",
     "react-sortable-tree": "^2.6.2",
     "react-sortable-tree-theme-file-explorer": "^2.0.0",

@@ -1,9 +1,11 @@
 /* global chrome */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import "../css/memo.css";
 import "../chrome-extension-async";
 import { Button, FormControl, InputGroup } from "react-bootstrap";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 let x;
 let y;
@@ -63,6 +65,16 @@ function removeMemo(element) {
 }
 
 export default function Memo(props) {
+  const [MDE, setStateMDE] = useState(props.text || "");
+
+  const handleChange = e => {
+    setStateMDE(e.target.value);
+  };
+
+  const handleChange2 = e => {
+    setStateMDE(e);
+  };
+
   useEffect(() => {
     dragElement(props.element);
     props.element.getElementsByClassName(
@@ -71,10 +83,9 @@ export default function Memo(props) {
       e.stopPropagation();
     };
     if (props.text) {
-      props.element.getElementsByClassName("flower-memo-text")[0].value =
-        props.text;
+      setStateMDE(props.text);
     }
-  });
+  }, []);
 
   return (
     <InputGroup className="flower-memo-wrapper">
@@ -94,14 +105,27 @@ export default function Memo(props) {
         </InputGroup.Text>
       </InputGroup>
       <div className="flower-memo-content">
-        <FormControl as="textarea" className="flower-memo-text" />
+        <textarea
+          className="flower-memo-text"
+          value={MDE}
+          onChange={handleChange}
+        />
+        <SimpleMDE
+          className="flower-memo-markdown"
+          value={MDE}
+          onChange={handleChange2}
+          options={{
+            autofocus: false,
+            spellChecker: false
+          }}
+        />
       </div>
     </InputGroup>
   );
 }
 
 function renderMemo(memoList = undefined) {
-  if (memoList == undefined) {
+  if (memoList === undefined) {
     const memo = document.createElement("div");
     memo.classList.add("flower-memo");
     memo.style = "left:" + x + "px;top:" + y + "px;";
@@ -124,7 +148,6 @@ function renderMemo(memoList = undefined) {
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  console.log("catch message :" + request.message);
   if (request.message === "contextMenu") {
     if (!node) {
       node = {};
@@ -150,8 +173,8 @@ window.onbeforeunload = e => {
           top: memoElement.style["top"]
         }
       };
-      if (memoElement.querySelector("textarea").value) {
-        memoData["text"] = memoElement.querySelector("textarea").value;
+      if (memoElement.querySelector(".flower-memo-text").value) {
+        memoData["text"] = memoElement.querySelector(".flower-memo-text").value;
       }
 
       memoList.push(memoData);

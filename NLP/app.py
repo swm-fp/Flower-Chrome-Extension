@@ -23,7 +23,7 @@ def get():
         '''
         arrayList = 
         {
-            title : ""
+            title : ""r
             url : ""
             memo : ["", "", ...]
             highlight : ["", "", ...]
@@ -32,7 +32,7 @@ def get():
         result = {}
         result["title"] = data["title"]
         result["url"] = data["url"]
-        result["keywords"], result["result"] = keyword_extractor(data["title"], "")
+        #result["keywords"], result["result"] = keyword_extractor(data["title"], "")
 
         res = json.dumps(result, ensure_ascii=False).encode('utf8')
 

@@ -1,93 +1,53 @@
 import operator, re
-from konlpy.tag import Kkma, Twitter
+from konlpy.tag import Kkma, Twitter, Hannanum, Komoran
 from textblob import TextBlob
+from collections import Counter
 
-def compare_api(api_name, sen):
-    module = None
-    if api_name=='kkma':
-        module = Kkma()
-    elif api_name=='Twitter':
-        module = Twitter()
+def clean_sentence(sen):
+    sen = re.sub('[-=+,#/\?:^$.@*\"※~&%·ㆍ!』♥☆\\‘|\(\)\[\]\<\>`\'…》]', ' ', sen)
+    sen = sen.strip()
+    return sen
 
-    return module.pos(sen)
+def filter(words):
+    words = list(set(words))
+    res = []
+    for w in words:
+        if not (len(w) <= 1 or w.isdigit()):
+            res.append(w)
+    return res
 
-def posResult(sen): #단어 단위로 형태소 분석 후 반환
-    kkma = Kkma()
-
-    #print("nouns: ", kkma.nouns(sen))
-
-    pos = kkma.pos(sen)
-    morphs = [x[0] for x in pos] #형태소
-
-    parse = sen.split(' ')
-    result = []
-    for p in parse:
-        temp = []
-        while True:
-            try:
-                target = morphs[0]
-            except:
+def deleteRepetes(words):
+    res = []
+    for i in range(len(words)):
+        for temp in words[:i]+words[i+1:]:
+            if temp is words[i]:
+                continue
+            if words[i] in temp:
                 break
-            print(target)
-            if target in p:
-                temp.append(pos[0])
-            elif morphs[0] not in sen:
-                pass
-            else:
-                break
-            pos = pos[1:]
-            morphs = morphs[1:]
-        result.append(temp)
-    
-    print(result)
-    return result
+        else:
+            res.append(words[i])
+    return res
 
-def toWords(pos):
-    for cur in pos:
-        word_temp = ''
-        for c in cur:
-            if 'N' in c[0]:
-                word_temp += c[0]
-            pass
+def eng_nouns(sen):
+    return [r for r in TextBlob(sen).noun_phrases if len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', r))==0]
 
+def api(api_num, sen):
+    sen = clean_sentence(sen)
+    api_dict = {1:Kkma(), 2:Twitter(), 3:Hannanum(), 4:Komoran()}
 
-def keyword_extractor(title, highlight):
-    konl = Kkma()
-    eng_title = TextBlob(re.sub("[^A-Za-z]", ",", title.strip())).noun_phrases
-    eng_highlight = TextBlob(re.sub("[^A-Za-z]", " ", highlight.strip())).noun_phrases
-    title_nouns = konl.nouns(title)
-    highlight_nouns = konl.nouns(highlight)
+    module = api_dict[api_num]
 
-    #line = re.sub("[^A-Za-z]", "", title.strip())
+    #pos = module.pos(sen)
+    return deleteRepetes(filter(module.nouns(sen))) + eng_nouns(sen), module.pos(sen)
 
-    keyword_list = {i: 2 for i in title_nouns}
-    for i in highlight_nouns:
-        try:
-            keyword_list[i] +=1
-        except:
-            keyword_list[i] = 1
+def keyword_extractor(title):
+    title_nouns, _ = api(2, title)
 
-    for i in eng_title:
-        keyword_list[i] = 2
-
-    for i in eng_highlight:
-        try:
-            keyword_list[i] +=1
-        except:
-            keyword_list[i] = 1
-
-    keyword_list = sorted(keyword_list.items(), key=operator.itemgetter(1), reverse=True)
-    
-    keywords={}
-    for i, k in enumerate(keyword_list):
-        if not k[0].isdigit():
-            keywords[str("k"+str(i))] = k[0]
-
-    return keyword_list, posResult(title)
+    for w, c in Counter(title_nouns).most_common(100):
+        print(w, c)
 
 if __name__ == "__main__":
     while True:
-        sent = input("문장입력>> ")
-        posResult(sent)
+        sen = input("문장입력>> ")
+        keyword_extractor(sen)
         print()
-    

@@ -19,35 +19,23 @@ def filter(words):
 def deleteRepetes(words):
     res = []
     for i in range(len(words)):
-        inFlag = False
         for temp in words[:i]+words[i+1:]:
+            if temp is words[i]:
+                continue
             if words[i] in temp:
-                inFlag=True
                 break
-        if not inFlag:
+        else:
             res.append(words[i])
     return res
 
 def eng_nouns(sen):
-    res = []
-    temp = TextBlob(sen).noun_phrases
-    for r in temp:
-        if len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', r))==0:
-            res.append(r)
-    return res
+    return [r for r in TextBlob(sen).noun_phrases if len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', r))==0]
 
 def api(api_num, sen):
     sen = clean_sentence(sen)
+    api_dict = {1:Kkma(), 2:Twitter(), 3:Hannanum(), 4:Komoran()}
 
-    module = None
-    if api_num==1:
-        module = Kkma()
-    elif api_num==2:
-        module = Twitter()
-    elif api_num==3:
-        module = Hannanum()
-    elif api_num==4:
-        module = Komoran()
+    module = api_dict[api_num]
 
     #pos = module.pos(sen)
     return deleteRepetes(filter(module.nouns(sen))) + eng_nouns(sen), module.pos(sen)

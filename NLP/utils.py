@@ -1,5 +1,5 @@
 import operator, re
-from konlpy.tag import Kkma, Twitter, Hannanum, Komoran
+from konlpy.tag import Kkma, Twitter, Hannanum, Komoran, Mecab
 from textblob import TextBlob
 from collections import Counter
 
@@ -33,7 +33,7 @@ def eng_nouns(sen):
 
 def api(api_num, sen):
     sen = clean_sentence(sen)
-    api_dict = {1:Kkma(), 2:Twitter(), 3:Hannanum(), 4:Komoran()}
+    api_dict = {1:Kkma(), 2:Twitter(), 3:Hannanum(), 4:Komoran(), 5:Mecab('/usr/local/lib/mecab/dic/mecab-ko-dic')}
 
     module = api_dict[api_num]
 

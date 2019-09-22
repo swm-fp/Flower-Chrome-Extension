@@ -1,10 +1,10 @@
 import csv
 from utils import *
 
-api_list = {1:'kkma', 2:'Twitter', 3:'Hannanum', 4:'Komoran'}
+api_list = {1:'kkma', 2:'Twitter', 3:'Hannanum', 4:'Komoran', 5:'Mecab'}
 
 with open('./data.csv', 'w', encoding='utf-8') as csvfile:
-    fieldnames = ['title', 'url', 'kkma', 'Twitter', 'Hannanum', 'Komoran']
+    fieldnames = ['title', 'url', 'kkma', 'Twitter', 'Hannanum', 'Komoran', 'Mecab']
     wr = csv.DictWriter(csvfile, fieldnames=fieldnames)
     wr.writeheader()
 
@@ -17,6 +17,7 @@ with open('./data.csv', 'w', encoding='utf-8') as csvfile:
             result[api_list[2]], _ = api(2,l["title"])
             result[api_list[3]], _ = api(3,l["title"])
             result[api_list[4]], _ = api(4,l["title"])
+            result[api_list[5]], _ = api(5,l["title"])
 
             print(result," ......finished")
             wr.writerow(result)

@@ -2,6 +2,7 @@ import operator, re
 from konlpy.tag import Kkma, Twitter, Hannanum, Komoran, Mecab
 from textblob import TextBlob
 from collections import Counter
+from body import spider
 
 def clean_sentence(sen):
     sen = re.sub('[-=+,#/\?:^$.@*\"※~&%·ㆍ!』♥☆\\‘|\(\)\[\]\<\>`\'…》]', ' ', sen)
@@ -9,7 +10,7 @@ def clean_sentence(sen):
     return sen
 
 def filter(words):
-    words = list(set(words))
+    #words = list(set(words))
     res = []
     for w in words:
         if not (len(w) <= 1 or w.isdigit()):
@@ -28,6 +29,14 @@ def deleteRepetes(words):
             res.append(words[i])
     return res
 
+def noWords(words): #불용어처리
+    nos = ['네이버', 'naver']
+    res = {}
+    for k, v in words.items():
+        if k not in nos:
+            res[k] = v
+    return res
+
 def eng_nouns(sen):
     return [r for r in TextBlob(sen).noun_phrases if len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', r))==0]
 
@@ -38,16 +47,68 @@ def api(api_num, sen):
     module = api_dict[api_num]
 
     #pos = module.pos(sen)
-    return deleteRepetes(filter(module.nouns(sen))) + eng_nouns(sen), module.pos(sen)
+    #return deleteRepetes(filter(module.nouns(sen))) + eng_nouns(sen), module.pos(sen)
+    return filter(module.nouns(sen)) + eng_nouns(sen), module.pos(sen)
 
-def keyword_extractor(title):
-    title_nouns, _ = api(2, title)
+def nouns_extractor(title, url, num=5):
+    title_nouns, _ = api(num, title)
+    try:
+        body_nouns, _ = api(num, spider(url))
 
-    for w, c in Counter(title_nouns).most_common(100):
-        print(w, c)
+    except Exception as e:
+        print("::body nouns ERROR::\n", e)
+    
+    return title_nouns, body_nouns
+
+def TF_score(title, body):
+
+    words = {}
+
+    try:
+        for w, c in Counter(body).most_common(1000):
+            words[w] = c
+    except Exception as e:
+        print("::body nouns ERROR::\n", e)
+
+    for w, c in Counter(title).most_common(10):
+        try:
+            words[w] += c*10
+        except:
+            words[w] = c*10
+
+    total = sum(words.values())
+    words = sorted(words.items(), key=operator.itemgetter(1), reverse=True)
+
+    res={}
+    for k, v in words:
+        res[k] = v/total
+
+    return noWords(res)
+
+def getTags():
+    tags = {"자동":0.1}
+    return tags
+
+def Total_score(words, tags, alpha=1, beta=1, test=True):
+    #====================================================================
+    # Tn-Score = (title-weight*title-tf + body-weihgt*body-tf) normalize
+    # Tn-Tag = Tag weight normalize
+    # Total = alpha * Tn-Score + beta * Tn-Tag
+    #====================================================================
+
+    for k, v in words.items():
+        if k in tags.keys():
+            words[k] = alpha*v + beta*tags[k]
+        else:
+            words[k] = alpha*v
+
+    if test:
+        return sorted(words.items(), key=operator.itemgetter(1), reverse=True)
+
+    return [x[0] for x in sorted(words.items(), key=operator.itemgetter(1), reverse=True)][:5]
 
 if __name__ == "__main__":
     while True:
         sen = input("문장입력>> ")
-        keyword_extractor(sen)
+        TF_score(sen, 'https://subinium.github.io/feature-selection/')
         print()

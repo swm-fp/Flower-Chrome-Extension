@@ -31,7 +31,7 @@ let table = 'projects';
       }
     };
     
-    let response = await documentClient.put(params).promise();
+    response = await documentClient.put(params).promise();
 
      let result = response;
     

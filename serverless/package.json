@@ -3,7 +3,19 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "babel src -d build --copy-files"
+  },
   "dependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.6.0",
+    "chai": "^4.2.0",
     "serverless": "^1.49.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.0"
   }
 }

@@ -3,7 +3,7 @@ let AWS = require('aws-sdk');
 let documentClient = new AWS.DynamoDB.DocumentClient();
 
 
-module.export.readTable = async function readTable(tableName,parameters = {}){
+export async function readTable(tableName,parameters = {}){
 
   let filterExpression = "";
   let expressionAttributeValues = {};

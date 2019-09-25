@@ -29,13 +29,11 @@ def deleteRepetes(words):
             res.append(words[i])
     return res
 
-def noWords(words): #불용어처리
+def noStopWords(word): #불용어처리
     nos = ['네이버', 'naver']
-    res = {}
-    for k, v in words.items():
-        if k not in nos:
-            res[k] = v
-    return res
+    if word not in nos:
+        return True
+    return False
 
 def eng_nouns(sen):
     return [r for r in TextBlob(sen).noun_phrases if len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', r))==0]
@@ -63,27 +61,27 @@ def nouns_extractor(title, url, num=5):
 def TF_score(title, body):
 
     words = {}
-
     try:
         for w, c in Counter(body).most_common(1000):
-            words[w] = c
+            if noStopWords(w):
+                words[w] = c
     except Exception as e:
         print("::body nouns ERROR::\n", e)
 
     for w, c in Counter(title).most_common(10):
-        try:
-            words[w] += c*10
-        except:
-            words[w] = c*10
+        if noStopWords(w):
+            try:
+                words[w] += c*10
+            except:
+                words[w] = c*10
 
     total = sum(words.values())
-    words = sorted(words.items(), key=operator.itemgetter(1), reverse=True)
 
     res={}
-    for k, v in words:
+    for k, v in words.items():
         res[k] = v/total
 
-    return noWords(res)
+    return res
 
 def getTags():
     tags = {"자동":0.1}

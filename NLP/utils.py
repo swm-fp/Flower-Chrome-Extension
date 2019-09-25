@@ -3,6 +3,8 @@ from konlpy.tag import Kkma, Twitter, Hannanum, Komoran, Mecab
 from textblob import TextBlob
 from collections import Counter
 from body import spider
+import boto3
+from boto3.dynamodb.conditions import Key, Attr
 
 def clean_sentence(sen):
     sen = re.sub('[-=+,#/\?:^$.@*\"※~&%·ㆍ!』♥☆\\‘|\(\)\[\]\<\>`\'…》]', ' ', sen)
@@ -84,8 +86,23 @@ def TF_score(title, body):
     return res
 
 def getTags():
-    tags = {"자동":0.1}
-    return tags
+    dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-2')
+    table = dynamodb.Table('tags')
+
+    response = table.scan(
+        FilterExpression=Attr('fq').gt(0)
+    )
+
+    words = {}
+    for i in response['Items']:
+        words[i['words']] = float(i['fq'])
+    
+    total = sum(words.values())
+
+    for k, v in words.items():
+        words[k] = v/total
+
+    return words
 
 def Total_score(words, tags, alpha=1, beta=1, test=True):
     #====================================================================
@@ -95,7 +112,7 @@ def Total_score(words, tags, alpha=1, beta=1, test=True):
     #====================================================================
 
     for k, v in words.items():
-        if k in tags.keys():
+        if k in tags:
             words[k] = alpha*v + beta*tags[k]
         else:
             words[k] = alpha*v

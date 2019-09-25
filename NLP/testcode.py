@@ -42,6 +42,10 @@ def TF_test():
                 print(result," ......finished")
                 wr.writerow(result)
 
+def dbconnection():
+    print(getTags())
+
 if __name__ == '__main__':
-    #ompare_api()
-    TF_test()
+    #compare_api()
+    #TF_test()
+    dbconnection()

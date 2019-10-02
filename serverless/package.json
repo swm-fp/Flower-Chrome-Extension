@@ -10,10 +10,12 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.6.0",
     "@babel/node": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.6.0",
     "chai": "^4.2.0",
-    "serverless": "^1.49.0"
+    "serverless": "^1.49.0",
+    "uniqid": "^5.0.3"
   },
   "devDependencies": {
     "mocha": "^6.2.0"

@@ -9,7 +9,10 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${file}",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/@babel/node/bin/babel-node.js"
+            "cwd": "${workspaceFolder}/serverless",
+            "runtimeExecutable": "yarn",
+            
+            "runtimeArgs": ["run","babel-node"]
         },
         {
             "type": "node",

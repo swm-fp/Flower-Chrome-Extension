@@ -1,6 +1,6 @@
 import "@babel/polyfill"
 import config from "../config/config"
-import { createDB, getSequelize } from "./dbHelper"
+import { createDB, getSequelize } from "../models/dbHelper"
 
 let sequelize;
 describe("Sequelize Test", function () {

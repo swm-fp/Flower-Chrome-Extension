@@ -1,7 +1,7 @@
 import chai, { expect } from "chai"
 import "@babel/polyfill"
 import config from "../config/config"
-import { createDB, getSequelize } from "./dbHelper"
+import { createDB, getSequelize } from "../models/dbHelper"
 import UserModel from "../models/UserModel"
 import MemoModel from "../models/MemoModel"
 import UserMemoModel from "../models/UserMemoModel"

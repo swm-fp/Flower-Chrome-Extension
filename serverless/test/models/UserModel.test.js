@@ -1,8 +1,8 @@
 import chai, { expect } from "chai"
 import "@babel/polyfill"
-import model from "../models/UserModel"
-import config from "../config/config"
-import { createDB, getSequelize } from "../models/dbHelper"
+import model from "../../models/UserModel"
+import config from "../../config/config"
+import { createDB, getSequelize } from "../../models/dbHelper"
 
 let sequelize;
 let dao;

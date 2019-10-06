@@ -8,6 +8,7 @@ let createDB = async (config) => {
         user: config.user,
         password: config.password,
     }).promise();
+    await connection.query(`DROP DATABASE IF EXISTS ${config.database};`);
     await connection.query(`CREATE DATABASE IF NOT EXISTS ${config.database};`);
     await connection.close();
 };

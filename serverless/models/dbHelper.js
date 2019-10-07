@@ -1,7 +1,14 @@
 import mysql from "mysql2"
 import Sequelize from "sequelize"
 
-let createDB = async (config) => {
+import UserModel from "./UserModel"
+import MemoModel from "./MemoModel"
+import UserMemoModel from "./UserMemoModel"
+
+
+let sequelize = undefined;
+
+export async function createDB(config){
     let connection = await mysql.createConnection({
         host: config.host,
         port: config.port,
@@ -13,10 +20,23 @@ let createDB = async (config) => {
     await connection.close();
 };
 
-let getSequelize = (config) => {
-        return new Sequelize(config.database, config.user, config.password, {
+
+export async function connect(config) {
+        sequelize = new Sequelize(config.database, config.user, config.password, {
             host: config.host,
             dialect: config.dialect
         });
+        await sequelize.authenticate();
+        return sequelize;
+};
+
+export async function disconnect(){
+    await sequelize.close();
 }
-export { createDB ,getSequelize};
+
+export async function migrate(){
+    UserModel.init(sequelize);
+    MemoModel.init(sequelize);
+    UserMemoModel.init(sequelize);
+    await sequelize.sync();
+}

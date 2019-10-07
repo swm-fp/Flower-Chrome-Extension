@@ -1,19 +1,16 @@
 import "@babel/polyfill"
 import config from "../config/config"
-import { createDB, getSequelize } from "../models/dbHelper"
+import * as dbHelper from "../models/dbHelper"
 
-let sequelize;
 describe("Sequelize Test", function () {
-
     before(async () => {
-        await createDB(config.test);
-        sequelize = getSequelize(config.test);
+        await dbHelper.createDB(config.test);
     });
 
     it("Connection Test", async function () {
         await (async () => {
-            await sequelize.authenticate();
-            await sequelize.close();
+            await dbHelper.connect(config.test);
+            await dbHelper.disconnect();
         })();
 
     });

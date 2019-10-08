@@ -8,7 +8,7 @@ import UserMemoModel from "./UserMemoModel"
 
 let sequelize = undefined;
 
-export async function createDB(config){
+export async function createDB(config) {
     let connection = await mysql.createConnection({
         host: config.host,
         port: config.port,
@@ -22,21 +22,26 @@ export async function createDB(config){
 
 
 export async function connect(config) {
-        sequelize = new Sequelize(config.database, config.user, config.password, {
-            host: config.host,
-            dialect: config.dialect
-        });
-        await sequelize.authenticate();
-        return sequelize;
+    sequelize = new Sequelize(config.database, config.user, config.password, {
+        host: config.host,
+        dialect: config.dialect
+    });
+    await sequelize.authenticate();
+    return sequelize;
 };
 
-export async function disconnect(){
+export async function disconnect() {
     await sequelize.close();
 }
 
-export async function migrate(){
+export async function migrate() {
     UserModel.init(sequelize);
     MemoModel.init(sequelize);
     UserMemoModel.init(sequelize);
+    MemoModel.hasMany(UserMemoModel, { foreignKey: "memoId", sourceKey: "memoId" });
+    UserModel.hasMany(UserMemoModel, { foreignKey: "userId", sourceKey: "userId" });
+    UserMemoModel.belongsTo(UserModel, { foreignKey: "userId" });
+    UserMemoModel.belongsTo(MemoModel, { foreignKey: "memoId" });
+    
     await sequelize.sync();
 }

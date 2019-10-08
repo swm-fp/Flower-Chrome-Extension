@@ -34,7 +34,7 @@ export async function disconnect() {
     await sequelize.close();
 }
 
-export async function migrate() {
+export async function migrate(force) {
     UserModel.init(sequelize);
     MemoModel.init(sequelize);
     UserMemoModel.init(sequelize);
@@ -42,6 +42,11 @@ export async function migrate() {
     UserModel.hasMany(UserMemoModel, { foreignKey: "userId", sourceKey: "userId" });
     UserMemoModel.belongsTo(UserModel, { foreignKey: "userId" });
     UserMemoModel.belongsTo(MemoModel, { foreignKey: "memoId" });
-    
-    await sequelize.sync();
+
+    if (force == true) {
+        await sequelize.sync({ force: true });
+    }
+    else {
+        await sequelize.sync();
+    }
 }

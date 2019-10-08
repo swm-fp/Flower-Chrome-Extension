@@ -26,6 +26,11 @@ class UserMemo extends Sequelize.Model {
                         key: 'memoId'
                     }
                 },
+                authority : {
+                    type: Sequelize.INTEGER,
+                    defaultValue : 0
+                    
+                }
             }, {
                 sequelize,
                 modelName: 'UserMemo'

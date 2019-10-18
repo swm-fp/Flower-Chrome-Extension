@@ -1,10 +1,10 @@
 import chai, { expect } from "chai"
 import "@babel/polyfill"
-import config from "../config/config"
-import { createDB, getSequelize } from "../models/dbHelper"
-import UserModel from "../models/UserModel"
-import MemoModel from "../models/MemoModel"
-import UserMemoModel from "../models/UserMemoModel"
+import config from "../../config/config"
+import UserModel from "../../models/UserModel"
+import MemoModel from "../../models/MemoModel"
+import UserMemoModel from "../../models/UserMemoModel"
+import * as dbHelper from "../../models/dbHelper"
 
 let sequelize;
 let userDao;
@@ -14,19 +14,17 @@ let userMemoDao;
 describe("Sequelize Test", function () {
 
     before(async () => {
-        await createDB(config.test);
-        sequelize = getSequelize(config.test);
-        await sequelize.authenticate();
+        await dbHelper.createDB(config.test);
+        sequelize = await dbHelper.connect(config.test);
+        await dbHelper.migrate();
 
         userDao = UserModel.init(sequelize);
         memoDao = MemoModel.init(sequelize);
         userMemoDao = UserMemoModel.init(sequelize);
-
-        await sequelize.sync();
     });
 
     after(async () => {
-        await sequelize.close();
+        await dbHelper.disconnect();
     });
 
     describe("Constraints Test", async () => {

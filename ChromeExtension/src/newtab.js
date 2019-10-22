@@ -141,6 +141,7 @@ export default function NewTab() {
               touch-it
             </Typography>
             <LoginButton />
+            <GoogleLoginButton />
           </Toolbar>
         </AppBar>
 

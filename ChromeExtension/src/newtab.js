@@ -26,6 +26,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { teal, yellow } from "@material-ui/core/colors";
 
 import LoginButton from "./Components/LoginButton";
+import GoogleLoginButton from "./Components/GoogleLoginButton";
 
 const drawerWidth = 180;
 

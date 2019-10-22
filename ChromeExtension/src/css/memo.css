@@ -1,7 +1,7 @@
 .flower-memo {
   position: absolute;
-  width: 300px;
-  height: 180px;
+  min-width: 300px;
+  min-height: 180px;
   z-index: 9999;
 }
 

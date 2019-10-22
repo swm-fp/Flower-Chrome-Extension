@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
+html,
+body,
+#root,
+#graph,
+.main-section,
+.app-container {
+  height: 100%;
+  width: 100%;
+}
+
+.jss10 {
+  padding: 8px !important;
+}
+
+button {
+  a {
+    color: #ffffff;
+  }
+}

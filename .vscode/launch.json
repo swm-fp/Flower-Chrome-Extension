@@ -22,7 +22,15 @@
             "runtimeExecutable": "yarn",
             "cwd": "${workspaceFolder}/serverless",
             "runtimeArgs": ["run","mocha","--require","@babel/register"]
-
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Serverless all Test",
+            "program": "",
+            "runtimeExecutable": "yarn",
+            "cwd": "${workspaceFolder}/serverless",
+            "runtimeArgs": ["run","mocha","--require","@babel/register"]
         }
     ]
 }

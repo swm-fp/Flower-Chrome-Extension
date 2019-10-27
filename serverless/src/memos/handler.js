@@ -1,11 +1,11 @@
 import * as get from "./get"
 import * as post from "./post"
-
+import tokenDecoder from "../utils/tokenDecoder"
 export async function postMemos(event) {
-  const userId = event.headers.Authorization;
   const memoList = JSON.parse(event.body);
-  console.log(userId);
-  console.log(JSON.stringify(memoList));
+  const accessToken = event.headers.Authorization;
+  const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
+
   try {
     await post.memos(userId, memoList);
     return {
@@ -23,15 +23,14 @@ export async function postMemos(event) {
 
 export async function getMemos(event) {
 
-  const userId = event.headers.Authorization;
   const url = event.queryStringParameters.requestUrl;
-  console.log(userId);
-  console.log(url);
+  const accessToken = event.headers.Authorization;
+  const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
   try {
     const result = await get.memos(userId, url);
     return {
       statusCode: 200,
-      body : JSON.stringify(result)
+      body: JSON.stringify(result)
     };
   }
   catch (e) {

@@ -30,7 +30,7 @@
             "program": "",
             "runtimeExecutable": "yarn",
             "cwd": "${workspaceFolder}/serverless",
-            "runtimeArgs": ["run","mocha","--require","@babel/register"]
+            "runtimeArgs": ["run","mocha","--require","@babel/register","-recursive"]
         }
     ]
 }

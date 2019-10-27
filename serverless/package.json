@@ -8,6 +8,7 @@
     "test": "mocha --recursive --require @babel/register"
   },
   "dependencies": {
+    "atob": "^2.1.2",
     "sequelize": "^5.19.1",
     "uniqid": "^5.0.3"
   },

@@ -5,7 +5,6 @@ import UserModel from "./UserModel"
 import MemoModel from "./MemoModel"
 import UserMemoModel from "./UserMemoModel"
 
-
 let sequelize = undefined;
 
 export async function createDB(config) {
@@ -24,9 +23,11 @@ export async function createDB(config) {
 export async function connect(config) {
     sequelize = new Sequelize(config.database, config.user, config.password, {
         host: config.host,
-        dialect: config.dialect
+        dialect: config.dialect,
+        dialectModule: mysql,
     });
     await sequelize.authenticate();
+    await migrate();
     return sequelize;
 };
 

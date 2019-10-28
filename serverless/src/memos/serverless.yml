@@ -11,14 +11,19 @@
 #
 # Happy Coding!
 
-service: nodes
+service: memo
 #app: your-app-name
 #tenant: your-tenant-name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
-
+plugins:
+  - serverless-webpack
+  - serverless-offline
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
 provider:
   name: aws
   runtime: nodejs10.x
@@ -32,7 +37,7 @@ provider:
       #'/users/{userId}/projects/{projectId}': 7fuw8k
       #'/users/{userId}/projects/{projectId}/nodes': g0ldnb
 # you can overwrite defaults here
-  stage: beta
+#  stage: beta
   region: ap-northeast-2
 
 # you can add statements to the Lambda function's IAM Role here
@@ -58,16 +63,16 @@ provider:
 # you can add packaging information here
 #package:
 #  include:
-#    - include-me.js
-#    - include-me-dir/**
+#    - ../../models/**
+#    - ../../config/**
 #  exclude:
 #    - exclude-me.js
 #    - exclude-me-dir/**
 
 functions:
-  readProjectNodes:
-    name: readNodes
-    handler: handler.read
+  getMemos:
+    name: getMemos
+    handler: handler.getMemos
     role: arn:aws:iam::616448378550:role/service-role/lambdaRole
           
 #    The following are a few example events you can configure
@@ -75,14 +80,14 @@ functions:
 #    Check the event documentation for details
     events:
       - http:
-          path: /users/{userId}/projects/{projectId}/nodes
+          path: /memos
           method: get
           cors: true
 
     
   readNode:
-    name: readNode
-    handler: handler.readNode
+    name: postMemos
+    handler: handler.postMemos
     role: arn:aws:iam::616448378550:role/service-role/lambdaRole
           
 #    The following are a few example events you can configure
@@ -90,66 +95,11 @@ functions:
 #    Check the event documentation for details
     events:
       - http:
-          path: /users/{userId}/node
-          method: get
-          cors: true
-
-  readUserNodes:
-    name: readUserNodes
-    handler: handler.readUserNodes
-    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
-          
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-    events:
-      - http:
-          path: /users/{userId}/nodes
-          method: get
-          cors: true
-          
-
-  create:
-    name: createNode
-    handler: handler.create
-    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-    events:
-      - http:
-          path: /users/{userId}/projects/{projectId}/nodes
+          path: /memos
           method: post
           cors: true
-  
-  update:
-    name: updateNode
-    handler: handler.update
-    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-    events:
-      - http:
-          path: /users/{userId}/projects/{projectId}/nodes
-          method: put
-          cors: true
-  
-  delete:
-    name: deleteNode
-    handler: handler.delete
-    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-    events:
-      - http:
-          path: /users/{userId}/projects/{projectId}/nodes
-          method: delete
-          cors: true
-    
-  
 
+  
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

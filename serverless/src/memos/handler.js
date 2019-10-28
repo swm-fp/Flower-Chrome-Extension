@@ -9,13 +9,16 @@ export async function postMemos(event) {
   try {
     await post.memos(userId, memoList);
     return {
-      statusCode: 200
+      statusCode: 200,
+      body : "success"
     };
   }
   catch (e) {
+    console.log(e);
     return {
       statusCode: 401,
-      body: "postMemos Error"
+      body: "postMemos Error : "+e.stack
+      
     };
   }
 
@@ -34,9 +37,10 @@ export async function getMemos(event) {
     };
   }
   catch (e) {
+    console.log(e);
     return {
       statusCode: 401,
-      body: "getMemos Error"
+      body: "getMemos Error : "+e.stack
     };
   }
 }

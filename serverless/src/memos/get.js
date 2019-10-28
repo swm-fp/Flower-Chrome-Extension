@@ -13,6 +13,7 @@ export async function memos(userId, url) {
     const memoDao = MemoModel.init(sequelize);
     const userMemoDao = UserMemoModel.init(sequelize);
 
+    await userDao.upsert({ userId: userId });
 
     const rows = await userMemoDao.findAll({
         raw: true,

@@ -34,10 +34,10 @@ describe("Memos Post Test", function () {
             connect: () => {
                 return sequelize;
             },
-            disconnect : () =>{}
+            disconnect: () => { }
         });
 
-        
+
 
     });
 
@@ -50,11 +50,34 @@ describe("Memos Post Test", function () {
         let user;
         beforeEach(async () => {
             await dbHelper.migrate(true);
-            user = await userDao.create({ userId: "bhw" });
+        });
+
+        it("should insert new memo with not registered user", async () => {
+
+            //given
+            //not registerd user
+            user = { userId: "bhw" };
+
+            //wheb
+            const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
+            const memosLength = memos.length;
+            await post.memos(user.userId, memos);
+
+            //then
+            const userMemoCount = await userMemoDao.count();
+            const memoCount = await memoDao.count();
+
+            expect(userMemoCount).to.equal(memosLength);
+            expect(memoCount).to.equal(memosLength);
+
         });
 
         it("should insert new memo", async () => {
+            //given
+            user = await userDao.create({ userId: "bhw" });
+
             //when
+
             const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
             const memosLength = memos.length;
             await post.memos(user.userId, memos);
@@ -70,6 +93,8 @@ describe("Memos Post Test", function () {
         it("should update memo", async () => {
 
             // given
+            user = await userDao.create({ userId: "bhw" });
+
             const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
             await post.memos(user.userId, memos);
 

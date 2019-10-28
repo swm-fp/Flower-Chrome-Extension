@@ -13,6 +13,7 @@ export async function memos(userId, memoList) {
     let memoDao = MemoModel.init(sequelize);
     let userMemoDao = UserMemoModel.init(sequelize);
 
+    await userDao.upsert({ userId: userId });
 
     let rows = await userDao.findAll({
         raw: true,
@@ -29,6 +30,7 @@ export async function memos(userId, memoList) {
     });
 
 
+
     let memoIds = [];
     for (const row of rows) {
         memoIds.push(row["UserMemos.memoId"]);
@@ -39,8 +41,8 @@ export async function memos(userId, memoList) {
             memo = await memoDao.create(memo);
             await userMemoDao.create({ userId: userId, memoId: memo.memoId });
         }
-        else{
-            if(memo.memoId in memoIds){
+        else {
+            if (memo.memoId in memoIds) {
                 await memoDao.upsert(memo);
             }
         }

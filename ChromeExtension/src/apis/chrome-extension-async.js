@@ -1,4 +1,5 @@
 /* global chrome */
+
 /** Wrap an API that uses callbacks with Promises
  * This expects the pattern function withCallback(arg1, arg2, ... argN, callback)
  * @author Keith Henry <keith.henry@evolutionjobs.co.uk>

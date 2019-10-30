@@ -98,7 +98,9 @@ const useStyles = makeStyles(theme => ({
 export default function NewTab() {
   const theme = createMuiTheme({
     palette: {
-      primary: teal,
+      primary: {
+        main: "#5F4B8B"
+      },
       secondary: yellow
     }
   });
@@ -138,9 +140,9 @@ export default function NewTab() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              touch-it
+              <b>touch-it </b>
             </Typography>
-            <LoginButton />
+
             <GoogleLoginButton />
           </Toolbar>
         </AppBar>
@@ -172,7 +174,7 @@ export default function NewTab() {
         </Drawer>
 
         <main className={classes.content}>
-          <div className={classes.toolbar} />
+          <div className={classes.toolbar}></div>
 
           <MainDashboard />
         </main>

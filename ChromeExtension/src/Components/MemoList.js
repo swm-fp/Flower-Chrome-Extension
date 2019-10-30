@@ -8,6 +8,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Skeleton from "@material-ui/lab/Skeleton";
 import "../css/memoList.scss";
+import MemoModal from "./MemoModal.js";
 
 function Media(props) {
   const { loading = false } = props;
@@ -33,10 +34,11 @@ function Media(props) {
               height={118}
               margin-bottom={10}
             />
+
             <Box className="memo-display-box">
               <Typography gutterBottom variant="body2">
                 <div className="memo-display-title">
-                  <a href={item.requestUrl}> {item.title}</a>
+                  <MemoModal props={item} />
                 </div>
               </Typography>
 
@@ -44,8 +46,9 @@ function Media(props) {
                 display="block"
                 variant="caption"
                 color="textSecondary"
+                className="memo-url"
               >
-                this is url and link
+                <a href={item.requestUrl}>{item.requestUrl}</a>
               </Typography>
 
               <Typography variant="caption" color="textSecondary">

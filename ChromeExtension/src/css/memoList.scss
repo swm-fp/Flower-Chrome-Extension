@@ -16,12 +16,11 @@
   height: 100% auto;
 }
 
-.memo-display-title {
+.memo-url {
   text-overflow: ellipsis;
   overflow: hidden;
   a {
     color: black;
-    font-weight: bold;
     width: 210px;
     height: 20px;
     white-space: nowrap;

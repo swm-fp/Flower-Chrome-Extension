@@ -1,0 +1,39 @@
+.card-header {
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.card-body {
+  font-size: 10px;
+}
+
+.card-footer {
+  font-size: 8px;
+}
+
+.card-deck,
+.card {
+  height: 100% auto;
+}
+
+.memo-url {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  a {
+    color: black;
+    width: 210px;
+    height: 20px;
+    white-space: nowrap;
+  }
+}
+
+.memo-display-box {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.memo-grid {
+  background-clip: border-box;
+  background-color: #e1e1e1;
+  border: 5px solid #fff;
+}

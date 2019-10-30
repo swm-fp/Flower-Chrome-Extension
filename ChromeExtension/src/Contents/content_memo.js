@@ -1,7 +1,7 @@
 /* global chrome */
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import "../css/memo.css";
+import "../css/memo.scss";
 import "../chrome-extension-async";
 import { Button, FormControl, InputGroup } from "react-bootstrap";
 import SimpleMDE from "react-simplemde-editor";

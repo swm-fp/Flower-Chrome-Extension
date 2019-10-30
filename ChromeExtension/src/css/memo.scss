@@ -1,7 +1,7 @@
 .flower-memo {
   position: absolute;
-  min-width: 300px;
-  min-height: 180px;
+  min-width: 300px !important;
+  min-height: 180px !important;
   z-index: 9999;
 }
 
@@ -26,6 +26,7 @@
   background: #ff0081;
   border-radius: 4px;
 }
+
 .flower-memo-action1 {
   width: 15px;
   height: 15px;
@@ -57,6 +58,6 @@
 .flower-memo-text {
   display: none;
   width: 100%;
-  min-width: 300px;
+  min-width: 300px !important;
   height: 0px;
 }

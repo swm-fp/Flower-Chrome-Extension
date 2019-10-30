@@ -2,53 +2,36 @@ import chai, { expect } from "chai"
 import "@babel/polyfill"
 
 import config from "../../../config/config"
-import * as dbHelper from "../../../models/dbHelper"
+import * as DBHelper from "../../../models/dbHelper"
 
-import UserModel from "../../../models/UserModel"
-import MemoModel from "../../../models/MemoModel"
-import UserMemoModel from "../../../models/UserMemoModel"
 
-import rewire from "rewire"
-const get = rewire("../../../src/memos/get");
-const post = rewire("../../../src/memos/post");
+import * as get from "../../../src/memos/get"
+import * as post from "../../../src/memos/post"
 
 
 describe("Memo Get Test", function () {
 
-    let sequelize;
     let userDao;
     let memoDao;
     let  userMemoDao;
     let user;
+    let dbHelper;
 
     before(async () => {
+
+        dbHelper = new DBHelper.DbHelper();
         await dbHelper.createDB(config.test);
-        sequelize = await dbHelper.connect(config.test);
+        await dbHelper.connect(config.test);
+        dbHelper.init();
         await dbHelper.migrate();
 
-        userDao = UserModel.init(sequelize);
-        memoDao = MemoModel.init(sequelize);
-        userMemoDao = UserMemoModel.init(sequelize);
-
-        //mock connection
-        get.__set__("dbHelper", {
-            connect: () => {
-                return sequelize;
-            },
-            disconnect: () => { }
-        });
-
-        post.__set__("dbHelper", {
-            connect: () => {
-                return sequelize;
-            },
-            disconnect: () => { }
-        });
-
+        userDao = dbHelper.getUserDao();
+        memoDao = dbHelper.getMemoDao();
+        userMemoDao = dbHelper.getUserMemoDao();
     });
 
     after(async () => {
-        await sequelize.close();
+        await dbHelper.disconnect();
     });
 
     beforeEach(async () => {
@@ -60,10 +43,10 @@ describe("Memo Get Test", function () {
         //given 
         const url = "google.com";
         const memoList = [{ content: "this is memo", url: url }];
-        await post.memos(user.userId, memoList);
+        await post.memos(dbHelper,user.userId, memoList);
 
         //when
-        const selectedMemos = await get.memos(user.userId,url);
+        const selectedMemos = await get.memos(dbHelper,user.userId,url);
 
 
         //then

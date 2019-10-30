@@ -1,17 +1,9 @@
-import * as dbHelper from "../../models/dbHelper"
-import config from "../../config/config"
-
-import UserModel from "../../models/UserModel"
-import MemoModel from "../../models/MemoModel"
-import UserMemoModel from "../../models/UserMemoModel"
 //import { Op } from "sequelize"
+import MemoModel from "../../models/MemoModel"
 
-export async function memos(userId, url) {
-    const sequelize = await dbHelper.connect(config.development);
-
-    const userDao = UserModel.init(sequelize);
-    const memoDao = MemoModel.init(sequelize);
-    const userMemoDao = UserMemoModel.init(sequelize);
+export async function memos(dbHelper,userId, url) {
+    const userDao = dbHelper.getUserDao();
+    const userMemoDao = dbHelper.getUserMemoDao();
 
     await userDao.upsert({ userId: userId });
 
@@ -25,7 +17,6 @@ export async function memos(userId, url) {
         }]
     });
 
-    await dbHelper.disconnect();
     return rows;
 
 }

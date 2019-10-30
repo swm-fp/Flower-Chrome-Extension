@@ -1,5 +1,5 @@
 /* global chrome */
-import FlowerAPI from "../FlowerAPI";
+import FlowerAPI from "../apis/FlowerAPI";
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({

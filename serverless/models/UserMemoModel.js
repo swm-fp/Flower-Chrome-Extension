@@ -3,40 +3,36 @@ import User from "./UserModel"
 import Memo from "./MemoModel"
 
 class UserMemo extends Sequelize.Model {
-    static model = undefined;
     static init(sequelize) {
-        if (this.model == undefined) {
-
-            this.model = super.init({
-                userId: {
-                    type: Sequelize.STRING,
-                    primaryKey: true,
-                    onDelete: 'CASCADE',
-                    references: {
-                        model: User,
-                        key: 'userId'
-                    }
-                },
-                memoId: {
-                    type: Sequelize.INTEGER,
-                    primaryKey: true,
-                    onDelete: 'CASCADE',
-                    references: {
-                        model: Memo,
-                        key: 'memoId'
-                    }
-                },
-                authority : {
-                    type: Sequelize.INTEGER,
-                    defaultValue : 0
-                    
+        
+        return super.init({
+            userId: {
+                type: Sequelize.STRING,
+                primaryKey: true,
+                onDelete: 'CASCADE',
+                references: {
+                    model: User,
+                    key: 'userId'
                 }
-            }, {
-                sequelize,
-                modelName: 'UserMemo'
-            });
-        }
-        return this.model;
+            },
+            memoId: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                onDelete: 'CASCADE',
+                references: {
+                    model: Memo,
+                    key: 'memoId'
+                }
+            },
+            authority : {
+                type: Sequelize.INTEGER,
+                defaultValue : 0
+                
+            }
+        }, {
+            sequelize,
+            modelName: 'UserMemo'
+        });
     }
 }
 export default UserMemo;

@@ -1,48 +1,30 @@
 import chai, { expect } from "chai"
 import "@babel/polyfill"
 import config from "../../../config/config"
-import * as dbHelper from "../../../models/dbHelper"
+import * as DBHelper from "../../../models/dbHelper"
 
-import UserModel from "../../../models/UserModel"
-import MemoModel from "../../../models/MemoModel"
-import UserMemoModel from "../../../models/UserMemoModel"
+import * as post from "../../../src/memos/post"
 
-import rewire from "rewire"
-const post = rewire("../../../src/memos/post");
-
-let sequelize;
 let userDao;
 let memoDao;
 let userMemoDao;
+let dbHelper;
 
 describe("Memos Post Test", function () {
     before(async () => {
+        dbHelper = new DBHelper.DbHelper();
         await dbHelper.createDB(config.test);
-
-
-        sequelize = await dbHelper.connect(config.test);
+        await dbHelper.connect(config.test);
+        dbHelper.init();
         await dbHelper.migrate();
 
-        userDao = UserModel.init(sequelize);
-        memoDao = MemoModel.init(sequelize);
-        userMemoDao = UserMemoModel.init(sequelize);
-
-
-
-        //mock connection
-        post.__set__("dbHelper", {
-            connect: () => {
-                return sequelize;
-            },
-            disconnect : () =>{}
-        });
-
-        
-
+        userDao = dbHelper.getUserDao();
+        memoDao = dbHelper.getMemoDao();
+        userMemoDao = dbHelper.getUserMemoDao();
     });
 
     after(async () => {
-        await sequelize.close();
+        dbHelper.disconnect();
     });
 
     describe("Insert Test", async () => {
@@ -50,14 +32,37 @@ describe("Memos Post Test", function () {
         let user;
         beforeEach(async () => {
             await dbHelper.migrate(true);
-            user = await userDao.create({ userId: "bhw" });
         });
 
-        it("should insert new memo", async () => {
+        it("should insert new memo with not registered user", async () => {
+
+            //given
+            //not registerd user
+            user = { userId: "bhw" };
+
             //when
             const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
             const memosLength = memos.length;
-            await post.memos(user.userId, memos);
+            await post.memos(dbHelper,user.userId, memos);
+
+            //then
+            const userMemoCount = await userMemoDao.count();
+            const memoCount = await memoDao.count();
+
+            expect(userMemoCount).to.equal(memosLength);
+            expect(memoCount).to.equal(memosLength);
+
+        });
+
+        it("should insert new memo", async () => {
+            //given
+            user = await userDao.create({ userId: "bhw" });
+
+            //when
+
+            const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
+            const memosLength = memos.length;
+            await post.memos(dbHelper,user.userId, memos);
 
             //then
             const userMemoCount = await userMemoDao.count();
@@ -70,8 +75,10 @@ describe("Memos Post Test", function () {
         it("should update memo", async () => {
 
             // given
+            user = await userDao.create({ userId: "bhw" });
+
             const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
-            await post.memos(user.userId, memos);
+            await post.memos(dbHelper,user.userId, memos);
 
 
 
@@ -82,7 +89,7 @@ describe("Memos Post Test", function () {
             memo1.content = "modify";
             memo2.content = "modify";
 
-            await post.memos(user.userId, [memo1, memo2]);
+            await post.memos(dbHelper,user.userId, [memo1, memo2]);
 
             //then
             const userMemoCount = await userMemoDao.count();

@@ -17,6 +17,17 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Chrome Extension Test",
+            "program": "${file}",
+            "runtimeExecutable": "yarn",
+            "cwd": "${workspaceFolder}/ChromeExtension",
+            "runtimeArgs": ["run","mocha","--require","babel-register"],
+            "env": {"BABEL_ENV" : "test","NODE_ENV" : "test"}
+
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Serverless Test",
             "program": "${file}",
             "runtimeExecutable": "yarn",

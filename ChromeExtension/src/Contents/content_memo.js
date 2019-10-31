@@ -161,11 +161,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
-window.onbeforeunload = async e => {
+window.onbeforeunload = e => {
   //node is exists
   if (memos) {
     let res = {};
     res["title"] = document.title;
+    let url = document.URL;
 
     let memoList = [];
     let memoElements = document.getElementsByClassName("flower-memo");
@@ -179,12 +180,7 @@ window.onbeforeunload = async e => {
         memoData["content"] = memoElement.querySelector(".flower-memo-text").value;
       }
 
-      memoData["url"] = async () => {
-        let temp = await chrome.tabs.executeScript({ //url
-          code: "document.URL"
-        });
-        return temp[0];
-      }
+      memoData["url"] = url;
 
       let memoId = memoElement.getAttribute("memoId");
       if(memoId>0){
@@ -197,6 +193,6 @@ window.onbeforeunload = async e => {
 
     console.log(res);
 
-    await chrome.runtime.sendMessage({ node: res });
+    chrome.runtime.sendMessage({ node: res });
   }
 };

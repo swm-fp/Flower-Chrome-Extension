@@ -9,7 +9,7 @@ import "easymde/dist/easymde.min.css";
 
 let x;
 let y;
-let node = undefined;
+let memos = undefined;
 
 document.addEventListener(
   "mousemove",
@@ -129,6 +129,7 @@ function renderMemo(memoList = undefined) {
     const memo = document.createElement("div");
     memo.classList.add("flower-memo");
     memo.style = "left:" + x + "px;top:" + y + "px;";
+    memo.setAttribute('memoId', memo.memoId);
 
     document.body.appendChild(memo);
     ReactDOM.render(<Memo element={memo} />, memo);
@@ -136,11 +137,12 @@ function renderMemo(memoList = undefined) {
     for (let memo of memoList) {
       const memoElement = document.createElement("div");
       memoElement.classList.add("flower-memo");
+      memoElement.setAttribute('memoId', memo.memoId);
       memoElement.style =
-        "left:" + memo.position.left + ";top:" + memo.position.top + ";";
+        "left:" + memo.position_left + ";top:" + memo.position_top + ";";
       document.body.appendChild(memoElement);
       ReactDOM.render(
-        <Memo element={memoElement} text={memo.text} />,
+        <Memo element={memoElement} text={memo.content} />,
         memoElement
       );
     }
@@ -149,38 +151,52 @@ function renderMemo(memoList = undefined) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.message === "contextMenu") {
-    if (!node) {
-      node = {};
+    if (!memos) {
+      memos = {};
     }
     renderMemo();
   } else if (request.message === "node") {
-    node = request.node;
-    if (node.memoList) renderMemo(node.memoList);
+    memos = request.node;
+    if (memos) renderMemo(memos);
   }
 });
 
-window.onbeforeunload = e => {
+window.onbeforeunload = async e => {
   //node is exists
-  if (node) {
-    node["title"] = document.title;
+  if (memos) {
+    let res = {};
+    res["title"] = document.title;
 
     let memoList = [];
     let memoElements = document.getElementsByClassName("flower-memo");
     for (let memoElement of memoElements) {
-      let memoData = {
-        position: {
-          left: memoElement.style["left"],
-          top: memoElement.style["top"]
-        }
+      let memoData = { //position
+        position_left: memoElement.style["left"],
+        position_top: memoElement.style["top"]
       };
-      if (memoElement.querySelector(".flower-memo-text").value) {
-        memoData["text"] = memoElement.querySelector(".flower-memo-text").value;
+
+      if (memoElement.querySelector(".flower-memo-text").value) { //content
+        memoData["content"] = memoElement.querySelector(".flower-memo-text").value;
+      }
+
+      memoData["url"] = async () => {
+        let temp = await chrome.tabs.executeScript({ //url
+          code: "document.URL"
+        });
+        return temp[0];
+      }
+
+      let memoId = memoElement.getAttribute("memoId");
+      if(memoId>0){
+        memoData["memoId"] = memoId;
       }
 
       memoList.push(memoData);
     }
-    node["memoList"] = memoList;
+    res["memoList"] = memoList;
 
-    chrome.runtime.sendMessage({ node: node });
+    console.log(res);
+
+    await chrome.runtime.sendMessage({ node: res });
   }
 };

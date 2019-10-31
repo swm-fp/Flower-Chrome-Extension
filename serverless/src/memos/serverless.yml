@@ -83,7 +83,9 @@ functions:
           path: /memos
           method: get
           cors: true
-
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
     
   readNode:
     name: postMemos
@@ -98,6 +100,9 @@ functions:
           path: /memos
           method: post
           cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
 
   
 #      - websocket: $connect

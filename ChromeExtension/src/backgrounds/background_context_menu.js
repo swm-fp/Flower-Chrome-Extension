@@ -15,43 +15,26 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
   let node = request.node;
-  let requestUrl = sender.url;
-
-  node["requestUrl"] = requestUrl;
-
-  let nodesArray = [];
-  nodesArray.push(node);
-
-  let nodesObject = {
-    nodes: nodesArray
-  };
   //console.log("before create , node :" + JSON.stringify(node));
 
-  (async () => {
-    let projectId;
-    if (node["projectId"]) {
-      projectId = node["projectId"];
-    } else {
-      projectId = "unknown";
-    }
-
-    let result = await FlowerAPI.createNodes(projectId, nodesObject);
-    //console.log("create memo : " + JSON.stringify(result));
-  })();
+  let result = await FlowerAPI.postMemos("", node);
+  console.log(result);
 });
 
 chrome.webNavigation.onCompleted.addListener(function(details) {
   if (details.frameId == 0) {
     chrome.tabs.query({ url: details.url, active: true }, async tabs => {
       if (tabs.length == 1) {
-        let node = await FlowerAPI.readNode(details.url);
+        let nodes = await FlowerAPI.getMemos("", details.url);
+
+        console.log(nodes);
 
         // node is exists
-        if (node.id) {
+        if (nodes.length>0) {
           //console.log("read memo : " + JSON.stringify(node));
-          chrome.tabs.sendMessage(tabs[0].id, { message: "node", node: node });
+          chrome.tabs.sendMessage(tabs[0].id, { message: "node", node: nodes });
         }
       }
     });

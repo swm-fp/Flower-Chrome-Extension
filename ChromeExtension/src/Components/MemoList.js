@@ -19,10 +19,9 @@ function Media(props) {
   }, []);
 
   let getMemoList = async () => {
-    return await FlowerAPI.readAllNodes();
+    return await FlowerAPI.getMemos();
   };
 
-  console.log(memo);
   return (
     <Grid container spacing={3}>
       {(loading ? Array.from(new Array(0)) : memo).map((item, index) => (

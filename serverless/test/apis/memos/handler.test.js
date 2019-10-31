@@ -55,6 +55,7 @@ describe("Memo Handler Test", function () {
 
     });
 
+    
 
     it("should except error null", async function () {
         //given
@@ -86,10 +87,11 @@ describe("Memo Handler Test", function () {
         expect(response).to.contain(expectedResponse);
     });
 
-    it("should get site's memos", async function () {
+    it("should get all user's memo",async function(){
         //given 
-        const url = "google.com";
-        const memoList = [{ content: "memo1", url: url }, { content: "memo2", url: url }, { memoId: 1, content: "modify", url: url }];
+        const url1 = "google.com";
+        const url2 = "naver.com";
+        const memoList = [{ content: "memo1", url: url1 }, { content: "memo2", url: url2 }];
         let event = {
             "headers": { "Authorization": accessToken },
             "body": JSON.stringify(memoList)
@@ -99,12 +101,45 @@ describe("Memo Handler Test", function () {
         //when
         event = {
             "headers": { "Authorization": accessToken },
-            "queryStringParameters": { requestUrl: url }
+            "queryStringParameters": {}
         }
         const response = await handler.getMemos(event);
 
         //then
         const expectedResponse = { statusCode: 200 }
         expect(response).to.contain(expectedResponse);
+
+        const expectedMemoListLength = 2;
+        const responseMemoList = JSON.parse(response.body);
+        expect(responseMemoList.length).to.equal(expectedMemoListLength);
+        
+    });
+    it("should get site's memos", async function () {
+        //given 
+        const url1 = "google.com";
+        const url2 = "naver.com";
+        const requestUrl = "google.com";
+        const memoList = [{ content: "memo1", url: url1 }, { content: "memo2", url: url2 }];
+        let event = {
+            "headers": { "Authorization": accessToken },
+            "body": JSON.stringify(memoList)
+        }
+        await handler.postMemos(event);
+
+        //when
+        event = {
+            "headers": { "Authorization": accessToken },
+            "queryStringParameters": { requestUrl: requestUrl }
+        }
+        const response = await handler.getMemos(event);
+
+        //then
+        const expectedResponse = { statusCode: 200 }
+        expect(response).to.contain(expectedResponse);
+
+        const expectedMemoListLength = 1;
+        const responseMemoList = JSON.parse(response.body);
+        expect(responseMemoList.length).to.equal(expectedMemoListLength);
+
     });
 });

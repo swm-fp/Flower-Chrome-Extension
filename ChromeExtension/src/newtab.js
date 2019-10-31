@@ -26,7 +26,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { teal, yellow } from "@material-ui/core/colors";
 
 import LoginButton from "./Components/LoginButton";
-import GoogleLoginButton from "./Components/GoogleLoginButton";
 
 const drawerWidth = 180;
 
@@ -142,8 +141,8 @@ export default function NewTab() {
             <Typography variant="h6" className={classes.title}>
               <b>touch-it </b>
             </Typography>
-
-            <GoogleLoginButton />
+            <LoginButton />
+            {/* <GoogleLoginButton /> */}
           </Toolbar>
         </AppBar>
 

@@ -1,10 +1,7 @@
 /* global chrome */
 import axios from "axios";
-import memoAPI from "./MemoAPI";
-
-async function getUserInfo() {
-  return chrome.storage.local.get(["token", "id"]);
-}
+const apiUrl = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/develop/memos";
+//const apiUrl = "http://localhost:3000/memos";
 
 async function sendRequest(token,url, method, data = "", queryString = {}) {
 
@@ -23,7 +20,7 @@ async function sendRequest(token,url, method, data = "", queryString = {}) {
   return response;
 }
 
-const FlowerAPI = {
+const MemoAPI = {
   getTags: async (token,node) => {
   /*
   node = 
@@ -56,16 +53,24 @@ const FlowerAPI = {
   return response.data.keywords;
 },
 
-  getMemos :async (requestUrl)=>{
-    const info = await getUserInfo();
-    await memoAPI.getMemos(info.token,requestUrl);
-  },
-
-  postMemos :async (memoList)=>{
-    const info = await getUserInfo();
-    await memoAPI.postMemos(info.token,memoList);
-
+  getMemos : async (token,requestUrl = undefined) => {
+  const url = apiUrl;
+  const method = "get";
+  const queryStringParameters = {}
+  if(requestUrl != undefined){
+    queryStringParameters["requestUrl"] = requestUrl;
   }
+  
+  let response = await sendRequest(token,url,method,{},queryStringParameters);
+  return response;
+},
+
+  postMemos : async (token,memoList) => {
+  let url = apiUrl;
+  let method = "post";
+  let response = await sendRequest(token,url,method,JSON.stringify(memoList));
+  return response;
+}
 
 };
-export default FlowerAPI;
+export default MemoAPI;

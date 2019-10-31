@@ -23,7 +23,20 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { teal, yellow } from "@material-ui/core/colors";
+import Paper from "@material-ui/core/Paper";
+import Input from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
+import DirectionsIcon from "@material-ui/icons/Directions";
+import Badge from "@material-ui/core/Badge";
+
+import MailIcon from "@material-ui/icons/Mail";
+import { red } from "@material-ui/core/colors";
+
+import Avatar from "@material-ui/core/Avatar";
+
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 import LoginButton from "./Components/LoginButton";
 
@@ -53,6 +66,7 @@ const useStyles = makeStyles(theme => ({
     })
   },
   menuButton: {
+    marginLeft: 5,
     marginRight: 36
   },
   hide: {
@@ -82,6 +96,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   toolbar: {
+    height: "48px",
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-end",
@@ -91,6 +106,29 @@ const useStyles = makeStyles(theme => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3)
+  },
+  avatar: {
+    margin: 10
+  },
+  margin: {
+    margin: theme.spacing(2)
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1
+  },
+  iconButton: {
+    padding: 10
+  },
+  divider: {
+    height: 28,
+    margin: 4
+  },
+  search: {
+    padding: "1px 3px",
+    display: "flex",
+    alignItems: "center",
+    width: "400px"
   }
 }));
 
@@ -100,7 +138,9 @@ export default function NewTab() {
       primary: {
         main: "#5F4B8B"
       },
-      secondary: yellow
+      secondary: {
+        main: "#ffffff"
+      }
     }
   });
 
@@ -126,7 +166,7 @@ export default function NewTab() {
             [classes.appBarShift]: open
           })}
         >
-          <Toolbar>
+          <Toolbar className={classes.toolbar}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -141,8 +181,40 @@ export default function NewTab() {
             <Typography variant="h6" className={classes.title}>
               <b>touch-it </b>
             </Typography>
+            <Paper className={classes.search}>
+              <Input
+                className={classes.input}
+                color="secondary"
+                placeholder="Search on Google"
+                inputProps={{ "aria-label": "search google" }}
+                variant="filled"
+              />
+
+              <IconButton className={classes.iconButton} aria-label="search">
+                <SearchIcon />
+              </IconButton>
+
+              <Divider className={classes.divider} orientation="vertical" />
+
+              <IconButton
+                color="Primary"
+                className={classes.iconButton}
+                aria-label="directions"
+              >
+                <DirectionsIcon />
+              </IconButton>
+            </Paper>
+            <IconButton
+              aria-label="4 pending messages"
+              className={classes.margin}
+            >
+              <Badge badgeContent={4} color="#ff0000">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+
+            <Avatar className={classes.avatar}>H</Avatar>
             <LoginButton />
-            {/* <GoogleLoginButton /> */}
           </Toolbar>
         </AppBar>
 
@@ -174,7 +246,13 @@ export default function NewTab() {
 
         <main className={classes.content}>
           <div className={classes.toolbar}></div>
-
+          <Grid item>
+            <ButtonGroup size="small" aria-label="small outlined button group">
+              <Button>All</Button>
+              <Button>Theme</Button>
+              <Button>URL</Button>
+            </ButtonGroup>
+          </Grid>
           <MainDashboard />
         </main>
       </div>

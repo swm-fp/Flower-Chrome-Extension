@@ -35,7 +35,7 @@ function getUserInfo(token){
 
 chrome.webRequest.onBeforeRequest.addListener(
 	function(details) {
-		let loginSuccessURL = "https://fpsample.s3.ap-northeast-2.amazonaws.com/success.html#";
+		let loginSuccessURL = "https://flower-chrome-extension.s3.ap-northeast-2.amazonaws.com/login_success.html#";
 
 		//if contain login url
 		if( details.url.search(loginSuccessURL) != -1){

@@ -62,14 +62,14 @@ const MemoAPI = {
   }
   
   let response = await sendRequest(token,url,method,{},queryStringParameters);
-  return response;
+  return response.data;
 },
 
   postMemos : async (token,memoList) => {
   let url = apiUrl;
   let method = "post";
   let response = await sendRequest(token,url,method,JSON.stringify(memoList));
-  return response;
+  return response.data;
 }
 
 };

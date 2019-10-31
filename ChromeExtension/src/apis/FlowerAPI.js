@@ -1,6 +1,7 @@
 /* global chrome */
 import axios from "axios";
 import memoAPI from "./MemoAPI";
+import "./chrome-extension-async";
 
 async function getUserInfo() {
   return chrome.storage.local.get(["token", "id"]);
@@ -58,12 +59,14 @@ const FlowerAPI = {
 
   getMemos :async (requestUrl)=>{
     const info = await getUserInfo();
-    await memoAPI.getMemos(info.token,requestUrl);
+    
+    return await memoAPI.getMemos(info.token,requestUrl);
   },
 
   postMemos :async (memoList)=>{
     const info = await getUserInfo();
-    await memoAPI.postMemos(info.token,memoList);
+
+    return await memoAPI.postMemos(info.token,memoList);
 
   }
 

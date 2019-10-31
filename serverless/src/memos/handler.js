@@ -10,7 +10,18 @@ export async function postMemos(event) {
   dbHelper.init();
   await dbHelper.migrate();
 
-  const memoList = JSON.parse(event.body);
+  let memoList;
+  try{
+    memoList = JSON.parse(event.body);
+  }
+  catch(e){
+    return {
+      statusCode: 400,
+      body: "request body is not valid :" +e.stack
+    };
+  }
+  
+  
   const accessToken = event.headers.Authorization;
   const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
 

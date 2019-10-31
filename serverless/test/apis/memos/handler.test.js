@@ -55,6 +55,21 @@ describe("Memo Handler Test", function () {
 
     });
 
+
+    it("should except error null", async function () {
+        //given
+        const url = "google.com";
+        const event = {
+            "headers": { "Authorization": accessToken },
+            "body": ""
+        }
+        //when
+        const response = await handler.postMemos(event);
+
+        //then
+        const expectedResponse = { statusCode: 400 }
+        expect(response).to.contain(expectedResponse);
+    });
     it("should post memos", async function () {
         //given 
         const url = "google.com";

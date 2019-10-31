@@ -7,7 +7,7 @@ async function getUserInfo() {
 
 async function sendRequest(token,url, method, data = "", queryString = {}) {
 
-  let request = {
+  const request = {
     url: url,
     method: method,
     headers: {
@@ -55,10 +55,15 @@ const FlowerAPI = {
   return response.data.keywords;
 },
 
-  getMemos : async (token,requestUrl) => {
-  let url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/develop/memos";
-  let method = "get";
-  let response = await sendRequest(token,url,method,{},{requestUrl : requestUrl});
+  getMemos : async (token,requestUrl = undefined) => {
+  const url = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/develop/memos";
+  const method = "get";
+  const queryStringParameters = {}
+  if(requestUrl != undefined){
+    queryStringParameters["requestUrl"] = requestUrl;
+  }
+  
+  let response = await sendRequest(token,url,method,{},queryStringParameters);
   return response;
 },
 

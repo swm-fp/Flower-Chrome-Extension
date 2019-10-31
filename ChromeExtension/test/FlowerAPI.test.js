@@ -29,4 +29,16 @@ describe("FlowerAPI Test", function () {
         expect(response).to.contain(expectedResponse);
 
     });
+
+    it("should get all user's memos", async function () {
+        
+        //when
+        const response = await FlowerAPI.getMemos(token);
+
+        //then
+        const expectedResponse = { status: 200 }
+        expect(response).to.contain(expectedResponse);
+
+    });
+
 });

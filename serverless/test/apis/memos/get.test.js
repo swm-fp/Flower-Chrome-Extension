@@ -39,17 +39,34 @@ describe("Memo Get Test", function () {
         user = await userDao.create({ userId: "bhw" });
 
     });
-    it("should get site's memos", async function () {
+
+    it("should get every memos by userId",async function(){
         //given 
         const url = "google.com";
         const memoList = [{ content: "this is memo", url: url }];
         await post.memos(dbHelper,user.userId, memoList);
 
         //when
-        const selectedMemos = await get.memos(dbHelper,user.userId,url);
+        const selectedMemos = await get.memos(dbHelper,user.userId);
 
 
         //then
         expect(selectedMemos.length).to.equal(memoList.length);
+    });
+
+    it("should get site's memos", async function () {
+        //given 
+        const url1 = "google.com";
+        const url2 = "naver.com";
+        const requestUrl = "naver.com";
+        const memoList = [{ content: "this is memo", url: url1 },{ content: "this is memo", url: url2 }];
+        await post.memos(dbHelper,user.userId, memoList);
+
+        //when
+        const selectedMemos = await get.memos(dbHelper,user.userId,requestUrl);
+
+
+        //then
+        expect(selectedMemos.length).to.equal(1);
     });
 });

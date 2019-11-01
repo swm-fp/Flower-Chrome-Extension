@@ -41,7 +41,7 @@ describe("Memos Post Test", function () {
             user = { userId: "bhw" };
 
             //when
-            const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
+            const memos = [{ content: "memo1", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}, { content: "memo2", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}];
             const memosLength = memos.length;
             await post.memos(dbHelper,user.userId, memos);
 
@@ -60,7 +60,7 @@ describe("Memos Post Test", function () {
 
             //when
 
-            const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
+            const memos = [{ content: "memo1", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}, { content: "memo2", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}];
             const memosLength = memos.length;
             await post.memos(dbHelper,user.userId, memos);
 
@@ -77,7 +77,7 @@ describe("Memos Post Test", function () {
             // given
             user = await userDao.create({ userId: "bhw" });
 
-            const memos = [{ content: "memo1", url: "google.com" }, { content: "memo2", url: "google.com" }];
+            const memos = [{ content: "memo1", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}, { content: "memo2", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}];
             await post.memos(dbHelper,user.userId, memos);
 
 

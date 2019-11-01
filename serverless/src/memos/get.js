@@ -23,12 +23,13 @@ export async function memos(dbHelper,userId, url = undefined) {
         //attributes: [['UserMemos->Memo.url', 'url']],
         raw: true,
         where: where,
-        attributes:[[Sequelize.col('UserMemos->Memo.url'), 'url'],[Sequelize.col('UserMemos->Memo.content'), 'content'],[Sequelize.col('UserMemos->Memo.memoId'), 'memoId']],
+        attributes:[[Sequelize.col('UserMemos->Memo.url'), 'url'],[Sequelize.col('UserMemos->Memo.content'), 'content'],[Sequelize.col('UserMemos->Memo.memoId'), 'memoId'],[Sequelize.col('UserMemos->Memo.positionLeft'), 'positionLeft'],[Sequelize.col('UserMemos->Memo.positionTop'), 'positionTop']],
         include: [{
             model: UserMemoModel,
             attributes: [],
             
             include: [{
+                attributes: [],
                 model: MemoModel
             }]
         }]

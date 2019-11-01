@@ -56,14 +56,14 @@ const FlowerAPI = {
 },
 
   getMemos :async (requestUrl)=>{
-    const info = await this.getUserInfo();
+    const info = await FlowerAPI.getUserInfo();
     
     let result = await memoAPI.getMemos(info.token,requestUrl);
     return result;
   },
 
   postMemos :async (memoList)=>{
-    const info = await this.getUserInfo();
+    const info = await FlowerAPI.getUserInfo();
 
 let result = await memoAPI.postMemos(info.token,memoList);
 return result;
@@ -75,7 +75,7 @@ getUserInfo : async () => {
   return info;
 },
 getLoginState : async ()=>{
- const info = await this.getUserInfo();
+ const info = await FlowerAPI.getUserInfo();
  if(info.token == undefined){
    return false;
  }

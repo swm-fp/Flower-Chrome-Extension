@@ -19,7 +19,8 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
   let node = request.node;
   //console.log("before create , node :" + JSON.stringify(node));
 
-  let result = await FlowerAPI.postMemos(node);
+  let result = await FlowerAPI.postMemos(node.memoList);
+  console.log("memos saved:"+node.memoList);
   console.log(result);
 });
 
@@ -28,8 +29,6 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
     chrome.tabs.query({ url: details.url, active: true }, async tabs => {
       if (tabs.length == 1) {
         let nodes = await FlowerAPI.getMemos(details.url);
-
-        console.log(nodes);
 
         // node is exists
         if (nodes.length>0) {

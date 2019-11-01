@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
   //console.log("before create , node :" + JSON.stringify(node));
 
   let result = await FlowerAPI.postMemos(node.memoList);
-  console.log("memos saved:"+node.memoList);
+  console.log("memos saved:"+JSON.stringify(node.memoList));
   console.log(result);
 });
 

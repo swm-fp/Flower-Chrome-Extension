@@ -139,7 +139,7 @@ function renderMemo(memoList = undefined) {
       memoElement.classList.add("flower-memo");
       memoElement.setAttribute('memoId', memo.memoId);
       memoElement.style =
-        "left:" + memo.position_left + ";top:" + memo.position_top + ";";
+        "left:" + memo.positionLeft + ";top:" + memo.positionTop + ";";
       document.body.appendChild(memoElement);
       ReactDOM.render(
         <Memo element={memoElement} text={memo.content} />,
@@ -171,8 +171,8 @@ window.onbeforeunload = e => {
     let memoElements = document.getElementsByClassName("flower-memo");
     for (let memoElement of memoElements) {
       let memoData = { //position
-        position_left: memoElement.style["left"],
-        position_top: memoElement.style["top"]
+        positionLeft: memoElement.style["left"],
+        positionTop: memoElement.style["top"]
       };
 
       if (memoElement.querySelector(".flower-memo-text").value) { //content

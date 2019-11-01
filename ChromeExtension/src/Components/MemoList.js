@@ -10,8 +10,24 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import "../css/memoList.scss";
 import MemoModal from "./MemoModal.js";
 
-function Media(props) {
-  const { loading = false } = props;
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  card: {
+    maxWidth: 345
+  }
+});
+
+function Media() {
+  const classes = useStyles();
   const [memo, setStateMemo] = useState([]);
 
   useEffect(() => {
@@ -23,40 +39,73 @@ function Media(props) {
   };
 
   return (
-    <Grid container spacing={3}>
-      {(loading ? Array.from(new Array(0)) : memo).map((item, index) => (
-        <Grid className="memo-grid" item md={2} sm={4}>
-          <Box className="memo-display-box" key={index} width="100%" my={5}>
-            <Skeleton
-              variant="rect"
-              width="100%"
-              height={118}
-              margin-bottom={10}
-            />
-
-            <Box className="memo-display-box">
-              <Typography gutterBottom variant="body2">
-                <div className="memo-display-title">
+    <Grid container className="memo-dashboard">
+      {memo.length > 0
+        ? Array.from(memo).map((item, index) => (
+            <Grid className="memo-grid" item md={2} sm={4}>
+              <Card>
+                <CardActionArea>
+                  <Skeleton
+                    variant="rect"
+                    width="100%"
+                    height={118}
+                    margin-bottom={10}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      Test
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      Lizards are a widespread group of squamate reptiles, with
+                      over 6,000 species, ranging across all continents except
+                      Antarctica
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    Share
+                  </Button>
                   <MemoModal props={item} />
-                </div>
-              </Typography>
+                </CardActions>
+              </Card>
+              {/* <Box
+                  className="memo-display-box"
+                  key={index}
+                  width="100%"
+                  my={5}
+                >
+                  
+                    
+                  </MemoModal>
+                  <Box className="memo-display-box">
+                    <Typography gutterBottom variant="body2">
+                      <div className="memo-display-title"></div>
+                    </Typography>
 
-              <Typography
-                display="block"
-                variant="caption"
-                color="textSecondary"
-                className="memo-url"
-              >
-                <a href={item.requestUrl}>{item.requestUrl}</a>
-              </Typography>
+                    <Typography
+                      display="block"
+                      variant="caption"
+                      color="textSecondary"
+                      className="memo-url"
+                    >
+                      <a href={item.url}>{item.url}</a>
+                    </Typography>
 
-              <Typography variant="caption" color="textSecondary">
-                memo contents example and it requries
-              </Typography>
-            </Box>
-          </Box>
-        </Grid>
-      ))}
+                    <Typography variant="caption" color="textSecondary">
+                      {item.content === null
+                        ? "hellohellohellohellohellohello"
+                        : item.content}
+                    </Typography>
+                  </Box>
+                </Box> */}
+            </Grid>
+          ))
+        : ""}
     </Grid>
   );
 }
@@ -70,7 +119,13 @@ export default function MemoList() {
     <Box overflow="hidden" clone>
       <Paper>
         <Box px={4}>
-          <Media loading />
+          <Grid item>
+            <ButtonGroup size="small" aria-label="small outlined button group">
+              <Button>All</Button>
+              <Button>Theme</Button>
+              <Button>URL</Button>
+            </ButtonGroup>
+          </Grid>
           <Media />
         </Box>
       </Paper>

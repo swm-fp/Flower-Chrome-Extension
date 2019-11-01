@@ -7,6 +7,8 @@ class Memo extends Sequelize.Model {
             memoId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
             url: { type: Sequelize.STRING, allowNull: false },
             content: { type: Sequelize.TEXT },
+            positionLeft : {type: Sequelize.STRING,allowNull :false},
+            positionTop : {type: Sequelize.STRING,allowNull:false},
         }, {
             sequelize,
             modelName: 'Memo'

@@ -1,6 +1,7 @@
 /* global chrome */
 import axios from "axios";
 import memoAPI from "./MemoAPI";
+import atob from "atob";
 import "./chrome-extension-async";
 
 
@@ -69,20 +70,17 @@ let result = await memoAPI.postMemos(info.token,memoList);
 return result;
 
   },
-  
-getUserInfo : async () => {
-  const info = await chrome.storage.local.get(["token","email"]);
-  return info;
-},
-getLoginState : async ()=>{
- const info = await FlowerAPI.getUserInfo();
- if(info.token == undefined){
-   return false;
- }
- else {
-   return true;
- }
-}
+
+  checkTokenValid : async(token) => {
+    let infoToken = token.split(".")[1];
+    let infoString = atob(infoToken);
+    let info = JSON.parse(infoString);
+    let expireTime = info["exp"];
+    let now = new Date().getTime();
+
+    return parseInt(now/1000) < expireTime;
+  }
+
 
 
 };

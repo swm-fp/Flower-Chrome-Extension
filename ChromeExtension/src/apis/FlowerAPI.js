@@ -66,10 +66,25 @@ const FlowerAPI = {
   postMemos :async (memoList)=>{
     const info = await FlowerAPI.getUserInfo();
 
-let result = await memoAPI.postMemos(info.token,memoList);
-return result;
+    let result = await memoAPI.postMemos(info.token,memoList);
+    return result;
 
   },
+
+  getUserInfo : async () => {
+    const info = await chrome.storage.local.get(["token","email"]);
+    return info;
+  },
+
+  getLoginState : async ()=>{
+    const info = await FlowerAPI.getUserInfo();
+    if(info.token == undefined){
+      return false;
+    }
+    else {
+      return true;
+    }
+   },
 
   checkTokenValid : async(token) => {
     let infoToken = token.split(".")[1];
@@ -80,8 +95,5 @@ return result;
 
     return parseInt(now/1000) < expireTime;
   }
-
-
-
 };
 export default FlowerAPI;

@@ -3,9 +3,7 @@ import axios from "axios";
 import memoAPI from "./MemoAPI";
 import "./chrome-extension-async";
 
-async function getUserInfo() {
-  return chrome.storage.local.get(["token", "id"]);
-}
+
 
 async function sendRequest(token,url, method, data = "", queryString = {}) {
 
@@ -70,7 +68,22 @@ const FlowerAPI = {
 let result = await memoAPI.postMemos(info.token,memoList);
 return result;
 
-  }
+  },
+  
+getUserInfo : async () => {
+  const info = await chrome.storage.local.get(["token","email"]);
+  return info;
+},
+getLoginState : async ()=>{
+ const info = await getUserInfo();
+ if(info.token == undefined){
+   return false;
+ }
+ else {
+   return true;
+ }
+}
+
 
 };
 export default FlowerAPI;

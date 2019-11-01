@@ -34,10 +34,6 @@ import { red } from "@material-ui/core/colors";
 
 import Avatar from "@material-ui/core/Avatar";
 
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-
 import LoginButton from "./Components/LoginButton";
 
 const drawerWidth = 180;
@@ -246,13 +242,7 @@ export default function NewTab() {
 
         <main className={classes.content}>
           <div className={classes.toolbar}></div>
-          <Grid item>
-            <ButtonGroup size="small" aria-label="small outlined button group">
-              <Button>All</Button>
-              <Button>Theme</Button>
-              <Button>URL</Button>
-            </ButtonGroup>
-          </Grid>
+
           <MainDashboard />
         </main>
       </div>

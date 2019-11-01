@@ -165,7 +165,6 @@ window.onbeforeunload = e => {
   //node is exists
   if (memos) {
     let res = {};
-    res["title"] = document.title;
     let url = document.URL;
 
     let memoList = [];

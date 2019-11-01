@@ -129,7 +129,7 @@ function renderMemo(memoList = undefined) {
     const memo = document.createElement("div");
     memo.classList.add("flower-memo");
     memo.style = "left:" + x + "px;top:" + y + "px;";
-    memo.setAttribute('memoId', memo.memoId);
+    memo.setAttribute('memoId', -1);
 
     document.body.appendChild(memo);
     ReactDOM.render(<Memo element={memo} />, memo);
@@ -180,7 +180,7 @@ window.onbeforeunload = e => {
       }
 
       memoData["url"] = url;
-
+      
       let memoId = memoElement.getAttribute("memoId");
       if(memoId>0){
         memoData["memoId"] = memoId;

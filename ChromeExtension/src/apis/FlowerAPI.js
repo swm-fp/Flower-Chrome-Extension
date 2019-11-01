@@ -60,13 +60,15 @@ const FlowerAPI = {
   getMemos :async (requestUrl)=>{
     const info = await getUserInfo();
     
-    return await memoAPI.getMemos(info.token,requestUrl);
+    let result = await memoAPI.getMemos(info.token,requestUrl);
+    return result;
   },
 
   postMemos :async (memoList)=>{
     const info = await getUserInfo();
 
-    return await memoAPI.postMemos(info.token,memoList);
+let result = await memoAPI.postMemos(info.token,memoList);
+return result;
 
   }
 

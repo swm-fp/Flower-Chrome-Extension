@@ -43,9 +43,10 @@ chrome.webRequest.onBeforeRequest.addListener(
 			let token = getIdToken(details.url);
 			let info = getUserInfo(token);
 			let userId = info["identities"][0]["userId"];
+			let email = info["email"];
 
 			//save to chrome storage
-			chrome.storage.local.set({"token": token,"id":userId}, function() {
+			chrome.storage.local.set({"token": token,"id":userId,"email": email}, function() {
 				alert("success");
 			});
 

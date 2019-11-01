@@ -62,6 +62,7 @@ const MemoAPI = {
   }
   
   let response = await sendRequest(token,url,method,{},queryStringParameters);
+  console.log(response);
   return response.data;
 },
 
@@ -69,6 +70,7 @@ const MemoAPI = {
   let url = apiUrl;
   let method = "post";
   let response = await sendRequest(token,url,method,JSON.stringify(memoList));
+  console.log(response);
   return response.data;
 }
 

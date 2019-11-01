@@ -40,6 +40,26 @@ describe("Memo Get Test", function () {
 
     });
 
+    it("should have correct property",async function(){
+        //given 
+        const url = "google.com";
+        const memoList = [{ content: "this is memo", url: url }];
+        await post.memos(dbHelper,user.userId, memoList);
+
+        //when
+        const selectedMemos = await get.memos(dbHelper,user.userId);
+
+        
+
+
+        //then
+        const selectedMemo = selectedMemos[0];
+        expect(selectedMemo).to.have.property("url");
+        expect(selectedMemo).to.have.property("memoId");
+        expect(selectedMemo).to.have.property("content");
+        
+    });
+
     it("should get every memos by userId",async function(){
         //given 
         const url = "google.com";

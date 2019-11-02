@@ -101,6 +101,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
+    width: "90%",
     padding: theme.spacing(3)
   },
   avatar: {

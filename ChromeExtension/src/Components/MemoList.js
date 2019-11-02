@@ -6,8 +6,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import MemoModal from "./MemoModal.js";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 function Media() {
   const [memo, setStateMemo] = useState([]);
@@ -34,13 +32,7 @@ export default function MemoList() {
     <Box overflow="hidden" clone>
       <Paper>
         <Box px={4}>
-          <Grid item>
-            <ButtonGroup size="small" aria-label="small outlined button group">
-              <Button>All</Button>
-              <Button>Theme</Button>
-              <Button>URL</Button>
-            </ButtonGroup>
-          </Grid>
+          {/* <Grid item></Grid> */}
           <Media />
         </Box>
       </Paper>

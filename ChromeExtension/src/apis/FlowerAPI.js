@@ -57,25 +57,29 @@ const FlowerAPI = {
 },
 
   getMemos :async (requestUrl)=>{
-    const info = await FlowerAPI.getUserInfo();
-    
-    let result = await memoAPI.getMemos(info.token,requestUrl);
-    return result;
+    if(FlowerAPI.checkLoginStatus()){
+      const info = await FlowerAPI.getUserInfo();
+      
+      let result = await memoAPI.getMemos(info.token,requestUrl);
+      return result;
+    }
   },
 
   postMemos :async (memoList)=>{
-    const info = await FlowerAPI.getUserInfo();
-
-    let result = await memoAPI.postMemos(info.token,memoList);
-    return result;
-
+    if(FlowerAPI.checkLoginStatus()){
+      const info = await FlowerAPI.getUserInfo();
+      let result = await memoAPI.postMemos(info.token,memoList);
+      return result;
+    }
   },
+
   deleteMemos :async (memoId) =>{
-    const info = await FlowerAPI.getUserInfo();
+    if(FlowerAPI.checkLoginStatus()){
+      const info = await FlowerAPI.getUserInfo();
 
-    let result = await memoAPI.deleteMemos(info.token,memoId);
-    return result;
-
+      let result = await memoAPI.deleteMemos(info.token,memoId);
+      return result;
+    }
   },
 
   getUserInfo : async () => {
@@ -83,9 +87,18 @@ const FlowerAPI = {
     return info;
   },
 
-  getLoginState : async ()=>{
+  checkLoginStatus : async () => {
     const info = await FlowerAPI.getUserInfo();
-    if(info.token == undefined){
+    const con1 = await FlowerAPI.getLoginState(info.token);
+    if(con1){
+      return await FlowerAPI.checkTokenValid(info.token);
+    }else{
+      return false
+    }
+  },
+
+  getLoginState : async (token)=>{
+    if(token == undefined || token==""){
       return false;
     }
     else {
@@ -93,14 +106,20 @@ const FlowerAPI = {
     }
    },
 
-  checkTokenValid : async(token) => {
+  checkTokenValid : async (token) => {
     let infoToken = token.split(".")[1];
     let infoString = atob(infoToken);
     let info = JSON.parse(infoString);
     let expireTime = info["exp"];
     let now = new Date().getTime();
 
-    return parseInt(now/1000) < expireTime;
+    return ((parseInt(now/1000) < expireTime)==true);
+  },
+
+  updateLogoutState : async () => {
+    await chrome.storage.local.set({"token": "","id": "","email": ""}, function() {
+      alert("logout");
+    });
   }
 };
 export default FlowerAPI;

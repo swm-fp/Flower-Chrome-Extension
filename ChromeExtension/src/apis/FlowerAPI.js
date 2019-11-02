@@ -73,7 +73,7 @@ const FlowerAPI = {
   deleteMemos :async (memoId) =>{
     const info = await FlowerAPI.getUserInfo();
 
-    let result = await MemoAPI.deleteMemos(info.token,memoId);
+    let result = await memoAPI.deleteMemos(info.token,memoId);
     return result;
 
   },

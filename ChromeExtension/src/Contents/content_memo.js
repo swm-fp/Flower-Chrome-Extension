@@ -62,6 +62,11 @@ function dragElement(elmnt) {
 
 function removeMemo(element) {
   element.remove();
+
+  let res = {}
+  res["message"]="delete";
+  res["memoId"]= element.getAttribute("memoId");
+  chrome.runtime.sendMessage({ node: res });
 }
 
 export default function Memo(props) {
@@ -165,6 +170,7 @@ window.onbeforeunload = e => {
   //node is exists
   if (memos) {
     let res = {};
+    res["message"] = "save";
     let url = document.URL;
 
     let memoList = [];

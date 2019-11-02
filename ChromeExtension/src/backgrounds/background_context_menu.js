@@ -16,12 +16,18 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
-  let node = request.node;
-  //console.log("before create , node :" + JSON.stringify(node));
 
-  let result = await FlowerAPI.postMemos(node.memoList);
-  console.log("memos saved:"+JSON.stringify(node.memoList));
-  console.log(result);
+  let node = request.node;
+  if (node.message == "save") {
+    //console.log("before create , node :" + JSON.stringify(node));
+
+    let result = await FlowerAPI.postMemos(node.memoList);
+    console.log("memos saved:" + JSON.stringify(node.memoList));
+    console.log(result);
+  } else if (node.message = "delete") {
+    console.log("memos deleted:" + JSON.stringify(node.memoId));
+    let result = await FlowerAPI.deleteMemos(node.memoId);
+  }
 });
 
 chrome.webNavigation.onCompleted.addListener(function(details) {

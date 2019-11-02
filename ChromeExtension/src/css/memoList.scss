@@ -19,3 +19,9 @@
   background-color: #e1e1e1;
   border: 5px solid #fff;
 }
+
+.memo-display-content {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 50px;
+}

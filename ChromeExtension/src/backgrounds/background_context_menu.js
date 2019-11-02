@@ -7,10 +7,16 @@ chrome.runtime.onInstalled.addListener(() => {
     title: "add Memo",
     type: "normal",
     contexts: ["page"],
-    onclick: () => {
-      chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        chrome.tabs.sendMessage(tabs[0].id, { message: "contextMenu" });
-      });
+    onclick: async () => {
+      let status = await FlowerAPI.checkLoginStatus();
+      console.log(status);
+      if(status){
+        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+          chrome.tabs.sendMessage(tabs[0].id, { message: "contextMenu" });
+        });
+      }else{
+        alert("LOGIN!");
+      }
     }
   });
 });
@@ -24,7 +30,7 @@ chrome.runtime.onMessage.addListener(async function(request, sender, sendRespons
     let result = await FlowerAPI.postMemos(node.memoList);
     console.log("memos saved:" + JSON.stringify(node.memoList));
     console.log(result);
-  } else if (node.message = "delete") {
+  } else if (node.message = "delete") { 
     console.log("memos deleted:" + JSON.stringify(node.memoId));
     let result = await FlowerAPI.deleteMemos(node.memoId);
   }

@@ -62,20 +62,11 @@ export default function MemoModal(item) {
           />
           <CardContent className={classes.card}>
             <Typography
-              gutterBottom
-              variant="h5"
-              component="h3"
-              className="memo-display-title"
-            >
-              Title
-            </Typography>
-            <Typography
               variant="body2"
               color="textSecondary"
-              component="p"
               clsssName="memo-display-content"
             >
-              {item.item.content}
+              <ReactMarkdown source={item.item.content}></ReactMarkdown>
             </Typography>
           </CardContent>
         </CardActionArea>

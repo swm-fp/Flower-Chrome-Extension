@@ -12,5 +12,6 @@ describe("DB Migrate", async () => {
         await dbHelper.connect(config.development);
         dbHelper.init();
         await dbHelper.migrate(true);
+        await dbHelper.disconnect();
     });
 });

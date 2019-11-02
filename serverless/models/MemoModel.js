@@ -11,7 +11,9 @@ class Memo extends Sequelize.Model {
             positionTop : {type: Sequelize.STRING,allowNull:false},
         }, {
             sequelize,
-            modelName: 'Memo'
+            modelName: 'Memo',
+            charset: 'utf8',
+            collate: 'utf8_unicode_ci'
         });
     }
 }

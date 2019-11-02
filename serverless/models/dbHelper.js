@@ -32,7 +32,10 @@ export class DbHelper {
                 min: 0,
                 acquire: 30000,
                 idle: 10000
-            }
+            },
+            logging: false,
+            charset: 'utf8',
+            collate: 'utf8_general_ci'
         });
         await this.sequelize.authenticate();
     };

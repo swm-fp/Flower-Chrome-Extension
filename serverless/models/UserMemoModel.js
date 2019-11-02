@@ -31,7 +31,9 @@ class UserMemo extends Sequelize.Model {
             }
         }, {
             sequelize,
-            modelName: 'UserMemo'
+            modelName: 'UserMemo',
+            charset: 'utf8',
+            collate: 'utf8_unicode_ci'
         });
     }
 }

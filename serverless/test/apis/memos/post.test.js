@@ -77,26 +77,25 @@ describe("Memos Post Test", function () {
             // given
             user = await userDao.create({ userId: "bhw" });
 
-            const memos = [{ content: "memo1", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}, { content: "memo2", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}];
+            const memos = [{ content: "memo1", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}];
             await post.memos(dbHelper,user.userId, memos);
 
 
 
             //when
-            const allMemos = await memoDao.findAll();
-            const memo1 = allMemos[0].get({ plain: true });
-            const memo2 = allMemos[1].get({ plain: true });
-            memo1.content = "modify";
-            memo2.content = "modify";
+            let allMemos = await memoDao.findAll();
+            let memo = allMemos[0].get({ plain: true });
+            const modifiedContent = "modify";
+            memo.content = modifiedContent;
 
-            await post.memos(dbHelper,user.userId, [memo1, memo2]);
+            await post.memos(dbHelper,user.userId, [memo]);
 
             //then
-            const userMemoCount = await userMemoDao.count();
-            const memoCount = await memoDao.count();
+            allMemos = await memoDao.findAll();
+            memo = allMemos[0].get({ plain: true });
 
-            expect(memos.length).to.equal(userMemoCount);
-            expect(memos.length).to.equal(memoCount);
+
+            expect(memo.content).to.equal(modifiedContent);
         });
     });
 });

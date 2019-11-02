@@ -70,6 +70,13 @@ const FlowerAPI = {
     return result;
 
   },
+  deleteMemos :async (memoId) =>{
+    const info = await FlowerAPI.getUserInfo();
+
+    let result = await MemoAPI.deleteMemos(info.token,memoId);
+    return result;
+
+  },
 
   getUserInfo : async () => {
     const info = await chrome.storage.local.get(["token","email"]);

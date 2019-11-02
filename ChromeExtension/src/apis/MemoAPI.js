@@ -72,7 +72,16 @@ const MemoAPI = {
   let response = await sendRequest(token,url,method,JSON.stringify(memoList));
   console.log(response);
   return response.data;
+},
+deleteMemos : async (token,memoId) => {
+  let url = apiUrl+"/"+memoId;
+  let method = "delete";
+  let response = await sendRequest(token,url,method);
+  console.log(response);
+  return response.data;
 }
+
+
 
 };
 export default MemoAPI;

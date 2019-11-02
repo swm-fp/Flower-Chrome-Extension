@@ -63,10 +63,10 @@ function dragElement(elmnt) {
 function removeMemo(element) {
   element.remove();
 
-  let res = {}
-  res["message"]="delete";
-  res["memoId"]= element.getAttribute("memoId");
-  if(res["memoId"]!=-1){
+  let res = {};
+  res["message"] = "delete";
+  res["memoId"] = element.getAttribute("memoId");
+  if (res["memoId"] != -1) {
     chrome.runtime.sendMessage({ node: res });
   }
 }
@@ -136,7 +136,7 @@ function renderMemo(memoList = undefined) {
     const memo = document.createElement("div");
     memo.classList.add("flower-memo");
     memo.style = "left:" + x + "px;top:" + y + "px;";
-    memo.setAttribute('memoId', -1);
+    memo.setAttribute("memoId", -1);
 
     document.body.appendChild(memo);
     ReactDOM.render(<Memo element={memo} />, memo);
@@ -144,7 +144,7 @@ function renderMemo(memoList = undefined) {
     for (let memo of memoList) {
       const memoElement = document.createElement("div");
       memoElement.classList.add("flower-memo");
-      memoElement.setAttribute('memoId', memo.memoId);
+      memoElement.setAttribute("memoId", memo.memoId);
       memoElement.style =
         "left:" + memo.positionLeft + ";top:" + memo.positionTop + ";";
       document.body.appendChild(memoElement);
@@ -178,19 +178,23 @@ window.onbeforeunload = e => {
     let memoList = [];
     let memoElements = document.getElementsByClassName("flower-memo");
     for (let memoElement of memoElements) {
-      let memoData = { //position
+      let memoData = {
+        //position
         positionLeft: memoElement.style["left"],
         positionTop: memoElement.style["top"]
       };
 
-      if (memoElement.querySelector(".flower-memo-text").value) { //content
-        memoData["content"] = memoElement.querySelector(".flower-memo-text").value;
+      if (memoElement.querySelector(".flower-memo-text").value) {
+        //content
+        memoData["content"] = memoElement.querySelector(
+          ".flower-memo-text"
+        ).value;
       }
 
       memoData["url"] = url;
-      
+
       let memoId = memoElement.getAttribute("memoId");
-      if(memoId>0){
+      if (memoId > 0) {
         memoData["memoId"] = memoId;
       }
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import registerServiceWorker from "./registerServiceWorker";
@@ -30,10 +30,10 @@ import DirectionsIcon from "@material-ui/icons/Directions";
 import Badge from "@material-ui/core/Badge";
 
 import MailIcon from "@material-ui/icons/Mail";
-import { red } from "@material-ui/core/colors";
 
 import Avatar from "@material-ui/core/Avatar";
 
+import LogoutButton from "./Components/LogoutButton";
 import LoginButton from "./Components/LoginButton";
 import FlowerAPI from "./apis/FlowerAPI";
 
@@ -145,6 +145,15 @@ export default function NewTab() {
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(false);
+  const [loginState, setLoginState] = useState(true);
+
+  useEffect(() => {
+    loginCheck().then(res => setLoginState(res));
+  }, []);
+
+  let loginCheck = async () => {
+    return await FlowerAPI.checkLoginStatus();
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -210,15 +219,10 @@ export default function NewTab() {
                 <MailIcon />
               </Badge>
             </IconButton>
-
             <Avatar className={classes.avatar}>H</Avatar>
-            {(async () => {
-              return await FlowerAPI.getLoginState();
-            })() ? (
-              ""
-            ) : (
-              <LoginButton />
-            )}
+            {loginState ? <LogoutButton /> : <LoginButton />}
+            {/* <LogoutButton />
+            <LoginButton /> */}
           </Toolbar>
         </AppBar>
 

@@ -9,41 +9,40 @@ chrome.runtime.onInstalled.addListener(() => {
     contexts: ["page"],
     onclick: async () => {
       let status = await FlowerAPI.checkLoginStatus();
-      console.log(status);
-      if(status){
+
+      if (status) {
         chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
           chrome.tabs.sendMessage(tabs[0].id, { message: "contextMenu" });
         });
-      }else{
+      } else {
         alert("LOGIN!");
       }
     }
   });
 });
 
-chrome.runtime.onMessage.addListener(async function(request, sender, sendResponse) {
-
+chrome.runtime.onMessage.addListener(async function(
+  request,
+  sender,
+  sendResponse
+) {
   let node = request.node;
-  if (node.message == "save") {
-    //console.log("before create , node :" + JSON.stringify(node));
-
-    let result = await FlowerAPI.postMemos(node.memoList);
-    console.log("memos saved:" + JSON.stringify(node.memoList));
-    console.log(result);
-  } else if (node.message = "delete") { 
-    console.log("memos deleted:" + JSON.stringify(node.memoId));
-    let result = await FlowerAPI.deleteMemos(node.memoId);
+  if (node.message === "save") {
+    await FlowerAPI.postMemos(node.memoList);
+  } else if ((node.message = "delete")) {
+    await FlowerAPI.deleteMemos(node.memoId);
   }
 });
 
 chrome.webNavigation.onCompleted.addListener(function(details) {
-  if (details.frameId == 0) {
+  if (details.frameId === 0) {
     chrome.tabs.query({ url: details.url, active: true }, async tabs => {
-      if (tabs.length == 1) {
+      if (tabs.length === 1) {
+        if (!(await FlowerAPI.checkLoginStatus())) return;
         let nodes = await FlowerAPI.getMemos(details.url);
 
         // node is exists
-        if (nodes.length>0) {
+        if (nodes.length > 0) {
           //console.log("read memo : " + JSON.stringify(node));
           chrome.tabs.sendMessage(tabs[0].id, { message: "node", node: nodes });
         }

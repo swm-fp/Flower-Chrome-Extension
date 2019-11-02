@@ -27,9 +27,9 @@ export async function memos(dbHelper,userId, memoList) {
 
 
 
-    let memoIds = [];
+    let ownMemoSet = new Set();
     for (const row of rows) {
-        memoIds.push(row["UserMemos.memoId"]);
+        ownMemoSet.add(row["UserMemos.memoId"]);
     }
 
     for (let memo of memoList) {
@@ -38,9 +38,12 @@ export async function memos(dbHelper,userId, memoList) {
             await userMemoDao.create({ userId: userId, memoId: memo.memoId });
         }
         else {
-            if (memo.memoId in memoIds) {
+            
+            if (ownMemoSet.has(parseInt(memo.memoId))) {
+
                 await memoDao.upsert(memo);
             }
         }
     }
+
 }

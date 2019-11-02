@@ -7,7 +7,9 @@ class User extends Sequelize.Model {
       userId: { type: Sequelize.STRING, primaryKey: true },
     }, {
       sequelize,
-      modelName: 'User'
+      modelName: 'User',
+      charset: 'utf8',
+      collate: 'utf8_unicode_ci'
     });
   }
 }

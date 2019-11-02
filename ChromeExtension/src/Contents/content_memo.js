@@ -66,7 +66,9 @@ function removeMemo(element) {
   let res = {}
   res["message"]="delete";
   res["memoId"]= element.getAttribute("memoId");
-  chrome.runtime.sendMessage({ node: res });
+  if(res["memoId"]!=-1){
+    chrome.runtime.sendMessage({ node: res });
+  }
 }
 
 export default function Memo(props) {

@@ -74,7 +74,7 @@ describe("Memo Handler Test", function () {
     it("should post memos", async function () {
         //given 
         const url = "google.com";
-        const memoList = [{ content: "memo1", url: url }, { content: "memo2", url: url }, { memoId: 1, content: "modify", url: url }];
+        const memoList = [{ content: "memo1", url: url ,positionLeft:"10px",positionTop:"10px"}, { content: "memo2", url: url ,positionLeft:"10px",positionTop:"10px"}, { memoId: 1, content: "modify", url: url ,positionLeft:"10px",positionTop:"10px"}];
         const event = {
             "headers": { "Authorization": accessToken },
             "body": JSON.stringify(memoList)
@@ -91,7 +91,7 @@ describe("Memo Handler Test", function () {
         //given 
         const url1 = "google.com";
         const url2 = "naver.com";
-        const memoList = [{ content: "memo1", url: url1 }, { content: "memo2", url: url2 }];
+        const memoList = [{ content: "memo1", url: url1 ,positionLeft:"10px",positionTop:"10px"}, { content: "memo2", url: url2 ,positionLeft:"10px",positionTop:"10px"}];
         let event = {
             "headers": { "Authorization": accessToken },
             "body": JSON.stringify(memoList)
@@ -119,7 +119,7 @@ describe("Memo Handler Test", function () {
         const url1 = "google.com";
         const url2 = "naver.com";
         const requestUrl = "google.com";
-        const memoList = [{ content: "memo1", url: url1 }, { content: "memo2", url: url2 }];
+        const memoList = [{ content: "memo1", url: url1 ,positionLeft:"10px",positionTop:"10px"}, { content: "memo2", url: url2 ,positionLeft:"10px",positionTop:"10px"}];
         let event = {
             "headers": { "Authorization": accessToken },
             "body": JSON.stringify(memoList)
@@ -140,6 +140,59 @@ describe("Memo Handler Test", function () {
         const expectedMemoListLength = 1;
         const responseMemoList = JSON.parse(response.body);
         expect(responseMemoList.length).to.equal(expectedMemoListLength);
+    });
+    it("should delete memos", async function () {
+        //given 
+        const url = "google.com";
+        const memoList = [{ content: "memo1", url: url ,positionLeft:"10px",positionTop:"10px"}];
+        let event = {
+            "headers": { "Authorization": accessToken },
+            "body": JSON.stringify(memoList)
+        }
+        await handler.postMemos(event);
+
+        //when
+        event = {
+            "headers": { "Authorization": accessToken },
+            "queryStringParameters": {}
+        }
+        let response = await handler.getMemos(event);
+        const memo = JSON.parse(response.body)[0];
+        console.log(JSON.stringify(memo));
+        
+
+        event = {
+            "headers": { "Authorization": accessToken },
+            "pathParameters": {
+                "memoId": memo.memoId
+              }
+        }
+        response = await handler.deleteMemos(event);
+
+        //then
+        const expectedResponse = { statusCode: 200 }
+        expect(response).to.contain(expectedResponse);
+
+        event = {
+            "headers": { "Authorization": accessToken },
+            "queryStringParameters": {}
+        }
+        const remainedMemos = await handler.getMemos(event)
+        const expectedMemoListLength = 0;
+        const responseMemoList = JSON.parse(remainedMemos.body);
+        expect(responseMemoList.length).to.equal(expectedMemoListLength);
+    });
+    it("should catch error when delete memo id is invalid ",async function(){
+        //when
+        const event = {
+            "headers": { "Authorization": accessToken },
+        }
+        const response = await handler.deleteMemos(event);
+
+        //then
+        const expectedResponse = { statusCode: 400 }
+        expect(response).to.contain(expectedResponse);
+
 
     });
 });

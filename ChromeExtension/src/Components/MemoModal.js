@@ -21,6 +21,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import FlowerAPI from "../apis/FlowerAPI";
 
 const useStyles = makeStyles({
   card: {
@@ -33,6 +34,7 @@ export default function MemoModal(item) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
+  const [displayState, setDisplayState] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,6 +42,11 @@ export default function MemoModal(item) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const memoDelete = memoId => {
+    setDisplayState(true);
+    FlowerAPI.deleteMemos(memoId);
   };
 
   const descriptionElementRef = React.useRef(null);
@@ -51,7 +58,13 @@ export default function MemoModal(item) {
   }, [open]);
 
   return (
-    <Grid className="memo-grid" item md={2} sm={4}>
+    <Grid
+      className="memo-grid"
+      item
+      md={2}
+      sm={4}
+      style={{ display: displayState ? "none" : "inline" }}
+    >
       <Card>
         <CardActionArea onClick={handleClickOpen}>
           <Skeleton
@@ -99,6 +112,13 @@ export default function MemoModal(item) {
         <CardActions>
           <Button size="small" color="primary">
             Share
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => memoDelete(item.item.memoId)}
+          >
+            Delete
           </Button>
         </CardActions>
       </Card>

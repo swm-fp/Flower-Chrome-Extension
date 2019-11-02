@@ -35,6 +35,7 @@ import { red } from "@material-ui/core/colors";
 import Avatar from "@material-ui/core/Avatar";
 
 import LoginButton from "./Components/LoginButton";
+import FlowerAPI from "./apis/FlowerAPI";
 
 const drawerWidth = 180;
 
@@ -211,7 +212,13 @@ export default function NewTab() {
             </IconButton>
 
             <Avatar className={classes.avatar}>H</Avatar>
-            <LoginButton />
+            {(async () => {
+              return await FlowerAPI.getLoginState();
+            })() ? (
+              ""
+            ) : (
+              <LoginButton />
+            )}
           </Toolbar>
         </AppBar>
 

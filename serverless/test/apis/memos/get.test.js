@@ -43,7 +43,7 @@ describe("Memo Get Test", function () {
     it("should have correct property",async function(){
         //given 
         const url = "google.com";
-        const memoList = [{ content: "this is memo", url: url }];
+        const memoList = [{ content: "this is memo", url: url ,positionLeft:"10px",positionTop:"10px"}];
         await post.memos(dbHelper,user.userId, memoList);
 
         //when
@@ -63,7 +63,7 @@ describe("Memo Get Test", function () {
     it("should get every memos by userId",async function(){
         //given 
         const url = "google.com";
-        const memoList = [{ content: "this is memo", url: url }];
+        const memoList = [{ content: "this is memo", url: url ,positionLeft:"10px",positionTop:"10px"}];
         await post.memos(dbHelper,user.userId, memoList);
 
         //when
@@ -79,7 +79,7 @@ describe("Memo Get Test", function () {
         const url1 = "google.com";
         const url2 = "naver.com";
         const requestUrl = "naver.com";
-        const memoList = [{ content: "this is memo", url: url1 },{ content: "this is memo", url: url2 }];
+        const memoList = [{ content: "this is memo", url: url1,positionLeft:"10px",positionTop:"10px" },{ content: "this is memo", url: url2 ,positionLeft:"10px",positionTop:"10px"}];
         await post.memos(dbHelper,user.userId, memoList);
 
         //when

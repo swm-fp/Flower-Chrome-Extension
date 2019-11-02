@@ -104,6 +104,22 @@ functions:
             name: authorizer
             arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
 
+  deleteMemos:
+    name: deleteMemos
+    handler: handler.deleteMemos
+    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
+          
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+      - http:
+          path: /memos/{memoId}
+          method: delete
+          cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
   
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}

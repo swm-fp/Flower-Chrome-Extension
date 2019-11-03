@@ -2,24 +2,54 @@ import React, { useState, useEffect } from "react";
 import FlowerAPI from "../apis/FlowerAPI";
 import "../css/memoList.scss";
 
-import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import MemoModal from "./MemoModal.js";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Typography from "@material-ui/core/Typography";
+
+const useStyles = makeStyles(theme => ({
+  loading: {
+    height: "500px"
+  },
+  loadingBar: {
+    margin: "auto"
+  }
+}));
 
 function Media() {
-  const [memo, setStateMemo] = useState([]);
+  const classes = useStyles();
+  const [memo, setMemo] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getMemoList().then(res => {
-      if (res) setStateMemo(res);
-    });
+    const memoList = async () => {
+      try {
+        setMemo(null);
+        setLoading(true);
+        const memoVal = await FlowerAPI.getMemos();
+        setMemo(memoVal);
+      } catch (e) {
+        setError(e);
+      }
+      setLoading(false);
+    };
+    memoList();
   }, []);
-
-  let getMemoList = async () => {
-    return await FlowerAPI.getMemos();
-  };
-
+  if (loading)
+    return (
+      <div className={classes.loading}>
+        <LinearProgress className={classes.loadingBar} />
+      </div>
+    );
+  if (error || !memo)
+    return (
+      <div>
+        <Typography component="p">Internet or Login Error</Typography>
+      </div>
+    );
   return (
     <Grid container className="memo-dashboard">
       {memo.length > 0
@@ -32,12 +62,10 @@ function Media() {
 export default function MemoList() {
   return (
     <Box overflow="hidden" clone>
-      <Paper>
-        <Box px={4}>
-          {/* <Grid item></Grid> */}
-          <Media />
-        </Box>
-      </Paper>
+      <Box px={4}>
+        <Grid item></Grid>
+        <Media />
+      </Box>
     </Box>
   );
 }

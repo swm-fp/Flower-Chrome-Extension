@@ -5,8 +5,8 @@ import registerServiceWorker from "./registerServiceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/newtab.scss";
 import MainDashboard from "./Components/MainDashboard";
-
 import clsx from "clsx";
+
 import {
   createMuiTheme,
   MuiThemeProvider,
@@ -26,11 +26,6 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Paper from "@material-ui/core/Paper";
 import Input from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
-import DirectionsIcon from "@material-ui/icons/Directions";
-import Badge from "@material-ui/core/Badge";
-
-import MailIcon from "@material-ui/icons/Mail";
-
 import Avatar from "@material-ui/core/Avatar";
 
 import LogoutButton from "./Components/LogoutButton";
@@ -102,7 +97,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    width: "90%",
+    width: "95%",
     padding: theme.spacing(3)
   },
   avatar: {
@@ -148,12 +143,11 @@ export default function NewTab() {
   const [loginState, setLoginState] = useState(true);
 
   useEffect(() => {
+    let loginCheck = async () => {
+      return await FlowerAPI.checkLoginStatus();
+    };
     loginCheck().then(res => setLoginState(res));
   }, []);
-
-  let loginCheck = async () => {
-    return await FlowerAPI.checkLoginStatus();
-  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -186,13 +180,13 @@ export default function NewTab() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              <b>touch-it </b>
+              <b>touch-it</b>
             </Typography>
             <Paper className={classes.search}>
               <Input
                 className={classes.input}
                 color="secondary"
-                placeholder="Search on Google"
+                placeholder="Search Memo"
                 inputProps={{ "aria-label": "search google" }}
                 variant="filled"
               />
@@ -200,29 +194,9 @@ export default function NewTab() {
               <IconButton className={classes.iconButton} aria-label="search">
                 <SearchIcon />
               </IconButton>
-
-              <Divider className={classes.divider} orientation="vertical" />
-
-              <IconButton
-                color="Primary"
-                className={classes.iconButton}
-                aria-label="directions"
-              >
-                <DirectionsIcon />
-              </IconButton>
             </Paper>
-            <IconButton
-              aria-label="4 pending messages"
-              className={classes.margin}
-            >
-              <Badge badgeContent={4} color="#ff0000">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <Avatar className={classes.avatar}>H</Avatar>
+            {loginState ? <Avatar className={classes.avatar}>H</Avatar> : ""}
             {loginState ? <LogoutButton /> : <LoginButton />}
-            {/* <LogoutButton />
-            <LoginButton /> */}
           </Toolbar>
         </AppBar>
 

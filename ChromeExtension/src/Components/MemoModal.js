@@ -25,7 +25,7 @@ import FlowerAPI from "../apis/FlowerAPI";
 
 const useStyles = makeStyles({
   card: {
-    height: "150px",
+    height: "100px",
     overflow: "hidden"
   }
 });
@@ -67,19 +67,20 @@ export default function MemoModal(item) {
     >
       <Card>
         <CardActionArea onClick={handleClickOpen}>
-          <Skeleton
+          {/* <Skeleton
             variant="rect"
             width="100%"
             height={118}
             margin-bottom={10}
-          />
+          /> */}
           <CardContent className={classes.card}>
             <Typography
               variant="body2"
               color="textSecondary"
               clsssName="memo-display-content"
             >
-              <ReactMarkdown source={item.item.content}></ReactMarkdown>
+              {item.item.content}
+              {/* <ReactMarkdown source={item.item.content}></ReactMarkdown> */}
             </Typography>
           </CardContent>
         </CardActionArea>

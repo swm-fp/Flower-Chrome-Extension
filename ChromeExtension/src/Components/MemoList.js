@@ -11,7 +11,9 @@ function Media() {
   const [memo, setStateMemo] = useState([]);
 
   useEffect(() => {
-    getMemoList().then(res => setStateMemo(res));
+    getMemoList().then(res => {
+      if (res) setStateMemo(res);
+    });
   }, []);
 
   let getMemoList = async () => {

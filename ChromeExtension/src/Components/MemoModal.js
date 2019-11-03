@@ -105,7 +105,7 @@ export default function MemoModal(item) {
               Cancel
             </Button>
             <Button onClick={handleClose} color="primary">
-              Go to Website
+              <a href={item.item.url}>Go to Website</a>
             </Button>
           </DialogActions>
         </Dialog>

@@ -148,12 +148,11 @@ export default function NewTab() {
   const [loginState, setLoginState] = useState(true);
 
   useEffect(() => {
+    let loginCheck = async () => {
+      return await FlowerAPI.checkLoginStatus();
+    };
     loginCheck().then(res => setLoginState(res));
   }, []);
-
-  let loginCheck = async () => {
-    return await FlowerAPI.checkLoginStatus();
-  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -211,18 +210,16 @@ export default function NewTab() {
                 <DirectionsIcon />
               </IconButton>
             </Paper>
-            <IconButton
+            {/* <IconButton
               aria-label="4 pending messages"
               className={classes.margin}
             >
               <Badge badgeContent={4} color="#ff0000">
                 <MailIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <Avatar className={classes.avatar}>H</Avatar>
             {loginState ? <LogoutButton /> : <LoginButton />}
-            {/* <LogoutButton />
-            <LoginButton /> */}
           </Toolbar>
         </AppBar>
 

@@ -1,8 +1,16 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import FlowerAPI from "../apis/FlowerAPI";
-export default function LoginButton() {
+
+function logout() {
+  FlowerAPI.updateLogoutState();
+  window.location.reload(false);
+}
+
+export default function LogoutButton() {
   return (
-    <Button variant="outlined" onClick={FlowerAPI.updateLogoutState}>logout</Button>
+    <Button variant="outlined" onClick={logout}>
+      logout
+    </Button>
   );
 }

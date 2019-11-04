@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import Grid from "@material-ui/core/Grid";
+import "typeface-roboto";
 
+import "../css/memoList.scss";
+
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Skeleton from "@material-ui/lab/Skeleton";
-import "../css/memoList.scss";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ShareIcon from "@material-ui/icons/Share";
 
 import Button from "@material-ui/core/Button";
 
@@ -21,12 +26,22 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+
 import FlowerAPI from "../apis/FlowerAPI";
 
 const useStyles = makeStyles({
   card: {
     height: "100px",
     overflow: "hidden"
+  },
+  buttonGroup: {
+    padding: "0px"
+  },
+  buttonLeft: {
+    marginLeft: "auto"
+  },
+  cautionTitle: {
+    backgroundColor: "rgba(255, 0, 0, 0.6)"
   }
 });
 
@@ -35,6 +50,16 @@ export default function MemoModal(item) {
 
   const [open, setOpen] = useState(false);
   const [displayState, setDisplayState] = useState(false);
+
+  const [deleteMemo, setDeleteOpen] = React.useState(false);
+
+  const deleteOpen = () => {
+    setDeleteOpen(true);
+  };
+
+  const deleteClose = () => {
+    setDeleteOpen(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,6 +71,7 @@ export default function MemoModal(item) {
 
   const memoDelete = memoId => {
     setDisplayState(true);
+
     FlowerAPI.deleteMemos(memoId);
   };
 
@@ -55,7 +81,7 @@ export default function MemoModal(item) {
     if (descriptionElement !== null) {
       descriptionElement.focus();
     }
-  }, [open]);
+  }, [open, deleteMemo]);
 
   return (
     <Grid
@@ -66,38 +92,23 @@ export default function MemoModal(item) {
       style={{ display: displayState ? "none" : "inline" }}
     >
       <Card>
-        <CardActionArea onClick={handleClickOpen}>
-          {/* <Skeleton
-            variant="rect"
-            width="100%"
-            height={118}
-            margin-bottom={10}
-          /> */}
-          <CardContent className={classes.card}>
+        <CardActionArea onClick={handleClickOpen} p="0px">
+          <CardContent className={classes.card} p="0px">
             <Typography
               variant="body2"
               color="textSecondary"
-              clsssName="memo-display-content"
+              className={classes.card}
+              inline
             >
               {item.item.content}
-              {/* <ReactMarkdown source={item.item.content}></ReactMarkdown> */}
             </Typography>
           </CardContent>
         </CardActionArea>
 
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="scroll-dialog-title"
-          aria-describedby="scroll-dialog-description"
-        >
-          <DialogTitle id="scroll-dialog-title">Memo</DialogTitle>
+        <Dialog open={open} onClose={handleClose} fullWidth="md" maxWidth="md">
+          <DialogTitle>Memo</DialogTitle>
           <DialogContent dividers>
-            <DialogContentText
-              id="scroll-dialog-description"
-              ref={descriptionElementRef}
-              tabIndex={-1}
-            >
+            <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
               <ReactMarkdown source={item.item.content}></ReactMarkdown>
             </DialogContentText>
           </DialogContent>
@@ -110,17 +121,46 @@ export default function MemoModal(item) {
             </Button>
           </DialogActions>
         </Dialog>
-        <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button
-            size="small"
+        <CardActions className={classes.buttonGroup}>
+          <IconButton
+            aria-label="Share"
+            className={classes.buttonLeft}
             color="primary"
-            onClick={() => memoDelete(item.item.memoId)}
+            fontSize="small"
+            disableSpacing
           >
-            Delete
-          </Button>
+            <ShareIcon color="primary" fontSize="small" />
+          </IconButton>
+          <IconButton
+            aria-label="delete"
+            color="primary"
+            fontSize="small"
+            onClick={deleteOpen}
+            disableSpacing
+          >
+            <DeleteIcon color="primary" fontSize="small" />
+          </IconButton>
+          <Dialog open={deleteMemo} onClose={deleteClose}>
+            <DialogTitle className={classes.cautionTitle}>Caution</DialogTitle>
+            <DialogContent dividers>
+              <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
+                <Typography>
+                  메모를 삭제하면 복구 할 수 없습니다. 그래도 삭제하시겠습니까?
+                </Typography>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  deleteClose();
+                  memoDelete(item.item.memoId);
+                }}
+                color="primary"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </CardActions>
       </Card>
     </Grid>

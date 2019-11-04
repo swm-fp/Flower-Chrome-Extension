@@ -122,7 +122,8 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     width: "400px"
-  }
+  },
+  logo: { width: "50%", height: "50%" }
 }));
 
 export default function NewTab() {
@@ -180,7 +181,11 @@ export default function NewTab() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              <b>touch-it</b>
+              <img
+                src="https://i.imgur.com/XAszQxS.png"
+                className="logo"
+                alt="logo"
+              />
             </Typography>
             <Paper className={classes.search}>
               <Input

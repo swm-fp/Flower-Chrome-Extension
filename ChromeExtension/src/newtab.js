@@ -29,6 +29,7 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import LogoutButton from "./Components/LogoutButton";
 import LoginButton from "./Components/LoginButton";
+import NeedLoginPage from "./Components/NeedLoginPage";
 import FlowerAPI from "./apis/FlowerAPI";
 
 const drawerWidth = 180;
@@ -267,8 +268,7 @@ export default function NewTab() {
 
         <main className={classes.content}>
           <div className={classes.toolbar}></div>
-
-          <MainDashboard />
+          {loginState ? <MainDashboard /> : <NeedLoginPage />}
         </main>
       </div>
     </MuiThemeProvider>

@@ -9,6 +9,7 @@ import clsx from "clsx";
 
 import {
   createMuiTheme,
+  fade,
   MuiThemeProvider,
   makeStyles
 } from "@material-ui/core/styles";
@@ -23,10 +24,8 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import Paper from "@material-ui/core/Paper";
-import Input from "@material-ui/core/InputBase";
+import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
-import Avatar from "@material-ui/core/Avatar";
 
 import LogoutButton from "./Components/LogoutButton";
 import LoginButton from "./Components/LoginButton";
@@ -36,7 +35,8 @@ const drawerWidth = 180;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    flexGrow: 1
   },
   title: {
     flexGrow: 1
@@ -100,15 +100,23 @@ const useStyles = makeStyles(theme => ({
     width: "95%",
     padding: theme.spacing(3)
   },
-  avatar: {
-    margin: 10
-  },
+
   margin: {
     margin: theme.spacing(2)
   },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1
+  inputRoot: {
+    color: "inherit"
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: 120,
+      "&:focus": {
+        width: 200
+      }
+    }
   },
   iconButton: {
     padding: 10
@@ -118,12 +126,32 @@ const useStyles = makeStyles(theme => ({
     margin: 4
   },
   search: {
-    padding: "1px 3px",
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25)
+    },
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(1),
+      width: "auto"
+    }
+  },
+  searchIcon: {
+    width: theme.spacing(7),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    width: "400px"
+    justifyContent: "center"
   },
-  logo: { width: "50%", height: "50%" }
+  logo: { width: "50%", height: "50%" },
+  auth: {
+    display: "contents"
+  }
 }));
 
 export default function NewTab() {
@@ -180,28 +208,34 @@ export default function NewTab() {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <Typography className={classes.title}>
               <img
                 src="https://i.imgur.com/XAszQxS.png"
                 className="logo"
                 alt="logo"
               />
             </Typography>
-            <Paper className={classes.search}>
-              <Input
-                className={classes.input}
-                color="secondary"
-                placeholder="Search Memo"
-                inputProps={{ "aria-label": "search google" }}
-                variant="filled"
-              />
 
-              <IconButton className={classes.iconButton} aria-label="search">
-                <SearchIcon />
-              </IconButton>
-            </Paper>
-            {loginState ? <Avatar className={classes.avatar}>H</Avatar> : ""}
-            {loginState ? <LogoutButton /> : <LoginButton />}
+            {loginState ? (
+              <div className={classes.auth}>
+                <div className={classes.search}>
+                  <div className={classes.searchIcon}>
+                    <SearchIcon />
+                  </div>
+                  <InputBase
+                    placeholder="Search…"
+                    classes={{
+                      root: classes.inputRoot,
+                      input: classes.inputInput
+                    }}
+                    inputProps={{ "aria-label": "search" }}
+                  />
+                </div>
+                <LogoutButton />
+              </div>
+            ) : (
+              <LoginButton />
+            )}
           </Toolbar>
         </AppBar>
 

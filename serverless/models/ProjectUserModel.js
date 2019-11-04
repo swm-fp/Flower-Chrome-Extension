@@ -1,42 +1,40 @@
 import Sequelize from "sequelize"
 import User from "./UserModel"
-import Memo from "./MemoModel"
+import Project from "./ProjectModel"
 
-class UserMemo extends Sequelize.Model {
+class ProjectUser extends Sequelize.Model {
     static init(sequelize) {
-        
         return super.init({
+            projectId: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
+                references: {
+                    model: Project,
+                    key: 'projectId'
+                }
+            },
             userId: {
                 type: Sequelize.STRING,
                 primaryKey: true,
+                onUpdate: 'CASCADE',
                 onDelete: 'CASCADE',
-                onUpdate :'CASCADE',
                 references: {
                     model: User,
                     key: 'userId'
                 }
             },
-            memoId: {
-                type: Sequelize.INTEGER,
-                primaryKey: true,
-                onDelete: 'CASCADE',
-                onUpdate :'CASCADE',
-                references: {
-                    model: Memo,
-                    key: 'memoId'
-                }
-            },
             authority : {
                 type: Sequelize.INTEGER,
                 defaultValue : 0
-                
             }
         }, {
             sequelize,
-            modelName: 'UserMemo',
+            modelName: 'ProjectUser',
             charset: 'utf8',
             collate: 'utf8_unicode_ci'
         });
     }
 }
-export default UserMemo;
+export default ProjectUser;

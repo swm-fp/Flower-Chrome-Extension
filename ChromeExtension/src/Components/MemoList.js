@@ -45,11 +45,7 @@ function Media() {
       </div>
     );
   if (error || !memo)
-    return (
-      <div>
-        <Typography component="p">Internet or Login Error</Typography>
-      </div>
-    );
+    return <Typography component="p">Internet or Login Error</Typography>;
   return (
     <Grid container className="memo-dashboard">
       {memo.length > 0

@@ -1,41 +1,35 @@
 import Sequelize,{ Op } from "sequelize"
 import MemoModel from "../../models/MemoModel"
-import UserMemoModel from "../../models/UserMemoModel"
-import UserModel from "../../models/UserModel"
+import Project from "../../models/ProjectModel"
 import UserAPI from "../users/UserAPI"
 
 export async function memos(dbHelper,userId, url = undefined) {
     const userDao = dbHelper.getUserDao();
-    const userMemoDao = dbHelper.getUserMemoDao();
+    const projectUserDao = dbHelper.getProjectUserDao();
 
     await UserAPI.createUser(dbHelper,userId);
 
     const where = {
         userId: userId,
-        "$UserMemos.authority$": { [Op.lte]: 1 }
-    };
-
+        authority: { [Op.lte]: 2 },
+        "$Project->Memos.memoId$" : {[Op.ne] : null}
+    }
     if(url != undefined){
-        where["$UserMemos.Memo.url$"] = url
+        where["$Project.Memos.url$"] = url
     }
 
-    let rows = await userDao.findAll({
-        //attributes: [['UserMemos.Memo.memoId','memoId'],['UserMemos.Memo.content','content'],['UserMemos.Memo.url', 'url']],
-        //attributes: [['UserMemos->Memo.url', 'url']],
+    let rows = await projectUserDao.findAll({
         raw: true,
         where: where,
-        attributes:[[Sequelize.col('UserMemos->Memo.url'), 'url'],[Sequelize.col('UserMemos->Memo.content'), 'content'],[Sequelize.col('UserMemos->Memo.memoId'), 'memoId'],[Sequelize.col('UserMemos->Memo.positionLeft'), 'positionLeft'],[Sequelize.col('UserMemos->Memo.positionTop'), 'positionTop']],
+        attributes:["authority","projectId",[Sequelize.col('Project->Memos.url'), 'url'],[Sequelize.col('Project->Memos.content'), 'content'],[Sequelize.col('Project->Memos.memoId'), 'memoId'],[Sequelize.col('Project->Memos.positionLeft'), 'positionLeft'],[Sequelize.col('Project->Memos.positionTop'), 'positionTop']],
         include: [{
-            model: UserMemoModel,
+            model: Project,
             attributes: [],
-            
             include: [{
                 attributes: [],
                 model: MemoModel
             }]
         }]
     });
-
     return rows;
-
 }

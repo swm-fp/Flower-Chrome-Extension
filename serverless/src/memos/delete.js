@@ -1,25 +1,32 @@
 import Sequelize,{ Op } from "sequelize"
 import MemoModel from "../../models/MemoModel"
-import UserMemoModel from "../../models/UserMemoModel"
-import UserModel from "../../models/UserModel"
+import Project from "../../models/ProjectModel"
 
 import UserAPI from "../users/UserAPI"
 export async function memos(dbHelper,userId, memoId) {
-    const userDao = dbHelper.getUserDao();
-    const userMemoDao = dbHelper.getUserMemoDao();
     const memoDao = dbHelper.getMemoDao();
+    const projectUserDao = dbHelper.getProjectUserDao();
+    const sequelize = dbHelper.getSequelize();
     
     await UserAPI.createUser(dbHelper,userId);
     
-    let row = await userMemoDao.findOne({
+    const rows = await projectUserDao.findAll({
         raw: true,
         where: {
             userId: userId,
-            memoId: memoId
-        }
+            "$Project->Memos.memoId$" : memoId,
+            authority: { [Op.lte]: 1 }
+        },
+        include : [{
+            model : Project,
+            include: [{
+                model: MemoModel,
+            }]
+        }],
     });
+    
 
-    if(row != null){
+    if(rows.length != 0 ){
         await memoDao.destroy({
             where: {
                 memoId: memoId

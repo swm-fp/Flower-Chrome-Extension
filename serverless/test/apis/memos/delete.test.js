@@ -16,7 +16,6 @@ describe("Memo Delete Test", function () {
 
     let userDao;
     let memoDao;
-    let  userMemoDao;
     let user;
     let dbHelper;
 
@@ -29,7 +28,6 @@ describe("Memo Delete Test", function () {
 
         userDao = dbHelper.getUserDao();
         memoDao = dbHelper.getMemoDao();
-        userMemoDao = dbHelper.getUserMemoDao();
     });
 
     after(async () => {

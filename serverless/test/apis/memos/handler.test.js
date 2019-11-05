@@ -160,7 +160,6 @@ describe("Memo Handler Test", function () {
         }
         let response = await handler.getMemos(event);
         const memo = JSON.parse(response.body)[0];
-        console.log(JSON.stringify(memo));
         
 
         event = {

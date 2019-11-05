@@ -9,7 +9,7 @@ class Memo extends Sequelize.Model {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 onUpdate: 'CASCADE',
-                onDelete: 'SET NULL',
+                onDelete: 'CASCADE',
                 references: {
                     model: Project,
                     key: 'projectId'

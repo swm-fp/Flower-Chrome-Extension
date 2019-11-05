@@ -1,12 +1,23 @@
 const UserAPI = {
     createUser: async (dbHelper, userId) => {
+        const userDao = dbHelper.getUserDao();
+        const projectDao = dbHelper.getProjectDao();
+        const projectUserDao = dbHelper.getProjectUserDao();
+
+        const selectedUesr = await userDao.findOne({
+            raw : true,
+            where : {
+                userId : userId
+            }
+        });
+        if(selectedUesr != null){
+            return false;
+        }
+
+        const sequelize = dbHelper.getSequelize();        
+
         let transaction;
         try{
-            const userDao = dbHelper.getUserDao();
-            const projectDao = dbHelper.getProjectDao();
-            const projectUserDao = dbHelper.getProjectUserDao();
-            
-            const sequelize = dbHelper.getSequelize();
             
             //transaction
             transaction = await sequelize.transaction();

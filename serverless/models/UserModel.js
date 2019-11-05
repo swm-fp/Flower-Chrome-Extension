@@ -1,5 +1,4 @@
 import Sequelize from "sequelize"
-import UserMemoModel from "./UserMemoModel"
 class User extends Sequelize.Model {
   static init(sequelize) {
 

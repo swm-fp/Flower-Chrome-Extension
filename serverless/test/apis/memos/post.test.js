@@ -4,6 +4,7 @@ import config from "../../../config/config"
 import * as DBHelper from "../../../models/dbHelper"
 
 import * as post from "../../../src/memos/post"
+import UserAPI from "../../../src/users/UserAPI"
 
 let userDao;
 let memoDao;
@@ -56,7 +57,7 @@ describe("Memos Post Test", function () {
 
         it("should insert new memo", async () => {
             //given
-            user = await userDao.create({ userId: "bhw" });
+            user = await UserAPI.createUser(dbHelper,"bhw");
 
             //when
 
@@ -75,7 +76,7 @@ describe("Memos Post Test", function () {
         it("should update memo", async () => {
 
             // given
-            user = await userDao.create({ userId: "bhw" });
+            user = await UserAPI.createUser(dbHelper,"bhw");
 
             const memos = [{ content: "memo1", url: "google.com" ,positionLeft : "10px", positionTop : "10px"}];
             await post.memos(dbHelper,user.userId, memos);

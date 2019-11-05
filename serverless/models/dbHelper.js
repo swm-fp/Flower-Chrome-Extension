@@ -78,7 +78,9 @@ export class DbHelper {
             await this.sequelize.sync();
         }
     }
-
+    getSequelize(){
+        return this.sequelize;
+    }
     getUserDao() {
         return this.userDao;
     }

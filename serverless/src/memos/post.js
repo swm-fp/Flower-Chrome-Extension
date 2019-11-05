@@ -1,16 +1,16 @@
 import MemoModel from "../../models/MemoModel"
 import UserMemoModel from "../../models/UserMemoModel"
-
 import { Op } from "sequelize"
+import UserAPI from "../users/UserAPI"
 
 export async function memos(dbHelper,userId, memoList) {
 
     let userDao = dbHelper.getUserDao();
     let memoDao = dbHelper.getMemoDao();
     let userMemoDao = dbHelper.getUserMemoDao();
-
-    await userDao.upsert({ userId: userId });
-
+    
+    await UserAPI.createUser(dbHelper,userId);
+    
     let rows = await userDao.findAll({
         raw: true,
         where: {

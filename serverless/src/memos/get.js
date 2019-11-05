@@ -2,12 +2,13 @@ import Sequelize,{ Op } from "sequelize"
 import MemoModel from "../../models/MemoModel"
 import UserMemoModel from "../../models/UserMemoModel"
 import UserModel from "../../models/UserModel"
+import UserAPI from "../users/UserAPI"
 
 export async function memos(dbHelper,userId, url = undefined) {
     const userDao = dbHelper.getUserDao();
     const userMemoDao = dbHelper.getUserMemoDao();
 
-    await userDao.upsert({ userId: userId });
+    await UserAPI.createUser(dbHelper,userId);
 
     const where = {
         userId: userId,

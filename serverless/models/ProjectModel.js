@@ -3,7 +3,8 @@ class Project extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
             projectId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-            name: { type: Sequelize.TEXT,allowNull : false }
+            name: { type: Sequelize.STRING,allowNull : false }
+            
         }, {
             sequelize,
             modelName: 'Project',

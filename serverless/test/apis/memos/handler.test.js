@@ -7,6 +7,8 @@ import config from "../../../config/config"
 import * as DBHelper from "../../../models/dbHelper"
 import tokenDecoder from "../../../src/utils/tokenDecoder"
 
+import UserAPI from "../../../src/users/UserAPI"
+
 import rewire from "rewire"
 const handler = rewire("../../../src/memos/handler");
 const mockDbHelper = rewire("../../../models/dbHelper");
@@ -51,7 +53,7 @@ describe("Memo Handler Test", function () {
     beforeEach(async () => {
         //force migrate
         await dbHelper.migrate(true);
-        user = await userDao.create({ userId: userId });
+        user = await UserAPI.createUser(dbHelper,userId);
 
     });
 

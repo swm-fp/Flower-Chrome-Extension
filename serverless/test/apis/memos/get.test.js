@@ -8,6 +8,7 @@ import * as DBHelper from "../../../models/dbHelper"
 import * as get from "../../../src/memos/get"
 import * as post from "../../../src/memos/post"
 
+import UserAPI from "../../../src/users/UserAPI"
 
 describe("Memo Get Test", function () {
 
@@ -36,7 +37,7 @@ describe("Memo Get Test", function () {
 
     beforeEach(async () => {
         await dbHelper.migrate(true);
-        user = await userDao.create({ userId: "bhw" });
+        user = await UserAPI.createUser(dbHelper,"bhw");
 
     });
 

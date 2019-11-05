@@ -8,6 +8,8 @@ import * as get from "../../../src/memos/get"
 import * as post from "../../../src/memos/post"
 import * as deleteMethod from "../../../src/memos/delete"
 
+import UserAPI from "../../../src/users/UserAPI"
+
 
 
 describe("Memo Delete Test", function () {
@@ -36,7 +38,7 @@ describe("Memo Delete Test", function () {
 
     beforeEach(async () => {
         await dbHelper.migrate(true);
-        user = await userDao.create({ userId: "bhw" });
+        user = await UserAPI.createUser(dbHelper,"bhw");
     });
 
 
@@ -58,7 +60,7 @@ describe("Memo Delete Test", function () {
     });
     it("should not delete other's memo ",async function(){
         //given 
-        const otherUser = await userDao.create({userId:"other"});
+        const otherUser = await UserAPI.createUser(dbHelper,"other")
 
         const url = "google.com";
         let memoList = [{ content: "this is memo", url: url ,positionLeft:"10px",positionTop:"10px"}];

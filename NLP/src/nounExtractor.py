@@ -16,7 +16,7 @@ def getEngNouns(sen):
 
 def nlp_apis(api_num, sen):
     sen = clean_sentence(sen)
-    api_dict = {1:Kkma(), 2:Twitter(), 3:Hannanum(), 4:Komoran(), 5:Mecab('/usr/local/lib/mecab/dic/mecab-ko-dic')}
+    api_dict = {1:Kkma(), 2:Twitter(), 3:Hannanum(), 4:Komoran(), 5:Mecab()}
 
     module = api_dict[api_num]
 
@@ -26,10 +26,6 @@ def nlp_apis(api_num, sen):
 
 def nouns_extractor(title, url, nlpapi_num=5):
     title_nouns, _ = nlp_apis(nlpapi_num, title)
-    try:
-        body_nouns, _ = nlp_apis(nlpapi_num, spider(url))
-
-    except Exception as e:
-        print("::body nouns ERROR::\n", e)
+    body_nouns, _ = nlp_apis(nlpapi_num, spider(url))
     
     return title_nouns, body_nouns

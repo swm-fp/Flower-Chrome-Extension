@@ -1,15 +1,12 @@
+// default
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-
 import registerServiceWorker from "./registerServiceWorker";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./css/newtab.scss";
-import MainDashboard from "./Components/MainDashboard";
-import clsx from "clsx";
 
+// UI component
+import clsx from "clsx";
 import {
   createMuiTheme,
-  fade,
   MuiThemeProvider,
   makeStyles
 } from "@material-ui/core/styles";
@@ -24,13 +21,24 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import InputBase from "@material-ui/core/InputBase";
-import SearchIcon from "@material-ui/icons/Search";
 
+import "./css/newtab.scss";
+
+// components & api
+import MainDashboard from "./Components/MainDashboard";
 import LogoutButton from "./Components/LogoutButton";
 import LoginButton from "./Components/LoginButton";
 import NeedLoginPage from "./Components/NeedLoginPage";
 import FlowerAPI from "./apis/FlowerAPI";
+
+// redux
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import rootReducer from "./modules/";
+import ReduxThunk from "redux-thunk";
+import SearchEngine from "./Components/SearchEngine";
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const drawerWidth = 180;
 
@@ -105,49 +113,12 @@ const useStyles = makeStyles(theme => ({
   margin: {
     margin: theme.spacing(2)
   },
-  inputRoot: {
-    color: "inherit"
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: 120,
-      "&:focus": {
-        width: 200
-      }
-    }
-  },
   iconButton: {
     padding: 10
   },
   divider: {
     height: 28,
     margin: 4
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25)
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto"
-    }
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
   },
   logo: { width: "50%", height: "50%" },
   auth: {
@@ -169,11 +140,11 @@ export default function NewTab() {
 
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [loginState, setLoginState] = useState(true);
 
   useEffect(() => {
-    let loginCheck = async () => {
+    const loginCheck = async () => {
       return await FlowerAPI.checkLoginStatus();
     };
     loginCheck().then(res => setLoginState(res));
@@ -219,19 +190,7 @@ export default function NewTab() {
 
             {loginState ? (
               <div className={classes.auth}>
-                <div className={classes.search}>
-                  <div className={classes.searchIcon}>
-                    <SearchIcon />
-                  </div>
-                  <InputBase
-                    placeholder="Search…"
-                    classes={{
-                      root: classes.inputRoot,
-                      input: classes.inputInput
-                    }}
-                    inputProps={{ "aria-label": "search" }}
-                  />
-                </div>
+                <SearchEngine />
                 <LogoutButton />
               </div>
             ) : (
@@ -275,5 +234,10 @@ export default function NewTab() {
   );
 }
 
-ReactDOM.render(<NewTab />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <NewTab />
+  </Provider>,
+  document.getElementById("root")
+);
 registerServiceWorker();

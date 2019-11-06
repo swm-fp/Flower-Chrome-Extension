@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import FlowerAPI from "../apis/FlowerAPI";
+import React, { useEffect } from "react";
 import "../css/memoList.scss";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,6 +7,9 @@ import Box from "@material-ui/core/Box";
 import MemoModal from "./MemoModal.js";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
+
+import { useSelector, useDispatch } from "react-redux";
+import { getMemos } from "../modules/memos";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -20,37 +22,25 @@ const useStyles = makeStyles(theme => ({
 
 function Media() {
   const classes = useStyles();
-  const [memo, setMemo] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { data, loading, error } = useSelector(state => state.memos.memos);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const memoList = async () => {
-      try {
-        setMemo(null);
-        setLoading(true);
-        const memoVal = await FlowerAPI.getMemos();
-        setMemo(memoVal);
-      } catch (e) {
-        setError(e);
-      }
-      setLoading(false);
-    };
-    memoList();
-  }, []);
+    dispatch(getMemos());
+  }, [dispatch]);
+
   if (loading)
     return (
       <div className={classes.loading}>
         <LinearProgress className={classes.loadingBar} />
       </div>
     );
-  if (error || !memo)
+  if (error || !data)
     return <Typography component="p">Internet or Login Error</Typography>;
   return (
     <Grid container className="memo-dashboard">
-      {memo.length > 0
-        ? Array.from(memo).map((item, index) => <MemoModal item={item} />)
-        : ""}
+      {data.length > 0 &&
+        Array.from(data).map((item, index) => <MemoModal item={item} />)}
     </Grid>
   );
 }

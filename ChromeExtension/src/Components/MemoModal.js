@@ -5,7 +5,6 @@ import "../css/memoList.scss";
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Skeleton from "@material-ui/lab/Skeleton";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ShareIcon from "@material-ui/icons/Share";
@@ -51,7 +50,7 @@ export default function MemoModal(item) {
   const [open, setOpen] = useState(false);
   const [displayState, setDisplayState] = useState(false);
 
-  const [deleteMemo, setDeleteOpen] = React.useState(false);
+  const [deleteMemo, setDeleteOpen] = useState(false);
 
   const deleteOpen = () => {
     setDeleteOpen(true);
@@ -92,6 +91,16 @@ export default function MemoModal(item) {
       style={{ display: displayState ? "none" : "inline" }}
     >
       <Card>
+        <CardActionArea>
+          <Typography
+            component="div"
+            style={{
+              height: "15px",
+              backgroundColor: "#cfe8fc"
+            }}
+          />
+        </CardActionArea>
+
         <CardActionArea onClick={handleClickOpen} p="0px">
           <CardContent className={classes.card} p="0px">
             <Typography

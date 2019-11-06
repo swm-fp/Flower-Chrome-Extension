@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles, fade } from "@material-ui/core/styles";
 
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { getMemos } from "../modules/memos";
 
@@ -51,9 +53,13 @@ export default function SearchEngine() {
   const { data, loading, error } = useSelector(state => state.memos.memos);
   const dispatch = useDispatch();
 
+  const [input, setInput] = useState("");
+
   useEffect(() => {
     dispatch(getMemos());
   }, [dispatch]);
+
+  if (loading || error || !data) return null;
 
   return (
     <div className={classes.search}>
@@ -61,13 +67,38 @@ export default function SearchEngine() {
         <SearchIcon />
       </div>
       <InputBase
+        // label="Search..."
         placeholder="Search…"
+        value={input}
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput
         }}
         inputProps={{ "aria-label": "search" }}
+        onChange={x => {
+          setInput(x.target.value);
+        }}
+        onKeyPress={e => {
+          if (e.charCode === 13) {
+            window.location = "https://www.google.com/search?q=" + input;
+          }
+        }}
       />
+      {/* <Autocomplete
+        placeholder="Search…"
+        freeSolo
+        disableClearable
+        options={data.map(option => option.url)}
+        renderInput={params => (
+          <TextField
+            {...params}
+            label="Search input"
+            margin="normal"
+            variant="outlined"
+            fullWidth
+          />
+        )}
+      /> */}
     </div>
   );
 }

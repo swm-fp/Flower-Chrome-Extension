@@ -3,8 +3,8 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import { makeStyles, fade } from "@material-ui/core/styles";
 
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
+// import Autocomplete from "@material-ui/lab/Autocomplete";
+// import TextField from "@material-ui/core/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { getMemos } from "../modules/memos";
 
@@ -40,9 +40,9 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: 120,
+      width: 150,
       "&:focus": {
-        width: 200
+        width: 240
       }
     }
   }
@@ -67,7 +67,6 @@ export default function SearchEngine() {
         <SearchIcon />
       </div>
       <InputBase
-        // label="Search..."
         placeholder="Search…"
         value={input}
         classes={{

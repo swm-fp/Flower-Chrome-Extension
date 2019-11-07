@@ -34,6 +34,6 @@
     "client_id": "651849940042-5f4f1q4hcue21g5cdaa5irnhj1vh42pg.apps.googleusercontent.com",
     "scopes": ["openid", "email", "profile"]
   },
-  "icons": { "16": "icon16.png", "32": "icon32.png" },
+
   "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'"
 }

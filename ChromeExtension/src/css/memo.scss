@@ -1,0 +1,64 @@
+.flower-memo {
+  position: absolute;
+  min-width: 300px !important;
+  min-height: 180px !important;
+  z-index: 9999;
+}
+
+.flower-memo-wrapper,
+.flower-memo-header {
+  width: 100%;
+  position: relative;
+  display: table;
+  border-collapse: separate;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.flower-memo-content {
+  width: 100% !important;
+  position: relative;
+}
+
+.flower-memo-remove {
+  width: 15px !important;
+  height: 15px !important;
+  padding: 0 !important;
+  background: #ff0081 !important;
+  border-radius: 4px !important;
+}
+
+.flower-memo-action1 {
+  width: 15px !important;
+  height: 15px !important;
+  padding: 0 !important;
+  background: lightgreen !important;
+  border-radius: 4px !important;
+}
+
+.flower-memo-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  white-space: nowrap;
+  background-color: #5f4b8b !important;
+
+  padding: 0.375rem 0.75rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(206, 212, 218);
+  border-image: initial;
+  border-radius: 0.25rem;
+}
+
+.flower-memo-text {
+  display: none;
+  width: 100% !important;
+  min-width: 300px !important;
+  height: 0px;
+}

@@ -1,0 +1,61 @@
+.sidebar-content {
+  text-align: center;
+  height: 100%;
+
+  background-image: linear-gradient(#80cbc4, #4db6ac);
+}
+
+.main-title {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px 5px;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.social-icons {
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  padding: 1em;
+  text-align: center;
+  display: inline-block;
+  margin-bottom: 100px;
+  letter-spacing: 2px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.social-icon {
+  width: 1em;
+  height: 1em;
+}
+
+a {
+  color: white;
+  font-weight: bold;
+  margin: 0 4px;
+}
+
+.nav-item {
+  height: 35px;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.nav-link {
+  height: 100%;
+}
+
+.nav-tabs {
+  border: none;
+}
+
+.profile-image {
+  width: 68%;
+  border-radius: 50%;
+  border: 4px solid rgba(0, 0, 0, 0.3);
+}

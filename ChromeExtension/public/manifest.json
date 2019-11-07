@@ -1,0 +1,39 @@
+{
+  "short_name": "F",
+  "name": "FLOWER",
+  "version": "1.0",
+  "manifest_version": 2,
+  "background": {
+    "scripts": ["static/js/background.js"]
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "browser_action": {},
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["static/css/content.css"],
+      "js": ["/static/js/content.js"]
+    }
+  ],
+  "web_accessible_resources": ["/static/css/content.css", "popup.html"],
+  "permissions": [
+    "webNavigation",
+    "contextMenus",
+    "tabs",
+    "activeTab",
+    "storage",
+    "<all_urls>",
+    "bookmarks",
+    "webRequest",
+    "*://fpsample.s3.ap-northeast-2.amazonaws.com/",
+    "identity"
+  ],
+  "oauth2": {
+    "client_id": "651849940042-5f4f1q4hcue21g5cdaa5irnhj1vh42pg.apps.googleusercontent.com",
+    "scopes": ["openid", "email", "profile"]
+  },
+
+  "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'"
+}

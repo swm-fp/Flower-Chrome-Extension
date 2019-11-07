@@ -1,0 +1,24 @@
+.memo-url {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  a {
+    color: black;
+    width: 210px;
+    height: 20px;
+    white-space: nowrap;
+  }
+}
+
+.memo-display-box {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.memo-grid {
+  background-clip: border-box;
+  border: 5px solid rgba(0, 0, 0, 0);
+}
+
+.memo-display-content {
+  height: 50px;
+}

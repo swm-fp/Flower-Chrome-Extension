@@ -1,0 +1,47 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}/serverless",
+            "runtimeExecutable": "yarn",
+            
+            "runtimeArgs": ["run","babel-node"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Chrome Extension Test",
+            "program": "${file}",
+            "runtimeExecutable": "yarn",
+            "cwd": "${workspaceFolder}/ChromeExtension",
+            "runtimeArgs": ["run","mocha","--require","babel-register"],
+            "env": {"BABEL_ENV" : "test","NODE_ENV" : "test"}
+
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Serverless Test",
+            "program": "${file}",
+            "runtimeExecutable": "yarn",
+            "cwd": "${workspaceFolder}/serverless",
+            "runtimeArgs": ["run","mocha","--require","@babel/register"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Serverless all Test",
+            "program": "",
+            "runtimeExecutable": "yarn",
+            "cwd": "${workspaceFolder}/serverless",
+            "runtimeArgs": ["run","mocha","--require","@babel/register","-recursive"]
+        }
+    ]
+}

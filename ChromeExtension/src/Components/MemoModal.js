@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+import { useSelector } from "react-redux";
 import "typeface-roboto";
 
 import "../css/memoList.scss";
@@ -41,6 +43,19 @@ const useStyles = makeStyles({
   },
   cautionTitle: {
     backgroundColor: "rgba(255, 0, 0, 0.6)"
+  },
+  cardBorder: {
+    color: "white",
+    backgroundColor: "#dc8665"
+    // border: "3px solid rgba(220, 150, 101, 0.7)"
+  },
+  project: {
+    height: "15px",
+    backgroundColor: "#c0c0c0"
+  },
+  projectShare: {
+    height: "15px",
+    backgroundColor: "rgba(0, 0, 0, 0)"
   }
 });
 
@@ -49,8 +64,13 @@ export default function MemoModal(item) {
 
   const [open, setOpen] = useState(false);
   const [displayState, setDisplayState] = useState(false);
+  const [shareChecked, setShareChecked] = useState(false);
 
   const [deleteMemo, setDeleteOpen] = useState(false);
+
+  const { check } = useSelector(state => ({
+    check: state.share.check
+  }));
 
   const deleteOpen = () => {
     setDeleteOpen(true);
@@ -70,12 +90,16 @@ export default function MemoModal(item) {
 
   const memoDelete = memoId => {
     setDisplayState(true);
-
     FlowerAPI.deleteMemos(memoId);
   };
 
-  const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
+  const shareClick = memoId => {
+    setShareChecked(!shareChecked);
+  };
+
+  const descriptionElementRef = useRef(null);
+
+  useEffect(() => {
     const { current: descriptionElement } = descriptionElementRef;
     if (descriptionElement !== null) {
       descriptionElement.focus();
@@ -90,22 +114,21 @@ export default function MemoModal(item) {
       sm={4}
       style={{ display: displayState ? "none" : "inline" }}
     >
-      <Card>
+      <Card className={check && shareChecked ? classes.cardBorder : null}>
         <CardActionArea>
           <Typography
             component="div"
-            style={{
-              height: "15px",
-              backgroundColor: "#cfe8fc"
-            }}
+            className={
+              check && shareChecked ? classes.projectShare : classes.project
+            }
           />
         </CardActionArea>
 
-        <CardActionArea onClick={handleClickOpen} p="0px">
+        <CardActionArea onClick={check ? shareClick : handleClickOpen} p="0px">
           <CardContent className={classes.card} p="0px">
             <Typography
               variant="body2"
-              color="textSecondary"
+              color={shareChecked ? "inherit" : "textSecondary"}
               className={classes.card}
               inline
             >
@@ -125,8 +148,14 @@ export default function MemoModal(item) {
             <Button onClick={handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={handleClose} color="primary">
-              <a href={item.item.url}>Go to Website</a>
+            <Button
+              onClick={() => {
+                handleClose();
+                window.location.href = item.item.url;
+              }}
+              color="primary"
+            >
+              Go to Website
             </Button>
           </DialogActions>
         </Dialog>
@@ -134,20 +163,26 @@ export default function MemoModal(item) {
           <IconButton
             aria-label="Share"
             className={classes.buttonLeft}
-            color="primary"
+            color={shareChecked ? "inherit" : "primary"}
             fontSize="small"
             disableSpacing
           >
-            <ShareIcon color="primary" fontSize="small" />
+            <ShareIcon
+              color={shareChecked ? "inherit" : "primary"}
+              fontSize="small"
+            />
           </IconButton>
           <IconButton
             aria-label="delete"
-            color="primary"
+            color={shareChecked ? "inherit" : "primary"}
             fontSize="small"
-            onClick={deleteOpen}
+            onClick={shareChecked && deleteOpen}
             disableSpacing
           >
-            <DeleteIcon color="primary" fontSize="small" />
+            <DeleteIcon
+              color={shareChecked ? "inherit" : "primary"}
+              fontSize="small"
+            />
           </IconButton>
           <Dialog open={deleteMemo} onClose={deleteClose}>
             <DialogTitle className={classes.cautionTitle}>Caution</DialogTitle>

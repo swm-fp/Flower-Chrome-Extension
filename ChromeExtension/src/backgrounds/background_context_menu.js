@@ -15,7 +15,9 @@ chrome.runtime.onInstalled.addListener(() => {
           chrome.tabs.sendMessage(tabs[0].id, { message: "contextMenu" });
         });
       } else {
-        alert("LOGIN!");
+        if (window.confirm("You have to login.")) {
+          // have to redirect url
+        }
       }
     }
   });

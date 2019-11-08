@@ -8,12 +8,12 @@ import * as DBHelper from "../../../models/dbHelper"
 import * as get from "../../../src/memos/get"
 import * as post from "../../../src/memos/post"
 
+import UserAPI from "../../../src/users/UserAPI"
 
 describe("Memo Get Test", function () {
 
     let userDao;
     let memoDao;
-    let  userMemoDao;
     let user;
     let dbHelper;
 
@@ -27,7 +27,6 @@ describe("Memo Get Test", function () {
 
         userDao = dbHelper.getUserDao();
         memoDao = dbHelper.getMemoDao();
-        userMemoDao = dbHelper.getUserMemoDao();
     });
 
     after(async () => {
@@ -36,8 +35,7 @@ describe("Memo Get Test", function () {
 
     beforeEach(async () => {
         await dbHelper.migrate(true);
-        user = await userDao.create({ userId: "bhw" });
-
+        user = await UserAPI.createUser(dbHelper,"bhw");
     });
 
     it("should have correct property",async function(){
@@ -48,9 +46,6 @@ describe("Memo Get Test", function () {
 
         //when
         const selectedMemos = await get.memos(dbHelper,user.userId);
-
-        
-
 
         //then
         const selectedMemo = selectedMemos[0];
@@ -69,7 +64,6 @@ describe("Memo Get Test", function () {
         //when
         const selectedMemos = await get.memos(dbHelper,user.userId);
 
-
         //then
         expect(selectedMemos.length).to.equal(memoList.length);
     });
@@ -84,7 +78,6 @@ describe("Memo Get Test", function () {
 
         //when
         const selectedMemos = await get.memos(dbHelper,user.userId,requestUrl);
-
 
         //then
         expect(selectedMemos.length).to.equal(1);

@@ -7,13 +7,11 @@ import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import BlockIcon from "@material-ui/icons/Block";
 
 import DeleteIcon from "@material-ui/icons/Delete";
-
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
 import Typography from "@material-ui/core/Typography";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -44,8 +42,6 @@ const useStyles = makeStyles(theme => ({
 export default function MenuBar() {
   const classes = useStyles();
 
-  const [deleteMemo, setDeleteMemo] = useState(false);
-
   const { check } = useSelector(state => ({
     check: state.share.check
   }));
@@ -54,15 +50,23 @@ export default function MenuBar() {
   const shareCheckOn = () => dispatch(shareOn());
   const shareCheckOff = () => dispatch(shareOff());
 
-  const deleteOpen = () => {
-    setDeleteMemo(true);
-  };
+  // const [deleteMemo, setDeleteMemo] = useState(false);
+  // const deleteOpen = () => {
+  //   setDeleteMemo(true);
+  // };
+  // const deleteClose = () => {
+  //   setDeleteMemo(false);
+  // };
+  // const descriptionElementRef = useRef(null);
 
-  const deleteClose = () => {
-    setDeleteMemo(false);
+  const shareMemos = () => {
+    let lst = document.querySelectorAll("#shareClicked");
+    let memo_share_list = [];
+    for (let i = 0; i < lst.length; i++) {
+      memo_share_list.push(lst[i].getAttribute("value"));
+    }
+    console.log(memo_share_list);
   };
-
-  const descriptionElementRef = useRef(null);
 
   return (
     <Paper className={classes.menubar}>
@@ -83,7 +87,7 @@ export default function MenuBar() {
             color="inherit"
             className={classes.button}
             startIcon={<AlternateEmailIcon />}
-            onClick={shareCheckOn}
+            onClick={shareMemos}
           >
             Ready to Share
           </Button>

@@ -114,7 +114,11 @@ export default function MemoModal(item) {
       sm={4}
       style={{ display: displayState ? "none" : "inline" }}
     >
-      <Card className={check && shareChecked ? classes.cardBorder : null}>
+      <Card
+        className={check && shareChecked ? classes.cardBorder : null}
+        id={check && shareChecked ? "shareClicked" : null}
+        value={item.item.memoId}
+      >
         <CardActionArea>
           <Typography
             component="div"
@@ -163,24 +167,24 @@ export default function MemoModal(item) {
           <IconButton
             aria-label="Share"
             className={classes.buttonLeft}
-            color={shareChecked ? "inherit" : "primary"}
+            color={check && shareChecked ? "inherit" : "primary"}
             fontSize="small"
             disableSpacing
           >
             <ShareIcon
-              color={shareChecked ? "inherit" : "primary"}
+              color={check && shareChecked ? "inherit" : "primary"}
               fontSize="small"
             />
           </IconButton>
           <IconButton
             aria-label="delete"
-            color={shareChecked ? "inherit" : "primary"}
+            color={check && shareChecked ? "inherit" : "primary"}
             fontSize="small"
-            onClick={shareChecked && deleteOpen}
+            onClick={!shareChecked && deleteOpen}
             disableSpacing
           >
             <DeleteIcon
-              color={shareChecked ? "inherit" : "primary"}
+              color={check && shareChecked ? "inherit" : "primary"}
               fontSize="small"
             />
           </IconButton>

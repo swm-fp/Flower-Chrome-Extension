@@ -1,7 +1,6 @@
 import MemoModel from "../../models/MemoModel"
 import Project from "../../models/ProjectModel"
 import { Op } from "sequelize"
-import UserAPI from "../users/UserAPI"
 
 export async function memos(dbHelper,userId, memoList) {
     
@@ -10,8 +9,6 @@ export async function memos(dbHelper,userId, memoList) {
     let memoDao = dbHelper.getMemoDao();
     let projectUserDao = dbHelper.getProjectUserDao();
     
-    await UserAPI.createUser(dbHelper,userId);
-
     const rows = await projectUserDao.findAll({
         raw: true,
         attributes:["projectId",[sequelize.col('Project->Memos.memoId'), 'memoId']],

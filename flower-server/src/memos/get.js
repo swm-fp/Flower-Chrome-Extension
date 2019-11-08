@@ -1,13 +1,10 @@
 import Sequelize,{ Op } from "sequelize"
 import MemoModel from "../../models/MemoModel"
 import Project from "../../models/ProjectModel"
-import UserAPI from "../users/UserAPI"
 
 export async function memos(dbHelper,userId, url = undefined) {
     const userDao = dbHelper.getUserDao();
     const projectUserDao = dbHelper.getProjectUserDao();
-
-    await UserAPI.createUser(dbHelper,userId);
 
     const where = {
         userId: userId,

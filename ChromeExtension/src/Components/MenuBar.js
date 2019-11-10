@@ -6,13 +6,13 @@ import ShareIcon from "@material-ui/icons/Share";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import BlockIcon from "@material-ui/icons/Block";
 
-import DeleteIcon from "@material-ui/icons/Delete";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 
 import { useSelector, useDispatch } from "react-redux";
 import { shareOn, shareOff } from "../modules/share";
@@ -32,10 +32,12 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1)
   },
   shareTitle: {
-    backgroundColor: "rgba(255, 255, 0, 0.6)"
+    backgroundColor: "rgba(0,0,0, 0.6)"
   },
-  deleteTitle: {
-    backgroundColor: "rgba(255, 0, 0, 0.6)"
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200
   }
 }));
 
@@ -45,19 +47,21 @@ export default function MenuBar() {
   const { check } = useSelector(state => ({
     check: state.share.check
   }));
+  const [projectName, setProjectName] = useState("");
 
   const dispatch = useDispatch();
   const shareCheckOn = () => dispatch(shareOn());
   const shareCheckOff = () => dispatch(shareOff());
 
-  // const [deleteMemo, setDeleteMemo] = useState(false);
-  // const deleteOpen = () => {
-  //   setDeleteMemo(true);
-  // };
-  // const deleteClose = () => {
-  //   setDeleteMemo(false);
-  // };
-  // const descriptionElementRef = useRef(null);
+  const [shareMemo, setShareMemo] = useState(false);
+  const shareOpen = () => {
+    setShareMemo(true);
+  };
+  const shareClose = () => {
+    setShareMemo(false);
+  };
+
+  const descriptionElementRef = useRef(null);
 
   const shareMemos = () => {
     let lst = document.querySelectorAll("#shareClicked");
@@ -65,7 +69,8 @@ export default function MenuBar() {
     for (let i = 0; i < lst.length; i++) {
       memo_share_list.push(lst[i].getAttribute("value"));
     }
-    console.log(memo_share_list);
+    console.log({ project: projectName, memo: memo_share_list });
+    setProjectName("");
   };
 
   return (
@@ -87,7 +92,7 @@ export default function MenuBar() {
             color="inherit"
             className={classes.button}
             startIcon={<AlternateEmailIcon />}
-            onClick={shareMemos}
+            onClick={shareOpen}
           >
             Ready to Share
           </Button>
@@ -100,30 +105,36 @@ export default function MenuBar() {
           >
             Cancel
           </Button>
+          <Dialog open={shareMemo} onClose={shareClose}>
+            <DialogTitle className={classes.shareTitle}>Share</DialogTitle>
+            <DialogContent dividers>
+              <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
+                <Typography>Project 명을 입력해주세요</Typography>
+                <TextField
+                  id="outlined-basic"
+                  className={classes.textField}
+                  label="Project"
+                  margin="normal"
+                  variant="outlined"
+                  onChange={e => setProjectName(e.target.value)}
+                />
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  shareClose();
+                  shareMemos();
+                  shareCheckOff();
+                }}
+                color="primary"
+              >
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       )}
-      {/* <Dialog open={deleteMemo} onClose={deleteClose}>
-        <DialogTitle className={classes.deleteTitle}>Delete</DialogTitle>
-        <DialogContent dividers>
-          <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
-            <Typography>다중 선택 삭제 기능은 아직 준비 중 입니다.</Typography>
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={deleteClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Button
-        variant="contained"
-        color="inherit"
-        className={classes.button}
-        startIcon={<DeleteIcon />}
-        onClick={deleteOpen}
-      >
-        Delete
-      </Button> */}
     </Paper>
   );
 }

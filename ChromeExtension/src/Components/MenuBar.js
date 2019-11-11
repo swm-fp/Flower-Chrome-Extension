@@ -16,6 +16,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { useSelector, useDispatch } from "react-redux";
 import { shareOn, shareOff } from "../modules/share";
+import FlowerAPI from "../apis/FlowerAPI";
 
 const useStyles = makeStyles(theme => ({
   menubar: {
@@ -69,7 +70,11 @@ export default function MenuBar() {
     for (let i = 0; i < lst.length; i++) {
       memo_share_list.push(lst[i].getAttribute("value"));
     }
-    console.log({ project: projectName, memo: memo_share_list });
+    console.log({ name: projectName, memoIdList: memo_share_list });
+    
+    // todo : async
+    FlowerAPI.postProject(projectName,memo_share_list);    
+    
     setProjectName("");
   };
 

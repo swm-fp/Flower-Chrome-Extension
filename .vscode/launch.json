@@ -31,7 +31,7 @@
             "name": "Serverless Test",
             "program": "${file}",
             "runtimeExecutable": "yarn",
-            "cwd": "${workspaceFolder}/serverless",
+            "cwd": "${workspaceFolder}/flower-server",
             "runtimeArgs": ["run","mocha","--require","@babel/register"]
         },
         {
@@ -40,7 +40,7 @@
             "name": "Serverless all Test",
             "program": "",
             "runtimeExecutable": "yarn",
-            "cwd": "${workspaceFolder}/serverless",
+            "cwd": "${workspaceFolder}/flower-server",
             "runtimeArgs": ["run","mocha","--require","@babel/register","-recursive"]
         }
     ]

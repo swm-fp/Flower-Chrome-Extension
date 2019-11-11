@@ -18,7 +18,6 @@ const UserAPI = {
 
         let transaction;
         try{
-            
             //transaction
             transaction = await sequelize.transaction();
             

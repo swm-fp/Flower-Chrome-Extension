@@ -63,7 +63,7 @@ provider:
 # you can add packaging information here
 #package:
 #  include:
-#    - ../../models/**
+#    - ../memos/handler.js
 #    - ../../config/**
 #  exclude:
 #    - exclude-me.js
@@ -72,7 +72,7 @@ provider:
 functions:
   getMemos:
     name: getMemos
-    handler: handler.getMemos
+    handler: src/memos/handler.getMemos
     role: arn:aws:iam::616448378550:role/service-role/lambdaRole
           
 #    The following are a few example events you can configure
@@ -89,7 +89,7 @@ functions:
     
   readNode:
     name: postMemos
-    handler: handler.postMemos
+    handler: src/memos/handler.postMemos
     role: arn:aws:iam::616448378550:role/service-role/lambdaRole
           
 #    The following are a few example events you can configure
@@ -106,7 +106,7 @@ functions:
 
   deleteMemos:
     name: deleteMemos
-    handler: handler.deleteMemos
+    handler: src/memos/handler.deleteMemos
     role: arn:aws:iam::616448378550:role/service-role/lambdaRole
           
 #    The following are a few example events you can configure
@@ -121,6 +121,41 @@ functions:
             name: authorizer
             arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
   
+
+  postUser:
+    name: postUser
+    handler: src/users/handler.postUser
+    role: arn:aws:iam::616448378550:role/service-role/lambdaRole
+          
+#    The following are a few example events you can configure
+#    NOTE: Please make sure to change your handler code to work with those events
+#    Check the event documentation for details
+    events:
+      - http:
+          path: /users
+          method: post
+          cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
+
+  postproject:
+    name: postproject
+    handler: src/projects/handler.postProject
+    role: arn:aws:iam::616448378550:role/service-role/lambdarole
+          
+#    the following are a few example events you can configure
+#    note: please make sure to change your handler code to work with those events
+#    check the event documentation for details
+    events:
+      - http:
+          path: /projects
+          method: post
+          cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qj2jlsgrm
+
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

@@ -1,8 +1,12 @@
 /* global chrome */
 import axios from "axios";
 import memoAPI from "./MemoAPI";
+<<<<<<< HEAD
 import userAPI from "./UserAPI";
 import projectAPI from "./ProjectAPI"
+=======
+import tagAPI from "./TagAPI";
+>>>>>>> e934648... TagAPI 추가
 import atob from "atob";
 import "./chrome-extension-async";
 
@@ -75,7 +79,26 @@ const FlowerAPI = {
       return response.data;
     }
   },
-  
+
+  getTags: async (tagUrl=undefined) => {
+    if (await FlowerAPI.checkLoginStatus()) {
+      tagUrl = "www.naver.com";
+      
+      const info = await FlowerAPI.getUserInfo();
+      let result = await tagAPI.getTags(info.token, tagUrl);
+    }
+  },
+
+  postTags: async (tagUrl=undefined, tags=undefined) => {
+    if (await FlowerAPI.checkLoginStatus()) {
+      tagUrl = "www.naver.com";
+      tags = ["chaen", "hello"];
+
+      const info = await FlowerAPI.getUserInfo();
+      let result = await tagAPI.postTags(info.token, tagUrl, tags);
+    }
+  },
+
   deleteMemos: async memoId => {
     if (await FlowerAPI.checkLoginStatus()) {
       const info = await FlowerAPI.getUserInfo();

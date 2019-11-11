@@ -1,3 +1,4 @@
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const slsw = require("serverless-webpack");
 const nodeExternals = require("webpack-node-externals");
@@ -30,5 +31,5 @@ module.exports = {
             }
         ]
     },
-    externals: [nodeExternals(), 'pg', 'sqlite3', 'tedious', 'pg-hstore'],
+    externals: [ 'pg', 'sqlite3', 'tedious', 'pg-hstore'],
 };

@@ -1,12 +1,9 @@
 /* global chrome */
 import axios from "axios";
 import memoAPI from "./MemoAPI";
-<<<<<<< HEAD
 import userAPI from "./UserAPI";
 import projectAPI from "./ProjectAPI"
-=======
 import tagAPI from "./TagAPI";
->>>>>>> e934648... TagAPI 추가
 import atob from "atob";
 import "./chrome-extension-async";
 

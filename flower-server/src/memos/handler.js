@@ -1,9 +1,8 @@
-import * as get from "./get"
-import * as post from "./post"
-import * as deleteMethod from "./delete"
+import MemoAPI from "./MemoAPI"
 import tokenDecoder from "../utils/tokenDecoder"
 import * as DBHelper from "../../models/dbHelper"
 import config from "../../config/config"
+
 
 export async function postMemos(event) {
   let dbHelper = new DBHelper.DbHelper();
@@ -27,7 +26,7 @@ export async function postMemos(event) {
   const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
   
   try {
-    await post.memos(dbHelper, userId, memoList);
+    await MemoAPI.saveMemoList(dbHelper, userId, memoList);
     await dbHelper.disconnect();
     return {
       statusCode: 200,
@@ -63,7 +62,7 @@ export async function getMemos(event) {
   const accessToken = event.headers.Authorization;
   const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
   try {
-    const result = await get.memos(dbHelper,userId, url);
+    const result = await MemoAPI.readMemoList(dbHelper,userId, url);
     await dbHelper.disconnect();
     return {
       statusCode: 200,
@@ -106,7 +105,7 @@ export async function deleteMemos(event) {
   const accessToken = event.headers.Authorization;
   const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
   try {
-    await deleteMethod.memos(dbHelper,userId,memoId);
+    await MemoAPI.deleteMemo(dbHelper,userId,memoId);
     await dbHelper.disconnect();
     return {
       statusCode: 200,

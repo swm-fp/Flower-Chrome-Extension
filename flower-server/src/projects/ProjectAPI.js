@@ -63,7 +63,7 @@ const ProjectAPI = {
         
         const verifiedMemoIdList = [];
         for(let id of memoIdList){
-            if(privateMemoIdSet.has(id)){
+            if(privateMemoIdSet.has(parseInt(id))){
                 verifiedMemoIdList.push(id);
             }
         }

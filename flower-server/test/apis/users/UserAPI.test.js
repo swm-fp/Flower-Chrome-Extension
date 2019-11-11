@@ -69,4 +69,44 @@ describe("UserAPI Test", function () {
 
     });
 
+    it("should pass when user already sign up", async () => {
+
+        //given
+        //not registerd user
+        const userId = "bhw";
+        await UserAPI.createUser(dbHelper, userId);
+        //when
+
+        await UserAPI.createUser(dbHelper,userId);
+
+        //then
+        const selectedUser = await userDao.findOne({
+            raw: true,
+            where: {
+                userId: userId
+            }
+        });
+
+        const selectedProject = await projectDao.findOne({
+            raw: true,
+            where: {
+                name: "private project"
+            }
+        });
+        const selectedProjectUser = await projectUserDao.findOne({
+            raw: true,
+            where: {
+                userId : selectedUser.userId,
+                projectId : selectedProject.projectId
+            }
+        });
+
+        expect(selectedUser.userId).to.equal(userId);
+        expect(selectedProject.name).to.equal("private project");
+        expect(selectedProjectUser.authority).to.equal(0);
+
+    });
+
+
+
 });

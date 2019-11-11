@@ -1,10 +1,10 @@
-
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const slsw = require("serverless-webpack");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-    entry: "./handler.js",
+    entry: slsw.lib.entries,
     mode: "none",
     target: 'node',
     output: {

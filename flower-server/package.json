@@ -8,6 +8,7 @@
     "test": "mocha --recursive --require @babel/register"
   },
   "dependencies": {
+    "@sentry/node": "5.7.1",
     "atob": "^2.1.2",
     "mysql2": "^2.0.0",
     "sequelize": "^5.19.1",

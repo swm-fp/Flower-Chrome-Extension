@@ -1,0 +1,6 @@
+{
+    "userApiUrl" : "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/develop/users",
+    "memoApiUrl" : "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/develop/memos",
+    "projectApiUrl" : "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/develop/projects"
+
+}

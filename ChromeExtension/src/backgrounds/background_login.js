@@ -1,4 +1,5 @@
 /* global chrome */
+import FlowerAPI from "../apis/FlowerAPI"
 function getParams(url) {
     // 파라미터가 담길 배열
     let param = new Array();
@@ -49,6 +50,8 @@ chrome.webRequest.onBeforeRequest.addListener(
 			chrome.storage.local.set({"token": token,"id":userId,"email": email}, function() {
 				alert("success");
 			});
+
+			FlowerAPI.postUser();
 
 			chrome.tabs.update(details.tabId, {url: "chrome://newtab"});
 		}

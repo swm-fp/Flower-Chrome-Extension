@@ -1,7 +1,8 @@
 /* global chrome */
 import axios from "axios";
-const apiUrl = "https://nl9xif1q55.execute-api.ap-northeast-2.amazonaws.com/develop/memos";
-//const apiUrl = "http://localhost:3000/memos";
+import config from "./api-config";
+const apiUrl = config.memoApiUrl;
+
 
 async function sendRequest(token,url, method, data = "", queryString = {}) {
 
@@ -63,7 +64,7 @@ const MemoAPI = {
   
   let response = await sendRequest(token,url,method,{},queryStringParameters);
   console.log(response);
-  return response.data;
+  return response;
 },
 
   postMemos : async (token,memoList) => {
@@ -71,14 +72,14 @@ const MemoAPI = {
   let method = "post";
   let response = await sendRequest(token,url,method,JSON.stringify(memoList));
   console.log(response);
-  return response.data;
+  return response;
 },
 deleteMemos : async (token,memoId) => {
   let url = apiUrl+"/"+memoId;
   let method = "delete";
   let response = await sendRequest(token,url,method);
   console.log(response);
-  return response.data;
+  return response;
 }
 
 

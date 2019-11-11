@@ -42,10 +42,8 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
       if (tabs.length === 1) {
         if (!(await FlowerAPI.checkLoginStatus())) return;
         let nodes = await FlowerAPI.getMemos(details.url);
-
         // node is exists
         if (nodes.length > 0) {
-          //console.log("read memo : " + JSON.stringify(node));
           chrome.tabs.sendMessage(tabs[0].id, { message: "node", node: nodes });
         }
       }

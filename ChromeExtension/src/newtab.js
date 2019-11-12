@@ -26,8 +26,6 @@ import SearchEngine from "./Components/SearchEngine";
 import MenuBar from "./Components/MenuBar";
 import FlowerAPI from "./apis/FlowerAPI";
 
-import TestButton from "./Components/TestButton";
-
 // redux
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
@@ -115,7 +113,6 @@ export default function NewTab() {
             ) : (
               <LoginButton />
             )}
-            <TestButton />
           </Toolbar>
         </AppBar>
 

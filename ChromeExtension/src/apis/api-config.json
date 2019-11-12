@@ -1,6 +1,6 @@
 {
     "userApiUrl" : "https://ddk6vlfnn2.execute-api.ap-northeast-2.amazonaws.com/dev/users",
     "memoApiUrl" : "https://ddk6vlfnn2.execute-api.ap-northeast-2.amazonaws.com/dev/memos",
-    "projectApiUrl" : "https://ddk6vlfnn2.execute-api.ap-northeast-2.amazonaws.com/dev/projects"
-
+    "projectApiUrl" : "https://ddk6vlfnn2.execute-api.ap-northeast-2.amazonaws.com/dev/projects",
+    "tagApiUrl" : "https://i0k72xqg1k.execute-api.ap-northeast-2.amazonaws.com/beta"
 }

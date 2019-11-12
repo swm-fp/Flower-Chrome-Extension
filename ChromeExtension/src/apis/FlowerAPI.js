@@ -24,37 +24,6 @@ async function sendRequest(token, url, method, data = "", queryString = {}) {
 }
 
 const FlowerAPI = {
-  getTags: async (token, node) => {
-    /*
-    node = 
-    {
-      title : ""
-      url : ""
-      memo : ["", "", ...]
-      highlight : ["", "", ...]
-    }
-    */
-    let url =
-    "https://ep9jktepxl.execute-api.ap-northeast-2.amazonaws.com/beata/";
-    //let url = "https://ec2-15-164-93-85.ap-northeast-2.compute.amazonaws.com/info/";
-    let method = "post";
-    let data = node;
-    let response = await sendRequest(token, url, method, JSON.stringify(data));
-    /*
-    return type:
-    
-    {
-      keywords:{
-        "k1" : "..",
-        "k2" : "..",
-        "k3" : "..",
-        ...
-      }
-    }
-    */
-    
-    return response.data.keywords;
-  },
   postUser: async () => {
     const info = await FlowerAPI.getUserInfo();
     userAPI.postUser(info.token);
@@ -79,10 +48,17 @@ const FlowerAPI = {
 
   getTags: async (tagUrl=undefined) => {
     if (await FlowerAPI.checkLoginStatus()) {
-      tagUrl = "www.naver.com";
+      tagUrl = "www.sss.com";
       
       const info = await FlowerAPI.getUserInfo();
-      let result = await tagAPI.getTags(info.token, tagUrl);
+      let response = await tagAPI.getTags(info.token, tagUrl);
+
+      let res = response.data.tagList;
+      if(res.length>0){
+        console.log(res);
+      }else{
+        console.log("none");
+      }
     }
   },
 
@@ -92,7 +68,9 @@ const FlowerAPI = {
       tags = ["chaen", "hello"];
 
       const info = await FlowerAPI.getUserInfo();
-      let result = await tagAPI.postTags(info.token, tagUrl, tags);
+      let response = await tagAPI.postTags(info.token, tagUrl, tags);
+      
+      return "success";
     }
   },
 

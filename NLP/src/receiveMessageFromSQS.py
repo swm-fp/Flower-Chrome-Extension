@@ -2,6 +2,11 @@ import boto3
 from boto3.dynamodb.conditions import Key, Attr
 from ast import literal_eval
 
+from body import *
+from getTagList import *
+from nounExtractor import *
+from preprocessing import *
+
 # Create SQS client
 sqs = boto3.client('sqs', region_name='ap-northeast-2')
 
@@ -29,12 +34,17 @@ while 1:
         receipt_handle = message['ReceiptHandle']
         body = literal_eval(message["Body"])
 
-        print(body["url"])
+        url = body["url"]
+        title = body["title"]
+
+        title_nouns, body_nouns = nouns_extractor(title, url)
+        TF = TF_score(title_nouns, body_nouns)
+        tags = Total_score(TF, seletAllTagsFromDB(), alpha=1, beta=1, test=False)
 
         response = table.put_item(
             Item={
-                    'url': body["url"],
-                    'tags': ["sqstest"]
+                    'url': url,
+                    'tags': tags
                 }
         )
 

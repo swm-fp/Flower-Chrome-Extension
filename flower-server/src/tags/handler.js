@@ -102,39 +102,50 @@ async function updateTagsintags(tag){
 export async function getTags(event) {
     const accessToken = event.headers.Authorization;
     const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
-    const body = JSON.parse(event.body);
-    const url = body.url;
+    const data = event.queryStringParameters;
+    const url = data.tagUrl;
 
     //let userId = "1111";
     //let url = "www.naveer.com";
 
+    let res = {}
+
     let response = await getTagsfromUserTag(userId, url);
     let userTagList = response.Items[0];
     if (userTagList != undefined) {
+      res["tagList"] = userTagList.tags;
+
       return {
-        "tagList": userTagList.tags
+        statusCode: 200,
+        body: JSON.stringify(res)
       };
     }
 
     response = await getTagsfromUrlTag(url);
     let tagList = response.Items[0];
     if (tagList != undefined) {
+      
+      res["tagList"]= tagList.tags;
+
       return {
-        "tagList": tagList.tags
+        statusCode: 200,
+        body: JSON.stringify(res)
       };
     }
 
+    res["tagList"] = [];
     return {
-      "tagList": []
+      statusCode: 200,
+      body: JSON.stringify(res)
     };
 }
 
 export async function postTags(event) {
     const accessToken = event.headers.Authorization;
     const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
-    const body = JSON.parse(event.body);
-    const url = body.url;
-    const tagList = body.tags;
+    const data = JSON.parse(event.body);
+    const url = data.url;
+    const tagList = data.tags;
 
     //let userId = "11111";
     //let url = "www.naver.com";

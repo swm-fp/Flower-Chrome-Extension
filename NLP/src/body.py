@@ -15,6 +15,7 @@ def spider(url):
         return ''.join(data)
     except Exception as ex:
         print("::CRAWLING ERROR::\n",ex)
+        return ""
 
 '''
 urls = []

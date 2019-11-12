@@ -3,13 +3,22 @@
 # flask REST API code
 #===========================
 from flask import Flask
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask import request
 from flask import json
 from flask import Response
-import csv
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
-from utils import keyword_extractor
+from body import *
+from getTagList import *
+from nounExtractor import *
+from preprocessing import *
+
+sentry_sdk.init(
+    dsn="https://3748dcc21dcc4661b7157e902f07998b@sentry.io/1810010",
+    integrations=[FlaskIntegration()]
+)
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -23,24 +32,23 @@ def get():
         '''
         arrayList = 
         {
-            title : ""r
+            title : ""
             url : ""
-            memo : ["", "", ...]
-            highlight : ["", "", ...]
         }
         '''
         result = {}
-        result["title"] = data["title"]
-        result["url"] = data["url"]
-        #result["keywords"], result["result"] = keyword_extractor(data["title"], "")
+        title = data["title"]
+        url = data["url"]
+        
+        title_nouns, body_nouns = nouns_extractor(title, url, nlpapi_num=3)
+        TF = TF_score(title_nouns, body_nouns)
+        tags = Total_score(TF, seletAllTagsFromDB(), alpha=1, beta=1, test=False)
+
+        result["version"] = "1.0"
+        result["tags"] = tags
 
         res = json.dumps(result, ensure_ascii=False).encode('utf8')
-
-        with open('./data.csv', 'a', encoding='utf-8') as csvfile:
-            fieldnames = ['title', 'url', 'keywords', 'result']
-            wr = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            wr.writeheader()
-            #wr.writerow(result)
+        print(res)
 
         return Response(res, content_type='application/json; charset=utf-8')
 

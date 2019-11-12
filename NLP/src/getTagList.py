@@ -8,12 +8,9 @@ from nounExtractor import notNoStopWords
 def TF_score(title, body):
 
     words = {}
-    try:
-        for w, c in Counter(body).most_common(1000):
-            if notNoStopWords(w):
-                words[w] = c
-    except Exception as e:
-        print("::body nouns ERROR::\n", e)
+    for w, c in Counter(body).most_common(1000):
+        if notNoStopWords(w):
+            words[w] = c
 
     for w, c in Counter(title).most_common(10):
         if notNoStopWords(w):

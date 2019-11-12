@@ -1,11 +1,14 @@
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
 from ast import literal_eval
+import sentry_sdk
 
 from body import *
 from getTagList import *
 from nounExtractor import *
 from preprocessing import *
+
+sentry_sdk.init("https://f566c5d6f45248c7b048e273e92d517c@sentry.io/1816966")
 
 # Create SQS client
 sqs = boto3.client('sqs', region_name='ap-northeast-2')

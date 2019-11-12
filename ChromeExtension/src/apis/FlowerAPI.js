@@ -46,9 +46,9 @@ const FlowerAPI = {
     }
   },
 
-  getTags: async (tagUrl=undefined) => {
+  getTags: async (tagUrl=undefined, title=undefined) => {
     if (await FlowerAPI.checkLoginStatus()) {
-      tagUrl = "www.sss.com";
+      tagUrl = "www.ddd.com";
       
       const info = await FlowerAPI.getUserInfo();
       let response = await tagAPI.getTags(info.token, tagUrl);
@@ -56,8 +56,17 @@ const FlowerAPI = {
       let res = response.data.tagList;
       if(res.length>0){
         console.log(res);
+        return res;
       }else{
-        console.log("none");
+        response = await tagAPI.putQueue(info.token, tagUrl, title);
+        console.log(response);
+
+        setTimeout(async function(){
+          // 0.5초 후 작동해야할 코드
+          response = await tagAPI.getTags(info.token, tagUrl);
+          console.log(response.data.tagList);
+          return response.data.tagList;
+          }, 5000);
       }
     }
   },

@@ -43,6 +43,24 @@ const TagAPI = {
 
     let response = await sendRequest(token, url, method, JSON.stringify(data));
     return response;
+  },
+
+  putQueue : async (token, tagUrl, title) => {
+    const url = "https://nhe02otv71.execute-api.ap-northeast-2.amazonaws.com/beta";
+    const method = "post";
+    const data = {url:tagUrl, title:title};
+
+    let response = await axios({
+      url: url,
+      method: method,
+      headers:{
+        Authorization: token,
+        "Content-Type":"application/json"
+      },
+      data: JSON.stringify(data)
+    });
+
+    return response;
   }
 
 };

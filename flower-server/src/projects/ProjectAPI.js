@@ -1,7 +1,8 @@
 
 import ProjectModel from "../../models/ProjectModel"
 import MemoModel from "../../models/MemoModel"
-import ProjectUser from "../../models/ProjectUserModel";
+import ProjectUserModel from "../../models/ProjectUserModel";
+
 const ProjectAPI = {
     createProject: async (dbHelper, userId, projectName) => {
         const projectDao = dbHelper.getProjectDao();
@@ -33,7 +34,7 @@ const ProjectAPI = {
         
         
         //check memo is user's and private memo
-        const projectUser = await ProjectUser.findOne({
+        const projectUser = await projectUserDao.findOne({
             raw : true,
             where : {
                 userId:userId,
@@ -91,6 +92,32 @@ const ProjectAPI = {
             return err;
         }
         
+    },
+    readProject : async (dbHelper,userId,projectId = undefined)=>{
+
+        const projectDao = dbHelper.getProjectDao();
+        const where = {
+            "$ProjectUsers.userId$" : userId
+        }
+        if(projectId != undefined){
+            where["projectId"] = projectId;
+        }
+
+        const rows = await projectDao.findAll({
+            attributes : ["projectId","name"],
+            where : where,
+            include : [{
+                model : MemoModel,
+                attributes : ["memoId","content"]
+            },
+            {
+                model : ProjectUserModel,
+                attributes : []
+            }]
+        });
+
+        return rows;
     }
+
 };
 export default ProjectAPI;

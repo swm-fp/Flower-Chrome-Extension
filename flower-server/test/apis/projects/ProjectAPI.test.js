@@ -5,6 +5,7 @@ import * as DBHelper from "../../../models/dbHelper"
 
 import UserAPI from "../../../src/users/UserAPI"
 import ProjectAPI from "../../../src/projects/ProjectAPI"
+import MemoAPI from "../../../src/memos/MemoAPI"
 
 
 let dbHelper;
@@ -90,5 +91,21 @@ describe("ProjectAPI Test", function () {
         for(let memo of selectedMemoList){
             expect(selectedMemoList.projectId).to.equal(selectedProject.projectId);
         }
+    });
+
+    it("should read memo group by project",async function(){
+        //given 
+        
+        const url = "google.com";
+        let memoList = [{ content: "this is memo", url: url ,positionLeft:"10px",positionTop:"10px"}];
+        await MemoAPI.saveMemoList(dbHelper,user.userId, memoList);
+        
+        //when
+        const allProjectList = await ProjectAPI.readProject(dbHelper,user.userId);
+        const privateProject = allProjectList[0];
+        
+        //then
+        expect(privateProject.name).to.equal("private project");
+        expect(privateProject.Memos.length).to.equal(1);
     });
 });

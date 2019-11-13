@@ -83,3 +83,38 @@ export async function addMemoToProject(event) {
   }
   
 }
+
+export async function readProject(event) {
+  let dbHelper = new DBHelper.DbHelper();
+  await dbHelper.connect(config.development);
+  dbHelper.init();
+  await dbHelper.migrate();
+  
+  const accessToken = event.headers.Authorization;
+  const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
+  let projectId;
+  try{
+    projectId = event.pathParameters.projectId;
+  }
+  catch(e){
+    projectId = undefined;
+  }
+  
+  try {
+    const projectList = await ProjectAPI.readProject(dbHelper,userId,projectId);
+    await dbHelper.disconnect();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(projectList)
+    };
+  }
+  catch (e) {
+    await dbHelper.disconnect();
+    return {
+      statusCode: 400,
+      body: "readProject Error : " + e.stack
+      
+    };
+  }
+  
+}

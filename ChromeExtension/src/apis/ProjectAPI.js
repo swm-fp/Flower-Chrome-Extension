@@ -28,6 +28,14 @@ const ProjectAPI= {
         const response = await sendRequest(token,url,method,JSON.stringify(data));
         console.log(response);
         return response;
-    }
+    },
+    postShareLink : async (token,projectId)=>{
+        const url = apiUrl+"/"+projectId;
+        const method = "post";
+        const response = await sendRequest(token,url);
+        console.log(response);
+        return response;
+    },
+     
 };
 export default ProjectAPI;

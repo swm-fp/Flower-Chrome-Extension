@@ -28,10 +28,18 @@ export async function postProject(event) {
   try {
     const project = await ProjectAPI.createProject(dbHelper,userId,projectInformation.name);
     await ProjectAPI.addMemoToProject(dbHelper,userId,project.projectId,projectInformation.memoIdList);
+    
+    let event = {
+      "headers": { "Authorization": accessToken },
+      "pathParameters" : {"projectId" : project.projectId}
+    }
+    
+    let response = await createShareLink(event);
+    let key = response.body.split("=")[1];
     await dbHelper.disconnect();
     return {
       statusCode: 200,
-      body: "success"
+      body: key
     };
   }
   catch (e) {

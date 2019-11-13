@@ -96,6 +96,15 @@ const FlowerAPI = {
     if (await FlowerAPI.checkLoginStatus()) {
       const info = await FlowerAPI.getUserInfo();
       let response = await projectAPI.postProject(info.token,projectName,memoIdList);
+
+      return response.data;
+    }
+  },
+   
+  postShareLink : async (projectId)=>{
+    if (await FlowerAPI.checkLoginStatus()) {
+      const info = await FlowerAPI.getUserInfo();
+      let response = await projectAPI.postShareLink(info.token,projectId);
       return response.data;
     }
   },

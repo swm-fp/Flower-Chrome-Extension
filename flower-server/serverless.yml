@@ -138,6 +138,21 @@ functions:
             name: authorizer
             arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
 
+  getProject:
+    name: m8
+    handler: src/projects/handler.readProject
+          
+#    the following are a few example events you can configure
+#    note: please make sure to change your handler code to work with those events
+#    check the event documentation for details
+    events:
+      - http:
+          path: /projects
+          method: get
+          cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qj2jlsgrm
   postProject:
     name: m5
     handler: src/projects/handler.postProject

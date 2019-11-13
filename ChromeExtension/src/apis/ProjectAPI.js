@@ -43,6 +43,13 @@ const ProjectAPI= {
         console.log(response);
         return response;
     },
+    getProject : async (token)=>{
+        const url = apiUrl
+        const method = "get";
+        const response = await sendRequest(token,url,method);
+        console.log(response);
+        return response;
+    },
     
 };
 export default ProjectAPI;

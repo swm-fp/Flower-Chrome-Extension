@@ -63,6 +63,14 @@ describe("Memo Handler Test", function () {
 
     });
 
+    it("should read projects",async ()=>{
+
+        //when
+        const event = {
+            "headers": { "Authorization": accessToken }
+        }
+        const response = await handler.readProject(event);
+    });
     it("should create new project with memoList", async function () {
         //given
         const url = "google.com";

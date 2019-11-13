@@ -89,6 +89,14 @@ const FlowerAPI = {
     }
   },
 
+  getProject: async () => {
+    if (await FlowerAPI.checkLoginStatus()) {
+      const info = await FlowerAPI.getUserInfo();
+      let response = await projectAPI.getProject(info.token);
+      return response.data;
+    }
+  },
+
   postProject: async (projectName, memoIdList) => {
     if (await FlowerAPI.checkLoginStatus()) {
       const info = await FlowerAPI.getUserInfo();

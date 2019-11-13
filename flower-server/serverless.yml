@@ -154,6 +154,38 @@ functions:
             name: authorizer
             arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qj2jlsgrm
 
+  postShareLink:
+    name: m6
+    handler: src/projects/handler.createShareLink
+          
+#    the following are a few example events you can configure
+#    note: please make sure to change your handler code to work with those events
+#    check the event documentation for details
+    events:
+      - http:
+          path: /projects/{projectId}/share
+          method: post
+          cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qj2jlsgrm
+
+  followProject:
+    name: m7
+    handler: src/projects/handler.shareProjectToUser
+          
+#    the following are a few example events you can configure
+#    note: please make sure to change your handler code to work with those events
+#    check the event documentation for details
+    events:
+      - http:
+          path: /share
+          method: get
+          cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qj2jlsgrm
+
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

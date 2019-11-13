@@ -140,4 +140,111 @@ describe("Memo Handler Test", function () {
         const expectedResponse = { statusCode: 200 }
         expect(response).to.contain(expectedResponse);
     });
+
+    it("should create share link", async function () {
+        //given
+        const url = "google.com";
+        const memoList = [{ content: "memo1", url: url ,positionLeft:"10px",positionTop:"10px"}, { content: "memo2", url: url ,positionLeft:"10px",positionTop:"10px"}, { memoId: 1, content: "modify", url: url ,positionLeft:"10px",positionTop:"10px"}];
+        await MemoAPI.saveMemoList(dbHelper,user.userId,memoList);
+        const savedMemoList = await MemoAPI.readMemoList(dbHelper,user.userId);
+        const memoIdList = [];
+        for(let memo of savedMemoList){
+            memoIdList.push(savedMemoList["memoId"]);
+        }
+
+        const projectName = "test project";
+        const projectInformation = {name : projectName,memoIdList : memoIdList};
+
+        let event = {
+            "headers": { "Authorization": accessToken },
+            "body": JSON.stringify(projectInformation)
+        }
+
+        await handler.postProject(event);
+
+        //when
+  
+        event = {
+            "headers": { "Authorization": accessToken },
+            "pathParameters" : {"projectId" : 2}
+        }
+        const response = await handler.createShareLink(event);
+
+        //then
+        const expectedResponse = { statusCode: 200 }
+        expect(response).to.contain(expectedResponse);
+    });
+    it("should share project to user", async function () {
+        //given
+        const url = "google.com";
+        const memoList = [{ content: "memo1", url: url ,positionLeft:"10px",positionTop:"10px"}, { content: "memo2", url: url ,positionLeft:"10px",positionTop:"10px"}, { memoId: 1, content: "modify", url: url ,positionLeft:"10px",positionTop:"10px"}];
+        await MemoAPI.saveMemoList(dbHelper,user.userId,memoList);
+        const savedMemoList = await MemoAPI.readMemoList(dbHelper,user.userId);
+        const memoIdList = [];
+        for(let memo of savedMemoList){
+            memoIdList.push(savedMemoList["memoId"]);
+        }
+
+        const projectName = "test project";
+        const projectInformation = {name : projectName,memoIdList : memoIdList};
+
+        let event = {
+            "headers": { "Authorization": accessToken },
+            "body": JSON.stringify(projectInformation)
+        }
+
+        await handler.postProject(event);
+  
+        event = {
+            "headers": { "Authorization": accessToken },
+            "pathParameters" : {"projectId" : 2}
+        }
+        let response = await handler.createShareLink(event);
+        const key = response.body.split("=")[1];
+
+        const otherUser = await UserAPI.createUser(dbHelper,"other");
+        
+
+        //when
+        event = {
+            "headers": { "Authorization": accessToken },
+            "queryStringParameters" : {"shareKey" : key}
+        }
+        response =await handler.shareProjectToUser(event);
+
+        //then
+        const expectedResponse = { statusCode: 200 }
+        expect(response).to.contain(expectedResponse);
+    });
+    /*
+        //given
+        const url = "google.com";
+        const memoList = [{ content: "memo1", url: url ,positionLeft:"10px",positionTop:"10px"}, { content: "memo2", url: url ,positionLeft:"10px",positionTop:"10px"}, { memoId: 1, content: "modify", url: url ,positionLeft:"10px",positionTop:"10px"}];
+        await MemoAPI.saveMemoList(dbHelper,user.userId,memoList);
+        const savedMemoList = await MemoAPI.readMemoList(dbHelper,user.userId);
+        const memoIdList = [];
+        for(let memo of savedMemoList){
+            memoIdList.push(savedMemoList["memoId"]);
+        }
+
+        const projectName = "test project";
+        const projectInformation = {name : projectName,memoIdList : memoIdList};
+
+        const event = {
+            "headers": { "Authorization": accessToken },
+            "body": JSON.stringify(projectInformation)
+        }
+
+        await handler.postProject(event);
+        await handler.createShareLink();
+
+        //when
+        
+
+
+        //then
+        const expectedResponse = { statusCode: 200 }
+        expect(response).to.contain(expectedResponse);
+    });
+    */
 });

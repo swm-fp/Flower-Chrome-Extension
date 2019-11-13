@@ -28,10 +28,18 @@ export async function postProject(event) {
   try {
     const project = await ProjectAPI.createProject(dbHelper,userId,projectInformation.name);
     await ProjectAPI.addMemoToProject(dbHelper,userId,project.projectId,projectInformation.memoIdList);
+    
+    let event = {
+      "headers": { "Authorization": accessToken },
+      "pathParameters" : {"projectId" : project.projectId}
+    }
+    
+    let response = await createShareLink(event);
+    let key = response.body.split("=")[1];
     await dbHelper.disconnect();
     return {
       statusCode: 200,
-      body: "success"
+      body: key
     };
   }
   catch (e) {
@@ -82,4 +90,118 @@ export async function addMemoToProject(event) {
     };
   }
   
+}
+
+export async function readProject(event) {
+  let dbHelper = new DBHelper.DbHelper();
+  await dbHelper.connect(config.development);
+  dbHelper.init();
+  await dbHelper.migrate();
+  
+  const accessToken = event.headers.Authorization;
+  const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
+  let projectId;
+  try{
+    projectId = event.pathParameters.projectId;
+  }
+  catch(e){
+    projectId = undefined;
+  }
+  
+  try {
+    const projectList = await ProjectAPI.readProject(dbHelper,userId,projectId);
+    await dbHelper.disconnect();
+    return {
+      statusCode: 200,
+      body: JSON.stringify(projectList)
+    };
+  }
+  catch (e) {
+    await dbHelper.disconnect();
+    return {
+      statusCode: 400,
+      body: "readProject Error : " + e.stack
+      
+    };
+  }
+  
+}
+export async function createShareLink(event) {
+  let dbHelper = new DBHelper.DbHelper();
+  await dbHelper.connect(config.development);
+  dbHelper.init();
+  await dbHelper.migrate();
+  
+  const accessToken = event.headers.Authorization;
+  const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
+  let projectId;
+  try{
+    projectId = event.pathParameters.projectId;
+  }
+  catch (e) {
+    await dbHelper.disconnect();
+    return {
+      statusCode: 400,
+      body: "createShareLink  : " + e.stack
+    };
+  }
+  
+  try {
+    const result = await ProjectAPI.createShareKey(dbHelper,userId,projectId);
+    const shareKey = result.key;
+    let apiEndPoint = config.apiEndPoint+"share/?shareKey="+shareKey;
+    
+    
+    await dbHelper.disconnect();
+    return {
+      statusCode: 200,
+      body: apiEndPoint
+    };
+  }
+  catch (e) {
+    await dbHelper.disconnect();
+    return {
+      statusCode: 400,
+      body: "createShareLink Error : " + e.stack
+      
+    };
+  }
+}
+
+export async function shareProjectToUser(event) {
+  let dbHelper = new DBHelper.DbHelper();
+  await dbHelper.connect(config.development);
+  dbHelper.init();
+  await dbHelper.migrate();
+  
+  const accessToken = event.headers.Authorization;
+  const userId = tokenDecoder.decode(accessToken)[1].identities[0]["userId"];
+  let key;
+  try{
+    key = event.queryStringParameters.shareKey;
+  }
+  catch (e) {
+    await dbHelper.disconnect();
+    return {
+      statusCode: 400,
+      body: "shareKey is not valid  : " + e.stack
+    };
+  }
+  
+  try {
+    await ProjectAPI.addProjectToUser(dbHelper,userId,key);
+    await dbHelper.disconnect();
+    return {
+      statusCode: 200,
+      body: "success"
+    };
+  }
+  catch (e) {
+    await dbHelper.disconnect();
+    return {
+      statusCode: 400,
+      body: "addProjectToUser Error : " + e.stack
+      
+    };
+  }
 }

@@ -62,34 +62,83 @@ export default function MenuBar() {
     setShareMemo(false);
   };
 
+  const [projectName2, setProjectName2] = useState("");
+  const [shareMemo2, setShareMemo2] = useState(false);
+
+  const shareOpen2 = () => {
+    setShareMemo2(true);
+  };
+  const shareClose2 = () => {
+    setShareMemo2(false);
+  };
+
   const descriptionElementRef = useRef(null);
 
-  const shareMemos = () => {
+  const shareMemos = async () => {
     let lst = document.querySelectorAll("#shareClicked");
     let memo_share_list = [];
     for (let i = 0; i < lst.length; i++) {
       memo_share_list.push(lst[i].getAttribute("value"));
     }
     console.log({ name: projectName, memoIdList: memo_share_list });
-    
-    // todo : async
-    FlowerAPI.postProject(projectName,memo_share_list);    
-    
+
+    await FlowerAPI.postProject(projectName, memo_share_list);
+
     setProjectName("");
   };
 
   return (
     <Paper className={classes.menubar}>
       {!check ? (
-        <Button
-          variant="contained"
-          color="inherit"
-          className={classes.button}
-          startIcon={<ShareIcon />}
-          onClick={shareCheckOn}
-        >
-          Share
-        </Button>
+        <div>
+          <Button
+            variant="contained"
+            color="inherit"
+            className={classes.button}
+            startIcon={<ShareIcon />}
+            onClick={shareCheckOn}
+          >
+            Share
+          </Button>
+          <Button
+            variant="contained"
+            color="inherit"
+            className={classes.button}
+            // startIcon={<AlternateEmailIcon />}
+            onClick={shareOpen2}
+          >
+            Get Share Memo
+          </Button>
+          {/* 프로젝트 명을 받는 부분 */}
+          <Dialog open={shareMemo2} onClose={shareClose2}>
+            <DialogTitle className={classes.shareTitle}>
+              공유받은 링크
+            </DialogTitle>
+            <DialogContent dividers>
+              <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
+                <Typography>Link를 입력해주세요</Typography>
+                <TextField
+                  id="outlined-basic"
+                  className={classes.textField}
+                  label="Link"
+                  margin="normal"
+                  variant="outlined"
+                  onChange={e => setProjectName2(e.target.value)}
+                />
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  shareClose2();
+                }}
+                color="primary"
+              >
+                OK
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
       ) : (
         <div>
           <Button

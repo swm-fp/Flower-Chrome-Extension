@@ -32,10 +32,17 @@ const ProjectAPI= {
     postShareLink : async (token,projectId)=>{
         const url = apiUrl+"/"+projectId;
         const method = "post";
-        const response = await sendRequest(token,url);
+        const response = await sendRequest(token,url,method);
         console.log(response);
         return response;
     },
-     
+    followProject : async (token,key)=>{
+        const url = config.baseUrl+"/share";
+        const method = "get";
+        const response = await sendRequest(token,url,method,{},{shareKey : key});
+        console.log(response);
+        return response;
+    },
+    
 };
 export default ProjectAPI;

@@ -118,7 +118,13 @@ const ProjectAPI = {
             }]
         });
 
-        return rows;
+        const result = [];
+        for(let row of rows){
+            if(row.Memos.length != 0){
+                result.push(row);
+            }
+        }
+        return result;
     },
     createShareKey : async (dbHelper,userId,projectId) =>{
         //project is user's

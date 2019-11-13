@@ -9,7 +9,7 @@ const GET_MEMOS = "GET_MEMOS";
 const GET_MEMOS_SUCCESS = "GET_MEMOS_SUCCESS";
 const GET_MEMOS_ERROR = "GET_MEMOS_ERROR";
 
-export const getMemos = createPromiseThunk(GET_MEMOS, FlowerAPI.getMemos);
+export const getMemos = createPromiseThunk(GET_MEMOS, FlowerAPI.getProject);
 
 const initailState = {
   memos: reducerUtils.initial()

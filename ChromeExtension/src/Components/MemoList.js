@@ -37,11 +37,20 @@ function Media() {
     );
   if (error || !data)
     return <Typography component="p">Internet or Login Error</Typography>;
+
   return (
-    <Grid container className="memo-dashboard">
-      {data.length > 0 &&
-        Array.from(data).map((item, index) => <MemoModal item={item} />)}
-    </Grid>
+    <div>
+      {data.map((data3, index) => {
+        return (
+          <Grid container className="memo-dashboard" key={index}>
+            {data3.Memos.length > 0 &&
+              Array.from(data3.Memos).map((item, index) => (
+                <MemoModal item={item} />
+              ))}
+          </Grid>
+        );
+      })}
+    </div>
   );
 }
 

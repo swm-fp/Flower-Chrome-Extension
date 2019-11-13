@@ -129,8 +129,11 @@ export default function MenuBar() {
             </DialogContent>
             <DialogActions>
               <Button
-                onClick={() => {
+                onClick={async () => {
                   shareClose2();
+                  
+                  const r = await FlowerAPI.followProject(projectName2);
+                  console.log(JSON.stringify(r));
                 }}
                 color="primary"
               >

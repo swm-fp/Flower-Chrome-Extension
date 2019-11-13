@@ -110,6 +110,14 @@ const FlowerAPI = {
     }
   },
 
+  followProject : async (key) =>{
+    if (await FlowerAPI.checkLoginStatus()) {
+      const info = await FlowerAPI.getUserInfo();
+      let response = await projectAPI.followProject(info.token,key);
+      return response.data;
+    }
+  },
+  
   getUserInfo: async () => {
     const info = await chrome.storage.local.get(["token", "email"]);
     return info;

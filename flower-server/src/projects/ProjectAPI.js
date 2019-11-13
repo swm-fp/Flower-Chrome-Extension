@@ -2,11 +2,13 @@
 import ProjectModel from "../../models/ProjectModel"
 import MemoModel from "../../models/MemoModel"
 import ProjectUserModel from "../../models/ProjectUserModel";
-
+import Sequelize,{ Op } from "sequelize"
+import uniqid from "uniqid"
 const ProjectAPI = {
     createProject: async (dbHelper, userId, projectName) => {
         const projectDao = dbHelper.getProjectDao();
         const projectUserDao = dbHelper.getProjectUserDao();
+        const shareKeyDao = dbHelper.getShareKeyDao();
         
         const project = await projectDao.create({ name: projectName });
         const projectUser = await projectUserDao.create({ userId: userId, projectId: project.projectId });
@@ -117,7 +119,52 @@ const ProjectAPI = {
         });
 
         return rows;
+    },
+    createShareKey : async (dbHelper,userId,projectId) =>{
+        //project is user's
+        const projectUserDao = dbHelper.getProjectUserDao();
+        const shareKeyDao = dbHelper.getShareKeyDao();
+        const row = await projectUserDao.findOne({
+            raw : true,
+            where : {
+                projectId : projectId,
+                userId : userId,
+                "$Project.name$" : {
+                    [Op.ne]: "private project"
+                }
+            },
+            include : [{
+                model : ProjectModel
+            }],
+        });
+        if(row == null){
+            throw "createShareKey request is not valid";
+        }
+
+        const keyRow = await shareKeyDao.create({key : uniqid(),projectId : projectId});
+        return keyRow;
+    },
+    addProjectToUser: async (dbHelper,userId,key)=>{
+        const shareKeyDao = dbHelper.getShareKeyDao();
+        const projectUserDao = dbHelper.getProjectUserDao();
+
+        const row = await shareKeyDao.findOne({
+            raw : true,
+            where : {
+                key : key
+            }
+        });
+        const shareProjectId = row.projectId;
+
+        try{
+            await projectUserDao.create({projectId : shareProjectId , userId : userId});            
+            return true;
+        }
+        catch(e){
+            return false;
+        }
     }
+
 
 };
 export default ProjectAPI;

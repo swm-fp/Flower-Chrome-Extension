@@ -4,6 +4,7 @@ import UserModel from "./UserModel"
 import MemoModel from "./MemoModel"
 import ProjectModel from "./ProjectModel"
 import ProjectUserModel from "./ProjectUserModel"
+import ShareKeyModel from "./ShareKeyModel"
 
 export class DbHelper {
     constructor() {
@@ -12,6 +13,7 @@ export class DbHelper {
         this.memoDao;
         this.projectDao;
         this.projectUserDao;
+        this.shareKeyDao;
     }
     async createDB(config) {
         let connection = await mysql.createConnection({
@@ -51,6 +53,7 @@ export class DbHelper {
         this.projectDao = ProjectModel.init(this.sequelize);
         this.memoDao = MemoModel.init(this.sequelize);
         this.projectUserDao = ProjectUserModel.init(this.sequelize);
+        this.shareKeyDao = ShareKeyModel.init(this.sequelize);
 
         ProjectModel.hasMany(ProjectUserModel, { foreignKey: "projectId", sourceKey: "projectId" });
         UserModel.hasMany(ProjectUserModel, { foreignKey: "userId", sourceKey: "userId" });
@@ -59,6 +62,9 @@ export class DbHelper {
         
         ProjectModel.hasMany(MemoModel, { foreignKey: "projectId", sourceKey: "projectId" });
         MemoModel.belongsTo(ProjectModel, { foreignKey: "projectId" });
+
+        ProjectModel.hasMany(ShareKeyModel, { foreignKey: "projectId", sourceKey: "projectId" });
+        ShareKeyModel.belongsTo(ProjectModel, { foreignKey: "projectId" });
 
     }
 
@@ -85,9 +91,7 @@ export class DbHelper {
     getProjectUserDao(){
         return this.projectUserDao;
     }
+    getShareKeyDao(){
+        return this.shareKeyDao;
+    }
 }
-
-
-
-
-

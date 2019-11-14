@@ -1,8 +1,8 @@
 /* global chrome */
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { WithContext as ReactTags } from "react-tag-input";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./css/popup.css";
 import FlowerAPI from "./apis/FlowerAPI";
@@ -14,31 +14,50 @@ const KeyCodes = {
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
-function TagApp(props) {
-  const [tags, setStateTags] = useState([]);
-  const [suggestions, setStateSuggenstions] = useState();
+class TagApp extends React.Component {
+  constructor(props) {
+    super(props);
 
-  const handleDelete = i => {
-    setStateTags({
+    this.state = {
+      tags: [],
+      suggestions: []
+    };
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddition = this.handleAddition.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+  }
+
+  componentDidMount() {
+    this.Tags().then(result =>
+      this.setState({
+        tags: result
+      })
+    );
+  }
+
+  handleDelete(i) {
+    const { tags } = this.state;
+    this.setState({
       tags: tags.filter((tag, index) => index !== i)
     });
-  };
+  }
 
-  const handleAddition = tag => {
-    setStateTags([...tags, tag]);
-  };
+  handleAddition(tag) {
+    this.setState(state => ({ tags: [...state.tags, tag] }));
+  }
 
-  const handleDrag = (tag, currPos, newPos) => {
+  handleDrag(tag, currPos, newPos) {
+    const tags = [...this.state.tags];
     const newTags = tags.slice();
 
     newTags.splice(currPos, 1);
     newTags.splice(newPos, 0, tag);
 
     // re-render
-    setStateTags(newTags);
-  };
+    this.setState({ tags: newTags });
+  }
 
-  const Tags = async () => {
+  async Tags() {
     let title = await chrome.tabs.executeScript({
       code: 'document.querySelector("title").innerText'
     });
@@ -48,54 +67,52 @@ function TagApp(props) {
     });
 
     let data = await FlowerAPI.getTags(url[0], title[0]);
+    console.log(data);
 
     let result = [];
-    for (let i = 0; i < data.length; i++) {
-      result.push({ id: data[i], text: data[i] });
+    if(data){
+      for (let i = 0; i < data.length; i++) {
+        result.push({id: data[i], text: data[i]});
+      }
     }
     return result;
-  };
+  }
 
-  useEffect(
-    () =>
-      Tags().then(result => {
-        setStateTags({
-          result
-        });
-      }),
-    []
-  );
-
-  return (
-    <div>
-      <ReactTags
-        inputFieldPosition="top"
-        tags={tags}
-        suggestions={suggestions}
-        handleDelete={handleDelete}
-        handleAddition={handleAddition}
-        handleDrag={handleDrag}
-        delimiters={delimiters}
-      />
-    </div>
-  );
+  render() {
+    const { tags, suggestions } = this.state;
+    return (
+      <div>
+        <ReactTags
+          inputFieldPosition="top"
+          tags={tags}
+          suggestions={suggestions}
+          handleDelete={this.handleDelete}
+          handleAddition={this.handleAddition}
+          handleDrag={this.handleDrag}
+          delimiters={delimiters}
+        />
+      </div>
+    );
+  }
 }
 
-function Popup(props) {
-  return (
-    <Form>
-      <Form.Group>
-        <Form.Label>
-          <h3 className="modal_tags">Tags</h3>
-        </Form.Label>
+class Popup extends Component {
+  render() {
+    return (
+      <Form>
+        <Form.Group>
+          <Form.Label>
+            <h3 className="modal_tags">Tags</h3>
+          </Form.Label>
 
-        <Form.Text className="text-muted">
-          태그는 삭제 또는 추가할 수 있습니다.
-        </Form.Text>
-      </Form.Group>
-      <TagApp />
-    </Form>
-  );
+          <Form.Text className="text-muted">
+            태그는 삭제 또는 추가할 수 있습니다.
+          </Form.Text>
+        </Form.Group>
+        <TagApp />
+      </Form>
+    );
+  }
 }
 
 ReactDOM.render(<Popup />, document.getElementById("root"));

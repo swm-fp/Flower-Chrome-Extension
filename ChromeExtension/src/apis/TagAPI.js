@@ -26,7 +26,7 @@ const TagAPI = {
     const url = apiUrl;
     const method = "get";
     const queryStringParameters = {};
-    if (tagUrl) {
+    if (tagUrl!=undefined) {
       queryStringParameters["tagUrl"] = tagUrl;
     }
 

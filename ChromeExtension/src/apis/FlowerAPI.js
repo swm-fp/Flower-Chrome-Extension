@@ -53,6 +53,8 @@ const FlowerAPI = {
 
       let res = response.data.tagList;
 
+      console.log(res);
+
       if (res.length) {
         return res;
       } else {
@@ -64,9 +66,7 @@ const FlowerAPI = {
           response = await tagAPI.getTags(info.token, tagUrl);
           console.log(response.data.tagList);
           return response.data.tagList;
-        }, 5000);
-
-        return [];
+        }, 1000);
       }
     }
   },

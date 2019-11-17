@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: 200
+  },
+  dialog: {
+    width: "50%"
   }
 }));
 
@@ -110,7 +113,12 @@ export default function MenuBar() {
             Get Share Memo
           </Button>
           {/* 프로젝트 명을 받는 부분 */}
-          <Dialog open={shareMemo2} onClose={shareClose2}>
+          <Dialog
+            open={shareMemo2}
+            onClose={shareClose2}
+            fullWidth="md"
+            maxWidth="md"
+          >
             <DialogTitle className={classes.shareTitle}>
               공유받은 링크
             </DialogTitle>
@@ -131,7 +139,7 @@ export default function MenuBar() {
               <Button
                 onClick={async () => {
                   shareClose2();
-                  
+
                   const r = await FlowerAPI.followProject(projectName2);
                   console.log(JSON.stringify(r));
                 }}
@@ -162,7 +170,12 @@ export default function MenuBar() {
           >
             Cancel
           </Button>
-          <Dialog open={shareMemo} onClose={shareClose}>
+          <Dialog
+            open={shareMemo}
+            onClose={shareClose}
+            fullWidth="md"
+            maxWidth="md"
+          >
             <DialogTitle className={classes.shareTitle}>Share</DialogTitle>
             <DialogContent dividers>
               <DialogContentText ref={descriptionElementRef} tabIndex={-1}>

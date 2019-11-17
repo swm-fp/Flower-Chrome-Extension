@@ -2,8 +2,9 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { WithContext as ReactTags } from "react-tag-input";
-import { Button, Form } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 import "./css/popup.css";
 import FlowerAPI from "./apis/FlowerAPI";
 
@@ -70,9 +71,9 @@ class TagApp extends React.Component {
     console.log(data);
 
     let result = [];
-    if(data){
+    if (data) {
       for (let i = 0; i < data.length; i++) {
-        result.push({id: data[i], text: data[i]});
+        result.push({ id: data[i], text: data[i] });
       }
     }
     return result;
@@ -83,7 +84,7 @@ class TagApp extends React.Component {
     return (
       <div>
         <ReactTags
-          inputFieldPosition="top"
+          inputFieldPosition="inline"
           tags={tags}
           suggestions={suggestions}
           handleDelete={this.handleDelete}
@@ -99,18 +100,14 @@ class TagApp extends React.Component {
 class Popup extends Component {
   render() {
     return (
-      <Form>
-        <Form.Group>
-          <Form.Label>
-            <h3 className="modal_tags">Tags</h3>
-          </Form.Label>
-
-          <Form.Text className="text-muted">
-            태그는 삭제 또는 추가할 수 있습니다.
-          </Form.Text>
-        </Form.Group>
-        <TagApp />
-      </Form>
+      <React.Fragment>
+        <CssBaseline />
+        <Container maxWidth="sm">
+          <h2 className="modal_tags">Tags</h2>
+          <Typography>태그는 삭제 또는 추가할 수 있습니다.</Typography>
+          <TagApp />
+        </Container>
+      </React.Fragment>
     );
   }
 }

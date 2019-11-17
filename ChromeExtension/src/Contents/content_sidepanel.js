@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender) {
     background_black.style.top = "0px";
     background_black.style.right = "0px";
 
-    background_black.style.background = "rgba(0, 0, 0, 0.5)";
+    background_black.style.background = "rgba(0, 0, 0, 0.7)";
     background_black.style.zIndex = "90000";
     document.body.appendChild(background_black);
     // dialog를 이용한 modal
@@ -18,7 +18,9 @@ chrome.runtime.onMessage.addListener(function(msg, sender) {
     modal.style.height = "40%";
     modal.style.width = "40%";
     modal.style.position = "fixed";
-    modal.innerHTML = `<iframe id="modal" style="height:100%"></iframe>`;
+    modal.style.borderRadius = "15px";
+    modal.style.borderColor = "#584b8b";
+    modal.innerHTML = `<iframe id="modal" style="height:100%; "></iframe>`;
     document.body.appendChild(modal);
     const dialog = document.querySelector("dialog");
     dialog.showModal();

@@ -60,11 +60,15 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3)
   },
   logo: {
-    margin: "10px 0px 0px 20px",
-    height: "48px"
+    margin: "10px 0px 0px 0px",
+    height: "36px"
   },
   auth: {
     display: "contents"
+  },
+  appbar: {
+    backgroundColor: "#58427c",
+    backgroundImage: "linear-gradient(316deg, #58427c 0%, #746cc0 74%)"
   }
 }));
 
@@ -95,11 +99,11 @@ export default function NewTab() {
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="fixed">
+        <AppBar position="fixed" className={classes.appbar}>
           <Toolbar className={classes.toolbar}>
             <Typography className={classes.title}>
               <img
-                src="https://i.imgur.com/XAszQxS.png"
+                src="https://i.imgur.com/ArsJMQp.png"
                 className={classes.logo}
                 alt="logo"
               />

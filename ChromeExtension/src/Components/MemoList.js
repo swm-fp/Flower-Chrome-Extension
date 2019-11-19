@@ -7,6 +7,7 @@ import Box from "@material-ui/core/Box";
 import MemoModal from "./MemoModal.js";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getMemos } from "../modules/memos";
@@ -17,6 +18,15 @@ const useStyles = makeStyles(theme => ({
   },
   loadingBar: {
     margin: "auto"
+  },
+  button: {
+    backgroundColor: " #f39f86",
+    backgroundImage: "linear-gradient(315deg, #f39f86 0%, #f9d976 74%)",
+    margin: theme.spacing(1)
+  },
+  project: {
+    color: "#323232",
+    fontWeight: "bold"
   }
 }));
 
@@ -42,12 +52,23 @@ function Media() {
     <div>
       {data.map((data3, index) => {
         return (
-          <Grid container className="memo-dashboard" key={index}>
-            {data3.Memos.length > 0 &&
-              Array.from(data3.Memos).map((item, index) => (
-                <MemoModal item={item} />
-              ))}
-          </Grid>
+          <div>
+            <Button
+              variant="contained"
+              size="small"
+              disabled
+              className={classes.button}
+            >
+              {data3.name}
+            </Button>
+
+            <Grid container className="memo-dashboard" key={index}>
+              {data3.Memos.length > 0 &&
+                Array.from(data3.Memos).map((item, index) => (
+                  <MemoModal item={item} />
+                ))}
+            </Grid>
+          </div>
         );
       })}
     </div>

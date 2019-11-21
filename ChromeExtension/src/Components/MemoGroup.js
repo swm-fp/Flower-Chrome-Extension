@@ -7,6 +7,10 @@ import Grid from "@material-ui/core/Grid";
 import MemoModal from "./MemoModal.js";
 import Button from "@material-ui/core/Button";
 
+import { useSelector, useDispatch } from "react-redux";
+import { shareOn, shareOff } from "../modules/share";
+import FlowerAPI from "../apis/FlowerAPI";
+
 const useStyles = makeStyles(theme => ({
   loading: {
     height: "500px"
@@ -19,6 +23,14 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: "linear-gradient(315deg, #f39f86 0%, #f9d976 74%)",
     margin: theme.spacing(1)
   },
+  button2: {
+    margin: theme.spacing(1)
+  },
+  button3: {
+    backgroundColor: "#7ee8fa",
+    backgroundImage: "linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%)",
+    margin: theme.spacing(1)
+  },
   project: {
     color: "#323232",
     fontWeight: "bold"
@@ -29,9 +41,32 @@ export default function MemoGroup(data3) {
   data3 = data3.data;
   const classes = useStyles();
   const [displayState, setDisplayState] = useState(false);
+  const [add, setAdd] = useState(false);
   const visibleCheck = () => {
     setDisplayState(!displayState);
   };
+
+  const dispatch = useDispatch();
+  const shareCheckOn = () => {
+    setAdd(true);
+    dispatch(shareOn());
+  };
+  const shareCheckOff = () => {
+    setAdd(false);
+    dispatch(shareOff());
+    AddMemos();
+  };
+
+  const AddMemos = async () => {
+    let lst = document.querySelectorAll("#shareClicked");
+    let memo_add_list = [];
+    for (let i = 0; i < lst.length; i++) {
+      memo_add_list.push(lst[i].getAttribute("value"));
+    }
+    console.log(data3.projectId);
+    console.log(memo_add_list);
+  };
+
   return (
     <div>
       <Button
@@ -43,13 +78,29 @@ export default function MemoGroup(data3) {
         {data3.name}
       </Button>
 
-      <Button variant="contained" size="small">
+      <Button variant="contained" size="small" className={classes.button2}>
         Share
       </Button>
 
-      <Button variant="contained" size="small">
-        Add
-      </Button>
+      {!add ? (
+        <Button
+          variant="contained"
+          size="small"
+          onClick={shareCheckOn}
+          className={classes.button2}
+        >
+          Add
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          size="small"
+          onClick={shareCheckOff}
+          className={classes.button3}
+        >
+          OK
+        </Button>
+      )}
 
       <Grid
         container

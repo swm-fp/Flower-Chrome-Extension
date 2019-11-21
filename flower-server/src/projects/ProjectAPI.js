@@ -110,7 +110,7 @@ const ProjectAPI = {
             where : where,
             include : [{
                 model : MemoModel,
-                attributes : ["memoId","content"]
+                attributes : ["memoId","content","url"]
             },
             {
                 model : ProjectUserModel,

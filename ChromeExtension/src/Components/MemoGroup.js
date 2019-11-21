@@ -43,6 +43,14 @@ export default function MemoGroup(data3) {
         {data3.name}
       </Button>
 
+      <Button variant="contained" size="small">
+        Share
+      </Button>
+
+      <Button variant="contained" size="small">
+        Add
+      </Button>
+
       <Grid
         container
         className="memo-dashboard"

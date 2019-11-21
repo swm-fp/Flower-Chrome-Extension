@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../css/memoList.scss";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 
 import { useSelector, useDispatch } from "react-redux";
 import { getMemos } from "../modules/memos";
+import MemoGroup from "./MemoGroup";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -51,25 +52,7 @@ function Media() {
   return (
     <div>
       {data.map((data3, index) => {
-        return (
-          <div>
-            <Button
-              variant="contained"
-              size="small"
-              disabled
-              className={classes.button}
-            >
-              {data3.name}
-            </Button>
-
-            <Grid container className="memo-dashboard" key={index}>
-              {data3.Memos.length > 0 &&
-                Array.from(data3.Memos).map((item, index) => (
-                  <MemoModal item={item} />
-                ))}
-            </Grid>
-          </div>
-        );
+        return <MemoGroup data={data3} index={index} />;
       })}
     </div>
   );

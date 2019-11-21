@@ -117,14 +117,8 @@ const ProjectAPI = {
                 attributes : []
             }]
         });
-
-        const result = [];
-        for(let row of rows){
-            if(row.Memos.length != 0){
-                result.push(row);
-            }
-        }
-        return result;
+        
+        return rows;
     },
     createShareKey : async (dbHelper,userId,projectId) =>{
         //project is user's

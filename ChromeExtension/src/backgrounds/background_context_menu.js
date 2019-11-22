@@ -23,20 +23,26 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.runtime.onMessage.addListener(async function(
+chrome.runtime.onMessage.addListener(async function (
   request,
   sender,
   sendResponse
 ) {
-  let node = request.node;
-  if (node.message === "save") {
-    await FlowerAPI.postMemos(node.memoList);
-  } else if ((node.message = "delete")) {
-    await FlowerAPI.deleteMemos(node.memoId);
+  try {
+    let node = request.node;
+    if (node.message === "save") {
+      await FlowerAPI.postMemos(node.memoList);
+    } else if ((node.message === "delete")) {
+      await FlowerAPI.deleteMemos(node.memoId);
+    }
   }
+  catch (e) {
+
+  }
+
 });
 
-chrome.webNavigation.onCompleted.addListener(function(details) {
+chrome.webNavigation.onCompleted.addListener(function (details) {
   if (details.frameId === 0) {
     chrome.tabs.query({ url: details.url, active: true }, async tabs => {
       if (tabs.length === 1) {

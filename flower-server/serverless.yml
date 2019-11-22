@@ -172,6 +172,22 @@ functions:
             name: authorizer
             arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qJ2JLSgrM
 
+  addMemoToProject:
+    name: m9
+    handler: src/projects/handler.addMemoToProject
+          
+#    the following are a few example events you can configure
+#    note: please make sure to change your handler code to work with those events
+#    check the event documentation for details
+    events:
+      - http:
+          path: /projects/{projectId}
+          method: post
+          cors: true
+          authorizer:
+            name: authorizer
+            arn: arn:aws:cognito-idp:ap-northeast-2:616448378550:userpool/ap-northeast-2_qj2jlsgrm
+
   postShareLink:
     name: f7
     handler: src/projects/handler.createShareLink

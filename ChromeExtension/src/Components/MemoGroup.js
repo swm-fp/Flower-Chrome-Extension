@@ -6,10 +6,10 @@ import Grid from "@material-ui/core/Grid";
 
 import MemoModal from "./MemoModal.js";
 import Button from "@material-ui/core/Button";
+import FlowerAPI from "../apis/FlowerAPI";
 
 import { useSelector, useDispatch } from "react-redux";
 import { shareOn, shareOff } from "../modules/share";
-import FlowerAPI from "../apis/FlowerAPI";
 
 const useStyles = makeStyles(theme => ({
   loading: {
@@ -78,7 +78,12 @@ export default function MemoGroup(data3) {
         {data3.name}
       </Button>
 
-      <Button variant="contained" size="small" className={classes.button2}>
+      <Button variant="contained" size="small" className={classes.button2}
+        onClick={async () => {
+          let response = await FlowerAPI.postShareLink(data3.projectId);
+          console.log(JSON.stringify(response));
+        }}
+      >
         Share
       </Button>
 
@@ -92,15 +97,28 @@ export default function MemoGroup(data3) {
           Add
         </Button>
       ) : (
-        <Button
-          variant="contained"
-          size="small"
-          onClick={shareCheckOff}
-          className={classes.button3}
-        >
-          OK
+          <Button
+            variant="contained"
+            size="small"
+            onClick={
+              async () => {
+                shareCheckOff();
+                console.log(data3);
+                let lst = document.querySelectorAll("#shareClicked");
+                let memo_add_list = [];
+                for (let i = 0; i < lst.length; i++) {
+                  memo_add_list.push(lst[i].getAttribute("value"));
+                }
+                let response = await FlowerAPI.addMemoToProject(data3.projectId, memo_add_list);
+                console.log(response);
+              }
+            }
+            className={classes.button3}
+          >
+            OK
         </Button>
-      )}
+        )
+      }
 
       <Grid
         container
@@ -112,6 +130,6 @@ export default function MemoGroup(data3) {
             <MemoModal item={item} />
           ))}
       </Grid>
-    </div>
+    </div >
   );
 }

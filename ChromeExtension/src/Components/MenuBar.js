@@ -92,119 +92,101 @@ export default function MenuBar() {
 
   return (
     <Paper className={classes.menubar}>
-      {!check ? (
-        <div>
-          <Button
-            variant="contained"
-            color="inherit"
-            className={classes.button}
-            startIcon={<ShareIcon />}
-            onClick={shareCheckOn}
-          >
-            Share
-          </Button>
-          <Button
-            variant="contained"
-            color="inherit"
-            className={classes.button}
-            // startIcon={<AlternateEmailIcon />}
-            onClick={shareOpen2}
-          >
-            Get Share Memo
-          </Button>
-          {/* 프로젝트 명을 받는 부분 */}
-          <Dialog
-            open={shareMemo2}
-            onClose={shareClose2}
-            fullWidth="md"
-            maxWidth="md"
-          >
-            <DialogTitle className={classes.shareTitle}>
-              공유받은 링크
-            </DialogTitle>
-            <DialogContent dividers>
-              <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
-                <Typography>Link를 입력해주세요</Typography>
-                <TextField
-                  id="outlined-basic"
-                  className={classes.textField}
-                  label="Link"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={e => setProjectName2(e.target.value)}
-                />
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={async () => {
-                  shareClose2();
 
-                  const r = await FlowerAPI.followProject(projectName2);
-                  console.log(JSON.stringify(r));
-                }}
-                color="primary"
-              >
-                OK
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      ) : (
-        <div>
-          <Button
-            variant="contained"
-            color="inherit"
-            className={classes.button}
-            startIcon={<AlternateEmailIcon />}
-            onClick={shareOpen}
-          >
-            Ready to Share
+      <Button
+        variant="contained"
+        color="inherit"
+        className={classes.button}
+        startIcon={<AlternateEmailIcon />}
+        onClick={shareOpen}
+      >
+        Create Project
           </Button>
+
+      <Dialog
+        open={shareMemo}
+        onClose={shareClose}
+        fullWidth="md"
+        maxWidth="md"
+      >
+        <DialogTitle className={classes.shareTitle}>Share</DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
+            <Typography>Project 명을 입력해주세요</Typography>
+            <TextField
+              id="outlined-basic"
+              className={classes.textField}
+              label="Project"
+              margin="normal"
+              variant="outlined"
+              onChange={e => setProjectName(e.target.value)}
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
           <Button
-            variant="contained"
-            color="inherit"
-            className={classes.button}
-            startIcon={<BlockIcon />}
-            onClick={shareCheckOff}
+            onClick={async () => {
+              await FlowerAPI.postProject(projectName);
+              shareClose();
+
+            }}
+            color="primary"
           >
-            Cancel
-          </Button>
-          <Dialog
-            open={shareMemo}
-            onClose={shareClose}
-            fullWidth="md"
-            maxWidth="md"
-          >
-            <DialogTitle className={classes.shareTitle}>Share</DialogTitle>
-            <DialogContent dividers>
-              <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
-                <Typography>Project 명을 입력해주세요</Typography>
-                <TextField
-                  id="outlined-basic"
-                  className={classes.textField}
-                  label="Project"
-                  margin="normal"
-                  variant="outlined"
-                  onChange={e => setProjectName(e.target.value)}
-                />
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => {
-                  shareClose();
-                  shareMemos();
-                  shareCheckOff();
-                }}
-                color="primary"
-              >
-                OK
+            OK
               </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
-      )}
+        </DialogActions>
+      </Dialog>
+
+      <Button
+        variant="contained"
+        color="inherit"
+        className={classes.button}
+        // startIcon={<AlternateEmailIcon />}
+        onClick={shareOpen2}
+      >
+        Get Share Memo
+          </Button>
+
+      <Dialog
+        open={shareMemo2}
+        onClose={shareClose2}
+        fullWidth="md"
+        maxWidth="md"
+      >
+        <DialogTitle className={classes.shareTitle}>
+          공유받은 링크
+            </DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
+            <Typography>Link를 입력해주세요</Typography>
+            <TextField
+              id="outlined-basic"
+              className={classes.textField}
+              label="Link"
+              margin="normal"
+              variant="outlined"
+              onChange={e => setProjectName2(e.target.value)}
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={async () => {
+              shareClose2();
+
+              const r = await FlowerAPI.followProject(projectName2);
+              console.log(JSON.stringify(r));
+            }}
+            color="primary"
+          >
+            OK
+              </Button>
+        </DialogActions>
+      </Dialog>
+
+
+
+
     </Paper>
   );
 }

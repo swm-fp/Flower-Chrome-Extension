@@ -15,7 +15,7 @@ const KeyCodes = {
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
 
-class TagApp extends React.Component {
+export default class TagApp extends React.Component {
   constructor(props) {
     super(props);
 
@@ -59,17 +59,13 @@ class TagApp extends React.Component {
   }
 
   async Tags() {
-    let title = await chrome.tabs.executeScript({
-      code: 'document.querySelector("title").innerText'
-    });
+    let title = await document.querySelector("title").innerText;
 
-    let url = await chrome.tabs.executeScript({
-      code: "document.URL"
-    });
+    let url = await document.URL;
 
-    let data = await FlowerAPI.getTags(url[0], title[0]);
+    let data = await FlowerAPI.getTags(url, title);
     console.log(data);
-
+    console.log("hello");
     let result = [];
     if (data) {
       for (let i = 0; i < data.length; i++) {
@@ -97,19 +93,8 @@ class TagApp extends React.Component {
   }
 }
 
-class Popup extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <Container maxWidth="sm">
-          <h2 className="modal_tags">Tags</h2>
-          <Typography>태그는 삭제 또는 추가할 수 있습니다.</Typography>
-          <TagApp />
-        </Container>
-      </React.Fragment>
-    );
-  }
-}
+// export default function Popup() {
+//   return <TagApp />;
+// }
 
-ReactDOM.render(<Popup />, document.getElementById("root"));
+// ReactDOM.render(<Popup />, document.getElementById("root"));

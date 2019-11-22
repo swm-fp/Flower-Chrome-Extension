@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../css/memoList.scss";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,6 +11,15 @@ import FlowerAPI from "../apis/FlowerAPI";
 import { useSelector, useDispatch } from "react-redux";
 import { shareOn, shareOff } from "../modules/share";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
+import UnfoldLessIcon from "@material-ui/icons/UnfoldLess";
+
 const useStyles = makeStyles(theme => ({
   loading: {
     height: "500px"
@@ -21,10 +30,10 @@ const useStyles = makeStyles(theme => ({
   button: {
     backgroundColor: " #f39f86",
     backgroundImage: "linear-gradient(315deg, #f39f86 0%, #f9d976 74%)",
-    margin: theme.spacing(1)
+    margin: theme.spacing(0.5)
   },
   button2: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(0.5)
   },
   button3: {
     backgroundColor: "#7ee8fa",
@@ -42,6 +51,9 @@ export default function MemoGroup(data3) {
   const classes = useStyles();
   const [displayState, setDisplayState] = useState(false);
   const [add, setAdd] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [shareKey, setShareKey] = useState("");
+
   const visibleCheck = () => {
     setDisplayState(!displayState);
   };
@@ -56,6 +68,12 @@ export default function MemoGroup(data3) {
     dispatch(shareOff());
     AddMemos();
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const descriptionElementRef = useRef(null);
 
   const AddMemos = async () => {
     let lst = document.querySelectorAll("#shareClicked");
@@ -76,16 +94,34 @@ export default function MemoGroup(data3) {
         className={classes.button}
       >
         {data3.name}
+        {!displayState ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
       </Button>
 
-      <Button variant="contained" size="small" className={classes.button2}
+      <Button
+        variant="contained"
+        size="small"
+        className={classes.button2}
         onClick={async () => {
+          setOpen(true);
           let response = await FlowerAPI.postShareLink(data3.projectId);
-          console.log(JSON.stringify(response));
+          setShareKey(JSON.stringify(response));
         }}
       >
         Share
       </Button>
+      <Dialog open={open} onClose={handleClose} fullWidth="md" maxWidth="md">
+        <DialogTitle>Share Key</DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText ref={descriptionElementRef} tabIndex={-1}>
+            {shareKey}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {!add ? (
         <Button
@@ -97,28 +133,32 @@ export default function MemoGroup(data3) {
           Add
         </Button>
       ) : (
-          <Button
-            variant="contained"
-            size="small"
-            onClick={
-              async () => {
-                shareCheckOff();
-                console.log(data3);
-                let lst = document.querySelectorAll("#shareClicked");
-                let memo_add_list = [];
-                for (let i = 0; i < lst.length; i++) {
-                  memo_add_list.push(lst[i].getAttribute("value"));
-                }
-                let response = await FlowerAPI.addMemoToProject(data3.projectId, memo_add_list);
-                console.log(response);
-              }
+        <Button
+          variant="contained"
+          size="small"
+          onClick={async () => {
+            shareCheckOff();
+            console.log(data3);
+            let lst = document.querySelectorAll("#shareClicked");
+            let memo_add_list = [];
+            for (let i = 0; i < lst.length; i++) {
+              memo_add_list.push(lst[i].getAttribute("value"));
             }
-            className={classes.button3}
-          >
-            OK
+            let response = await FlowerAPI.addMemoToProject(
+              data3.projectId,
+              memo_add_list
+            );
+            console.log(response);
+          }}
+          className={classes.button3}
+        >
+          OK
         </Button>
-        )
-      }
+      )}
+
+      <Button variant="contained" size="small" className={classes.button2}>
+        Delete
+      </Button>
 
       <Grid
         container
@@ -130,6 +170,6 @@ export default function MemoGroup(data3) {
             <MemoModal item={item} />
           ))}
       </Grid>
-    </div >
+    </div>
   );
 }

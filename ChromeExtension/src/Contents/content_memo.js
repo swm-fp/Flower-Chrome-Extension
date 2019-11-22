@@ -1,5 +1,10 @@
+
+
+
+
+
 /* global chrome */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import ReactDOM from "react-dom";
 import "../css/memo.scss";
 import "../apis/chrome-extension-async";
@@ -7,7 +12,115 @@ import { Button, FormControl, InputGroup } from "react-bootstrap";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import FlowerAPI from "../apis/FlowerAPI";
-import TagApp from "../popup.js";
+
+
+import { WithContext as ReactTags } from "react-tag-input";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import "../css/popup.css";
+
+const KeyCodes = {
+  comma: 188,
+  enter: 13
+};
+
+const delimiters = [KeyCodes.comma, KeyCodes.enter];
+let globalTag;
+class TagApp extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tags: [],
+      suggestions: []
+    };
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAddition = this.handleAddition.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+  }
+
+  componentDidMount() {
+    this.Tags().then(result => {
+      globalTag = result;
+      this.setState({
+        tags: result
+      })
+    }
+    );
+  }
+
+  handleDelete(i) {
+    const { tags } = this.state;
+    this.setState(() => {
+      let result = {
+        tags: tags.filter((tag, index) => index !== i)
+      }
+      globalTag = result.tags;
+      console.log(globalTag);
+      return result;
+    });
+
+  }
+
+  handleAddition(tag) {
+    this.setState(
+      state => {
+        let result = { tags: [...state.tags, tag] }
+        globalTag = result.tags;
+        console.log(globalTag);
+
+        return result;
+      }
+    );
+
+  }
+
+  handleDrag(tag, currPos, newPos) {
+    const tags = [...this.state.tags];
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    this.setState({ tags: newTags });
+    globalTag = this.state.tags;
+    console.log(globalTag);
+  }
+
+  async Tags() {
+
+
+    let response = await chrome.runtime.sendMessage({ message: "nlp" });
+    console.log(response);
+    let result = [];
+    if (response.tags) {
+      for (let i = 0; i < response.tags.length; i++) {
+        result.push({ id: response.tags[i], text: response.tags[i] });
+      }
+    }
+    return result;
+  }
+
+  render() {
+    const { tags, suggestions } = this.state;
+    return (
+      <div>
+        <ReactTags
+          inputFieldPosition="inline"
+          tags={tags}
+          suggestions={suggestions}
+          handleDelete={this.handleDelete}
+          handleAddition={this.handleAddition}
+          handleDrag={this.handleDrag}
+          delimiters={delimiters}
+        />
+      </div>
+    );
+  }
+}
+
 
 let x;
 let y;
@@ -15,7 +128,7 @@ let memos = undefined;
 
 document.addEventListener(
   "mousemove",
-  function(event) {
+  function (event) {
     x = event.layerX;
     y = event.layerY;
   },
@@ -159,7 +272,7 @@ function renderMemo(memoList = undefined) {
   }
 }
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message === "contextMenu") {
     if (!memos) {
       memos = {};
@@ -177,6 +290,7 @@ window.onbeforeunload = e => {
   if (memos) {
     let res = {};
     res["message"] = "save";
+    res["tags"] = globalTag;
     let url = document.URL;
 
     let memoList = [];
@@ -207,6 +321,7 @@ window.onbeforeunload = e => {
     res["memoList"] = memoList;
 
     console.log(res);
+    console.log(globalTag);
 
     chrome.runtime.sendMessage({ node: res });
   }

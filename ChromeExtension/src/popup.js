@@ -29,6 +29,7 @@ export default class TagApp extends React.Component {
   }
 
   componentDidMount() {
+    console.log("bhw1994");
     this.Tags().then(result =>
       this.setState({
         tags: result
@@ -59,17 +60,14 @@ export default class TagApp extends React.Component {
   }
 
   async Tags() {
-    let title = await document.querySelector("title").innerText;
 
-    let url = await document.URL;
 
-    let data = await FlowerAPI.getTags(url, title);
-    console.log(data);
-    console.log("hello");
+    let response = await chrome.runtime.sendMessage({ message: "nlp" });
+    console.log(response);
     let result = [];
-    if (data) {
-      for (let i = 0; i < data.length; i++) {
-        result.push({ id: data[i], text: data[i] });
+    if (response.tags) {
+      for (let i = 0; i < response.tags.length; i++) {
+        result.push({ id: response.tags[i], text: response.tags[i] });
       }
     }
     return result;
@@ -93,8 +91,4 @@ export default class TagApp extends React.Component {
   }
 }
 
-// export default function Popup() {
-//   return <TagApp />;
-// }
 
-// ReactDOM.render(<Popup />, document.getElementById("root"));

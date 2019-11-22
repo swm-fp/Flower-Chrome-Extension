@@ -104,7 +104,9 @@ export default function MemoGroup(data3) {
         onClick={async () => {
           setOpen(true);
           let response = await FlowerAPI.postShareLink(data3.projectId);
+
           setShareKey(JSON.stringify(response));
+
         }}
       >
         Share
@@ -133,28 +135,28 @@ export default function MemoGroup(data3) {
           Add
         </Button>
       ) : (
-        <Button
-          variant="contained"
-          size="small"
-          onClick={async () => {
-            shareCheckOff();
-            console.log(data3);
-            let lst = document.querySelectorAll("#shareClicked");
-            let memo_add_list = [];
-            for (let i = 0; i < lst.length; i++) {
-              memo_add_list.push(lst[i].getAttribute("value"));
-            }
-            let response = await FlowerAPI.addMemoToProject(
-              data3.projectId,
-              memo_add_list
-            );
-            console.log(response);
-          }}
-          className={classes.button3}
-        >
-          OK
+          <Button
+            variant="contained"
+            size="small"
+            onClick={async () => {
+              shareCheckOff();
+              console.log(data3);
+              let lst = document.querySelectorAll("#shareClicked");
+              let memo_add_list = [];
+              for (let i = 0; i < lst.length; i++) {
+                memo_add_list.push(lst[i].getAttribute("value"));
+              }
+              let response = await FlowerAPI.addMemoToProject(
+                data3.projectId,
+                memo_add_list
+              );
+              console.log(response);
+            }}
+            className={classes.button3}
+          >
+            OK
         </Button>
-      )}
+        )}
 
       <Button variant="contained" size="small" className={classes.button2}>
         Delete

@@ -32,6 +32,27 @@ chrome.runtime.onMessage.addListener(async function (
     let node = request.node;
     if (node.message === "save") {
       await FlowerAPI.postMemos(node.memoList);
+
+
+      try {
+
+        let url = await chrome.tabs.executeScript({
+          code: "document.URL"
+        });
+
+        const tags = [];
+        for (let tag of node.tags) {
+          tags.push(tag.text);
+        }
+        console.log(url);
+        console.log(tags);
+        let response = await FlowerAPI.postTags(url[0], tags);
+        console.log(response);
+      }
+      catch (e) {
+
+      }
+
     } else if ((node.message === "delete")) {
       await FlowerAPI.deleteMemos(node.memoId);
     }

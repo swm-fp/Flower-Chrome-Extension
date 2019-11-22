@@ -7,6 +7,7 @@ import { Button, FormControl, InputGroup } from "react-bootstrap";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import FlowerAPI from "../apis/FlowerAPI";
+import TagApp from "../popup.js";
 
 let x;
 let y;
@@ -14,7 +15,7 @@ let memos = undefined;
 
 document.addEventListener(
   "mousemove",
-  function (event) {
+  function(event) {
     x = event.layerX;
     y = event.layerY;
   },
@@ -110,7 +111,7 @@ export default function Memo(props) {
           id="inputGroup-sizing-sm"
         >
           Memo
-          </InputGroup.Text>
+        </InputGroup.Text>
       </InputGroup>
       <div className="flower-memo-content">
         <textarea
@@ -127,16 +128,7 @@ export default function Memo(props) {
             spellChecker: false
           }}
         />
-
-        <div>
-          <div
-            onClick={async () => {
-              chrome.runtime.sendMessage({ message: "nlp" }, function (response) {
-                console.log(response);
-              });
-            }}
-          >tags</div>
-        </div>
+        <TagApp />
       </div>
     </InputGroup>
   );
@@ -167,7 +159,7 @@ function renderMemo(memoList = undefined) {
   }
 }
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.message === "contextMenu") {
     if (!memos) {
       memos = {};

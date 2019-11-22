@@ -62,7 +62,7 @@ const FlowerAPI = {
 
         console.log(response);
 
-        setTimeout(async function() {
+        setTimeout(async function () {
           response = await tagAPI.getTags(info.token, tagUrl);
           console.log(response.data.tagList);
           return response.data.tagList;
@@ -108,7 +108,7 @@ const FlowerAPI = {
       return response.data;
     }
   },
-  addMemoToProject : async (projectId, memoIdList) => {
+  addMemoToProject: async (projectId, memoIdList) => {
     if (await FlowerAPI.checkLoginStatus()) {
       const info = await FlowerAPI.getUserInfo();
       let response = await projectAPI.addMemoToProject(
@@ -120,24 +120,25 @@ const FlowerAPI = {
       return response.data;
     }
   },
-  
+
 
   postShareLink: async projectId => {
     if (await FlowerAPI.checkLoginStatus()) {
       const info = await FlowerAPI.getUserInfo();
       let response = await projectAPI.postShareLink(info.token, projectId);
+
+      return response.data.split("=")[1];
+    }
+  },
+
+  followProject: async (key) => {
+    if (await FlowerAPI.checkLoginStatus()) {
+      const info = await FlowerAPI.getUserInfo();
+      let response = await projectAPI.followProject(info.token, key);
       return response.data;
     }
   },
 
-  followProject : async (key) =>{
-    if (await FlowerAPI.checkLoginStatus()) {
-      const info = await FlowerAPI.getUserInfo();
-      let response = await projectAPI.followProject(info.token,key);
-      return response.data;
-    }
-  },
-  
   getUserInfo: async () => {
     const info = await chrome.storage.local.get(["token", "email"]);
     return info;
@@ -174,7 +175,7 @@ const FlowerAPI = {
   updateLogoutState: async () => {
     await chrome.storage.local.set(
       { token: "", id: "", email: "" },
-      function() {
+      function () {
         alert("logout");
       }
     );

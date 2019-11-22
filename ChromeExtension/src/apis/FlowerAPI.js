@@ -97,18 +97,30 @@ const FlowerAPI = {
     }
   },
 
-  postProject: async (projectName, memoIdList) => {
+  postProject: async (projectName) => {
     if (await FlowerAPI.checkLoginStatus()) {
       const info = await FlowerAPI.getUserInfo();
       let response = await projectAPI.postProject(
         info.token,
-        projectName,
+        projectName
+      );
+
+      return response.data;
+    }
+  },
+  addMemoToProject : async (projectId, memoIdList) => {
+    if (await FlowerAPI.checkLoginStatus()) {
+      const info = await FlowerAPI.getUserInfo();
+      let response = await projectAPI.addMemoToProject(
+        info.token,
+        projectId,
         memoIdList
       );
 
       return response.data;
     }
   },
+  
 
   postShareLink: async projectId => {
     if (await FlowerAPI.checkLoginStatus()) {

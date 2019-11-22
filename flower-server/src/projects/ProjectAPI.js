@@ -110,14 +110,14 @@ const ProjectAPI = {
             where : where,
             include : [{
                 model : MemoModel,
-                attributes : ["memoId","content"]
+                attributes : ["memoId","content","url"]
             },
             {
                 model : ProjectUserModel,
                 attributes : []
             }]
         });
-
+        
         return rows;
     },
     createShareKey : async (dbHelper,userId,projectId) =>{

@@ -9,7 +9,7 @@ docutils==0.15.2
 Flask==1.1.1
 Flask-Cors==3.0.8
 itsdangerous==1.1.0
-Jinja2==2.10.3
+Jinja2==2.11.3
 jmespath==0.9.4
 JPype1==0.7.0
 konlpy==0.5.1
